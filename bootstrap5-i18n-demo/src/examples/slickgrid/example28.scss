@@ -1,0 +1,31 @@
+
+.icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+/** You can use the following code OR use the .color-x CSS classes */
+
+// .icon.mdi-file-pdf-outline {
+//   /** 1. use `filter` color */
+//   // filter: invert(62%) sepia(93%) saturate(5654%) hue-rotate(325deg) brightness(100%) contrast(90%);
+
+//   /** 2. or use the SASS @mixin (from Slickgrid-React "sass-utilities.scss") that will produce the `filter` color */
+//   @include recolor(#f14668, 0.9);
+// }
+
+// .icon.mdi-folder, .icon.mdi-folder-open {
+//   @include recolor(#ffa500, 0.9);
+// }
+// .icon.mdi-file-music-outline {
+//   @include recolor(#3298dc, 0.9);
+// }
+// .icon.mdi-file-excel-outline {
+//   @include recolor(#1E9F75, 0.9);
+// }
+// .icon.mdi-file-document-outline {
+//   @include recolor(#686868, 0.9);
+// }
