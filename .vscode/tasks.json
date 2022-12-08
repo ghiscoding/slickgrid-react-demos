@@ -13,7 +13,7 @@
     {
       "label": "Start Webpack Bootstrap 5 Demo Page",
       "type": "shell",
-      "command": "yarn start",
+      "command": "yarn dev",
       "options": {
         "cwd": "${workspaceFolder}/bootstrap5-i18n-demo",
       },
