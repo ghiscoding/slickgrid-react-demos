@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Webpack Bootstrap 5 Demo Page",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${workspaceFolder}/bootstrap5-i18n-demo",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Webpack Bootstrap 5 Demo Page",
+      "type": "shell",
+      "command": "yarn start",
+      "options": {
+        "cwd": "${workspaceFolder}/bootstrap5-i18n-demo",
+      },
+      "problemMatcher": []
+    }
+  ]
+}
