@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { GridOdataService, OdataServiceApi, OdataOption } from '@slickgrid-universal/odata';
 import { RxJsResource } from '@slickgrid-universal/rxjs-observable';
 import { Observable, of, Subject } from 'rxjs';
-import moment from 'moment-mini';
 
 import {
   Column,
@@ -16,7 +14,7 @@ import {
   Pagination,
   ReactGridInstance,
   ReactSlickgridComponent,
-} from '../../slickgrid-react';
+} from 'slickgrid-react';
 import React from 'react';
 import BaseSlickGridState from './state-slick-grid-base';
 
@@ -497,7 +495,7 @@ export default class Example31 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <div className="row">
           <div className="col-md-12" aria-label="Basic Editing Commands">
@@ -544,7 +542,7 @@ export default class Example31 extends React.Component<Props, State> {
               </label>
               <label className="radio-inline control-label" htmlFor="radio4">
                 <input type="radio" name="inlineRadioOptions" data-test="version4" id="radio4" value="4"
-                  onChange={() => this.setOdataVersion(4)} /> 4 
+                  onChange={() => this.setOdataVersion(4)} /> 4
               </label>
             </span>
             <label className="checkbox-inline control-label" htmlFor="enableCount" style={{ marginLeft: '20px' }}>

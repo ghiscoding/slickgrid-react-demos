@@ -13,7 +13,7 @@ import {
   GridStateChange,
   SlickGrid,
   ReactSlickgridComponent,
-} from '../../slickgrid-react';
+} from 'slickgrid-react';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import BaseSlickGridState from './state-slick-grid-base';
@@ -287,7 +287,7 @@ class Example12 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <hr />
 

@@ -10,15 +10,16 @@ import {
   Formatters,
   GridOption,
   LongTextEditorOption,
+  ReactGridInstance,
+  ReactSlickgridComponent,
   SlickGrid,
   SlickNamespace,
   SortComparers,
-} from '@slickgrid-universal/common';
+} from 'slickgrid-react';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import React from 'react';
 
 import BaseSlickGridState from './state-slick-grid-base';
-import { ReactGridInstance, ReactSlickgridComponent } from '../../slickgrid-react';
 import './example32.scss'; // provide custom CSS/SASS styling
 
 const NB_ITEMS = 5000;
@@ -105,7 +106,7 @@ export default class Example32 extends React.Component<Props, State> {
         { value: 3, label: 'Complex' },
         { value: 4, label: 'Very Complex' },
       ],
-    }
+    };
   }
 
   componentDidMount() {
@@ -842,7 +843,7 @@ export default class Example32 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <h4 className="ml-3">Container Width (950px)</h4>
 

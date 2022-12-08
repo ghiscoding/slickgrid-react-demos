@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import i18next, { TFunction } from 'i18next';
-import { ReactGridInstance, Column, Formatters, SlickDataView, SlickGrid, ReactSlickgridComponent } from '../../slickgrid-react';
+import { ReactGridInstance, Column, Formatters, SlickDataView, SlickGrid, ReactSlickgridComponent } from 'slickgrid-react';
 import './example8.scss'; // provide custom CSS/SASS styling
 import React from 'react';
 import BaseSlickGridState from './state-slick-grid-base';
@@ -11,8 +11,8 @@ interface Props {
   t: TFunction;
 }
 
-interface State extends BaseSlickGridState{
-  selectedLanguage:string,
+interface State extends BaseSlickGridState {
+  selectedLanguage: string,
   visibleColumns: Column[]
 }
 
@@ -69,8 +69,8 @@ class Example8 extends React.Component<Props, State> {
     this.dataView = reactGrid?.dataView;
   }
 
-  getColumnDefinitions(){
-    const columnDefinitions:Column[] = [
+  getColumnDefinitions() {
+    const columnDefinitions: Column[] = [
       { id: 'title', name: 'Title', field: 'title', nameKey: 'TITLE' },
       { id: 'duration', name: 'Duration', field: 'duration', nameKey: 'DURATION', sortable: true },
       { id: 'percentComplete', name: '% Complete', field: 'percentComplete', nameKey: 'PERCENT_COMPLETE', sortable: true },
@@ -155,7 +155,7 @@ class Example8 extends React.Component<Props, State> {
     const gridOptions = this.getGridOptions();
     const columnDefinitions = this.getColumnDefinitions();
 
-    this.setState((state:any,props:any)=>{
+    this.setState((state: any, props: any) => {
       return {
         ...state,
         columnDefinitions,
@@ -179,10 +179,10 @@ class Example8 extends React.Component<Props, State> {
       };
     }
 
-    this.setState((state:any, props:any)=>{
+    this.setState((state: any, props: any) => {
       return {
         ...state,
-        dataset:mockDataset,
+        dataset: mockDataset,
       };
     });
   }
@@ -190,7 +190,7 @@ class Example8 extends React.Component<Props, State> {
   async switchLanguage() {
     const nextLanguage = (this.state.selectedLanguage === 'en') ? 'fr' : 'en';
     await i18next.changeLanguage(nextLanguage);
-    this.setState((state:any, props:any)=>{
+    this.setState((state: any, props: any) => {
       return {
         ...state,
         selectedLanguage: nextLanguage
@@ -211,7 +211,7 @@ class Example8 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <button className="btn btn-outline-secondary btn-sm me-1" onClick={() => this.switchLanguage()}>
           <i className="fa fa-language me-1"></i>

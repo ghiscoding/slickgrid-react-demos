@@ -10,7 +10,7 @@ import {
   ReactSlickgridComponent,
   SlickGrid,
   TreeToggledItem,
-} from '../../slickgrid-react';
+} from 'slickgrid-react';
 import React from 'react';
 import './example28.scss'; // provide custom CSS/SASS styling
 import BaseSlickGridState from './state-slick-grid-base';
@@ -25,10 +25,6 @@ interface State extends BaseSlickGridState {
   treeToggleItems: TreeToggledItem[];
   isExcludingChildWhenFiltering: boolean;
   isAutoApproveParentItemWhenTreeColumnIsValid: boolean;
-}
-
-function randomBetween(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 export default class Example28 extends React.Component<Props, State> {
@@ -58,7 +54,7 @@ export default class Example28 extends React.Component<Props, State> {
       loadingClass: '',
       treeToggleItems: [],
       searchString: '',
-    }
+    };
   }
 
   componentDidMount() {
@@ -238,7 +234,7 @@ export default class Example28 extends React.Component<Props, State> {
         id: newId,
         file: `pop-${newId}.mp3`,
         dateModified: new Date(),
-        size: randomBetween(50, 100),
+        size: Math.floor(Math.random() * 100) + 50,
       });
 
       // overwrite hierarchical dataset which will also trigger a grid sort and rendering

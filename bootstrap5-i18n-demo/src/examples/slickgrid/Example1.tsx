@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Column, Formatters, GridOption, ReactSlickgridComponent } from '../../slickgrid-react';
+import { Column, Formatters, GridOption, ReactSlickgridComponent } from 'slickgrid-react';
 
 const NB_ITEMS = 995;
 
@@ -42,8 +42,8 @@ export default class Example1 extends React.Component<Props, State> {
 
     // mock some data (different in each dataset)
     this.setState((state: State, props: Props) => ({
-        dataset1: this.mockData(NB_ITEMS),
-        dataset2: this.mockData(NB_ITEMS)
+      dataset1: this.mockData(NB_ITEMS),
+      dataset2: this.mockData(NB_ITEMS)
     }));
   }
 

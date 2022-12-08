@@ -9,13 +9,14 @@ import {
   GridOption,
   MenuCommandItemCallbackArgs,
   OperatorType,
+  ReactGridInstance,
+  ReactSlickgridComponent,
   SlickGrid,
-} from '@slickgrid-universal/common';
+} from 'slickgrid-react';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import React from 'react';
 
-import { ReactGridInstance, ReactSlickgridComponent } from '../../slickgrid-react';
 import BaseSlickGridState from './state-slick-grid-base';
 
 const NB_ITEMS = 500;
@@ -47,7 +48,7 @@ export default class Example32 extends React.Component<Props, State> {
       gridOptions: undefined,
       columnDefinitions: [],
       serverApiDelay: 500,
-    }
+    };
   }
 
   componentDidMount() {
@@ -386,7 +387,7 @@ export default class Example32 extends React.Component<Props, State> {
   handleServerDelayInputChange(e: React.FormEvent<HTMLInputElement>) {
     this.setState((state: State) => ({
       ...state,
-      serverApiDelay: parseInt((e.target as HTMLInputElement)?.value) ?? '',
+      serverApiDelay: parseInt((e.target as HTMLInputElement)?.value, 10) ?? '',
     }));
   }
 

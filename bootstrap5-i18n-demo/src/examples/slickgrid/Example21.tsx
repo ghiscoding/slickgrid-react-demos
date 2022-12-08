@@ -7,7 +7,7 @@ import {
   ReactSlickgridComponent,
   GroupingGetterFunction,
   GridOption
-} from '../../slickgrid-react';
+} from 'slickgrid-react';
 import React from 'react';
 import BaseSlickGridState from './state-slick-grid-base';
 
@@ -121,7 +121,7 @@ export default class Example21 extends React.Component<Props, State> {
       enableRowSelection: true
     };
 
-    this.setState((state: State, props: Props) => {
+    this.setState((state: State) => {
       return {
         ...state,
         gridOptions,
@@ -167,16 +167,16 @@ export default class Example21 extends React.Component<Props, State> {
   //
 
   clearGridSearchInput() {
-    this.setState((state: State, props: Props) => {
+    this.setState((state: State) => {
       return {
         ...state,
         searchValue: '',
-      }
+      };
     }, () => this.updateFilter());
   }
 
   selectedOperatorChanged(e: React.FormEvent<HTMLSelectElement>) {
-    this.setState((state: State, props: Props) => {
+    this.setState((state: State) => {
       return {
         ...state,
         selectedOperator: (e.target as HTMLSelectElement)?.value ?? '',
@@ -188,17 +188,15 @@ export default class Example21 extends React.Component<Props, State> {
     const selectedVal = (e.target as HTMLSelectElement)?.value ?? '';
     const selectedColumn = this.state.columnDefinitions.find(c => c.id === selectedVal);
 
-    this.setState((state: State) =>
-      ({ ...state, selectedColumn }),
-      () => this.updateFilter()
-    );
+    this.setState((state: State) => {
+      return { ...state, selectedColumn };
+    }, () => this.updateFilter());
   }
 
   searchValueChanged(e: React.FormEvent<HTMLInputElement>) {
-    this.setState((state: State) =>
-      ({ ...state, searchValue: (e.target as HTMLInputElement)?.value ?? '' }),
-      () => this.updateFilter()
-    );
+    this.setState((state: State) => {
+      return { ...state, searchValue: (e.target as HTMLInputElement)?.value ?? '' };
+    }, () => this.updateFilter());
   }
 
   updateFilter() {
@@ -222,7 +220,7 @@ export default class Example21 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <div className="row row-cols-lg-auto g-1 align-items-center">
           <div className="col">

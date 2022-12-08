@@ -9,7 +9,7 @@ import {
   MultipleSelectOption,
   OperatorType,
   ReactSlickgridComponent
-} from '../../slickgrid-react';
+} from 'slickgrid-react';
 import React from 'react';
 import './example25.scss'; // provide custom CSS/SASS styling
 import BaseSlickGridState from './state-slick-grid-base';
@@ -71,7 +71,7 @@ export default class Example25 extends React.Component<Props, State> {
       processing: false,
       selectedLanguage: '',
       status: { text: '', class: '' },
-    }
+    };
   }
 
   async componentDidMount() {
@@ -248,7 +248,7 @@ export default class Example25 extends React.Component<Props, State> {
       const response = await fetch(COUNTRIES_API, {
         method: 'post',
         body: JSON.stringify({ query }),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
+        headers: { 'Content-type': 'application/json; charset=UTF-8' }
       });
       resolve(response.json());
     });
@@ -265,7 +265,7 @@ export default class Example25 extends React.Component<Props, State> {
       const response = await fetch(COUNTRIES_API, {
         method: 'post',
         body: JSON.stringify({ query: continentQuery }),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
+        headers: { 'Content-type': 'application/json; charset=UTF-8' }
       });
       resolve(response.json());
     });
@@ -278,12 +278,11 @@ export default class Example25 extends React.Component<Props, State> {
    */
   getLanguages(): Promise<GraphqlResult<{ code: string; name: string; native: string; }>> {
     const languageQuery = `query { languages { code, name, native  }}`;
-    console.log('GET LANG', JSON.stringify({ query: languageQuery }))
     return new Promise(async resolve => {
       const response = await fetch(COUNTRIES_API, {
         method: 'post',
         body: JSON.stringify({ query: languageQuery }),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
+        headers: { 'Content-type': 'application/json; charset=UTF-8' }
       });
       resolve(response.json());
     });
@@ -317,7 +316,7 @@ export default class Example25 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <div className="row">
           <div className="col-xs-6 col-sm-3">

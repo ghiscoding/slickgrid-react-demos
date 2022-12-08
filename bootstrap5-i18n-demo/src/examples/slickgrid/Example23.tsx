@@ -21,7 +21,7 @@ import {
   SliderRangeOption,
   ReactSlickgridComponent,
   GroupingGetterFunction
-} from '../../slickgrid-react';
+} from 'slickgrid-react';
 import React from 'react';
 import BaseSlickGridState from './state-slick-grid-base';
 import { withTranslation } from 'react-i18next';
@@ -94,7 +94,7 @@ class Example23 extends React.Component<Props, State> {
         { value: 'currentYearTasks', label: 'Current Year Completed Tasks' },
         { value: 'nextYearTasks', label: 'Next Year Active Tasks' }
       ]
-    }
+    };
   }
 
   componentDidMount() {
@@ -255,7 +255,7 @@ class Example23 extends React.Component<Props, State> {
       return {
         ...state,
         selectedPredefinedFilter: ''
-      }
+      };
     }, () => this.reactGrid.filterService.clearFilters());
   }
 
@@ -272,16 +272,14 @@ class Example23 extends React.Component<Props, State> {
   refreshMetrics(_e: Event, args: any) {
     if (args && args.current >= 0) {
       setTimeout(() => {
-        this.setState((state: State, props: Props) => {
-          return {
-            ...state,
-            metrics: {
-              startTime: new Date(),
-              itemCount: args?.current ?? 0,
-              totalItemCount: state.dataset?.length || 0
-            }
+        this.setState((state: State, props: Props) => ({
+          ...state,
+          metrics: {
+            startTime: new Date(),
+            itemCount: args?.current ?? 0,
+            totalItemCount: state.dataset?.length || 0
           }
-        });
+        }));
       });
     }
   }
@@ -290,12 +288,7 @@ class Example23 extends React.Component<Props, State> {
     const selectedVal = (e.target as HTMLSelectElement)?.value ?? '';
     const selectedColumn = this.state.columnDefinitions.find(c => c.id === selectedVal);
 
-    this.setState((state: State, props: Props) => {
-      return {
-        ...state,
-        selectedColumn: selectedColumn,
-      };
-    });
+    this.setState((state: State) => ({ ...state, selectedColumn }));
   }
 
   setFiltersDynamically() {
@@ -356,7 +349,7 @@ class Example23 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <br />
 

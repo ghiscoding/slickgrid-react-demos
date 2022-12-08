@@ -1,4 +1,4 @@
-import { ReactGridInstance, Column, FieldType, Filters, Formatters, GridOption, GridStateChange, ReactSlickgridComponent } from '../../slickgrid-react';
+import { ReactGridInstance, Column, FieldType, Filters, Formatters, GridOption, GridStateChange, ReactSlickgridComponent } from 'slickgrid-react';
 import React from 'react';
 import './example10.scss'; // provide custom CSS/SASS styling
 
@@ -300,7 +300,7 @@ export default class Example10 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <div className="row">
           <div className="col-sm-4" style={{ maxWidth: '170px' }}>

@@ -9,7 +9,7 @@ import {
   GridOption,
   SlickNamespace,
   ReactSlickgridComponent
-} from '../../slickgrid-react';
+} from 'slickgrid-react';
 import React from 'react';
 
 interface Props { }
@@ -168,7 +168,7 @@ export default class Example17 extends React.Component {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <hr />
 

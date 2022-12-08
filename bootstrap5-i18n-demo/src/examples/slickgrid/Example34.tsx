@@ -8,12 +8,13 @@ import {
   Formatters,
   GridOption,
   GroupTotalFormatters,
-} from '@slickgrid-universal/common';
+  ReactGridInstance,
+  ReactSlickgridComponent,
+} from 'slickgrid-react';
 import { faker } from '@faker-js/faker';
 import sparkline from '@fnando/sparkline';
 import React from 'react';
 
-import { ReactGridInstance, ReactSlickgridComponent } from '../../slickgrid-react';
 import BaseSlickGridState from './state-slick-grid-base';
 import './example34.scss';
 
@@ -76,7 +77,7 @@ export default class Example34 extends React.Component<Props, State> {
       minChangePerCycle: 0,
       maxChangePerCycle: 10,
       refreshRate: 75,
-    }
+    };
   }
 
   componentDidMount() {
@@ -283,15 +284,9 @@ export default class Example34 extends React.Component<Props, State> {
       // highlight whichever cell is being changed
       changes[rowNumber]['id'] = 'changed';
       this.renderCellHighlighting(itemTmp, this.findColumnById('priceChange'), priceChange);
-      if (!prevItem || !itemTmp) {
-        console.log('something wrong')
-      }
       if ((prevItem.priceChange < 0 && itemTmp.priceChange > 0) || (prevItem.priceChange > 0 && itemTmp.priceChange < 0)) {
         this.renderCellHighlighting(itemTmp, this.findColumnById('price'), priceChange);
       }
-      // if (prevItem.trsnType !== itemTmp.trsnType) {
-      //   this.renderCellHighlighting(itemTmp, this.findColumnById('trsnType'), priceChange);
-      // }
 
       // update the data
       this.reactGrid.dataView.updateItem(itemTmp.id, itemTmp);
@@ -314,9 +309,8 @@ export default class Example34 extends React.Component<Props, State> {
     const newVal = elm.value;
     this.setState((state: State) => ({ ...state, refreshRate: +newVal }));
 
-    let otherInputElm: HTMLInputElement | null;
-    const inputElmId = (elm.type === 'number') ? '#refreshRateSlider' : '#refreshRateInput'
-    otherInputElm = document.querySelector<HTMLInputElement>(inputElmId);
+    const inputElmId = (elm.type === 'number') ? '#refreshRateSlider' : '#refreshRateInput';
+    const otherInputElm = document.querySelector<HTMLInputElement>(inputElmId);
     if (otherInputElm) {
       otherInputElm.value = newVal;
     }
@@ -408,15 +402,15 @@ export default class Example34 extends React.Component<Props, State> {
                 </button>
               </span>
               <span className="mx-1">
-                <label htmlFor="change-per-cycle-input">Changes p/Cycle</label>
+                <label htmlFor="change-per-cycle-input" className="me-1">Changes p/Cycle</label>
                 <input type="number" id="change-per-cycle-input" defaultValue={this.state.minChangePerCycle} max={this.state.maxChangePerCycle}
                   onInput={($event) => this.handleMinChangePerCycle(+($event.target as HTMLInputElement).value)} />
-                to
+                &nbsp;to&nbsp;
                 <input type="number" min={this.state.minChangePerCycle} defaultValue={this.state.maxChangePerCycle}
                   onInput={($event) => this.handleMaxChangePerCycle(+($event.target as HTMLInputElement).value)} />
               </span>
               <span className="ms-2">
-                <label htmlFor="highlight-input">Highlight Duration(ms)</label>
+                <label htmlFor="highlight-input" className="me-1">Highlight Duration(ms)</label>
                 <input type="number" id="highlight-input" data-test="highlight-input" defaultValue={this.state.highlightDuration}
                   onInput={($event) => this.handleHighlightDuration(+($event.target as HTMLInputElement).value)} />
               </span>

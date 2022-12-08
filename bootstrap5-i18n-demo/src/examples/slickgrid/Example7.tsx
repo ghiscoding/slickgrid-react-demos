@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import { Column, GridOption, ReactGridInstance, ReactSlickgridComponent } from '../../slickgrid-react';
+import { Column, GridOption, ReactGridInstance, ReactSlickgridComponent } from 'slickgrid-react';
 import './example7.scss';
 
 let columns1WithHighlightingById: any = {};
@@ -281,7 +281,7 @@ export default class Example7 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <h5>Grid 1</h5>
         <ReactSlickgridComponent gridId="grid7-1"

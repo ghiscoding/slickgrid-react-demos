@@ -10,7 +10,7 @@ import {
   SlickDataView,
   SlickGrid,
   ReactSlickgridComponent,
-} from '../../slickgrid-react';
+} from 'slickgrid-react';
 import React from 'react';
 import './example11.scss';
 
@@ -291,7 +291,7 @@ export default class Example11 extends React.Component {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <div className="col-sm-12">
           <span>

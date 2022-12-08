@@ -13,7 +13,7 @@ import {
   OperatorType,
   SortDirection,
   ReactSlickgridComponent,
-} from '../../slickgrid-react';
+} from 'slickgrid-react';
 import React from 'react';
 import BaseSlickGridState from './state-slick-grid-base';
 import { withTranslation } from 'react-i18next';
@@ -23,7 +23,7 @@ interface Props {
   t: TFunction;
 }
 
-interface State extends BaseSlickGridState{
+interface State extends BaseSlickGridState {
   graphqlQuery: string,
   isWithCursor: boolean,
   processing: boolean,
@@ -84,11 +84,10 @@ class Example6 extends React.Component<Props, State> {
   }
 
   reactGridReady(reactGrid: ReactGridInstance) {
-    console.log('reactGridReady', reactGrid)
     this.reactGrid = reactGrid;
   }
 
-  getColumnsDefinition(){
+  getColumnsDefinition() {
     return [
       {
         id: 'name', field: 'name', nameKey: 'NAME', width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
@@ -148,8 +147,8 @@ class Example6 extends React.Component<Props, State> {
     const columnDefinitions = this.getColumnsDefinition();
     const gridOptions = this.getGridOptions();
 
-    this.setState((props:Props, state:any) => {
-      return{
+    this.setState((props: Props, state: any) => {
+      return {
         ...state,
         columnDefinitions,
         gridOptions
@@ -157,7 +156,7 @@ class Example6 extends React.Component<Props, State> {
     });
   }
 
-  getGridOptions(){
+  getGridOptions() {
     const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
     const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
 
@@ -226,8 +225,8 @@ class Example6 extends React.Component<Props, State> {
           const metrics = result.metrics as Metrics;
 
           this.setState((state: State) => ({
-              ...state,
-              metrics,
+            ...state,
+            metrics,
           }));
 
           this.displaySpinner(false);
@@ -246,7 +245,7 @@ class Example6 extends React.Component<Props, State> {
       ? { text: 'processing...', class: 'alert alert-danger' }
       : { text: 'finished', class: 'alert alert-success' };
 
-    this.setState((state:any, props:any)=>{
+    this.setState((state: any, props: any) => {
       return {
         ...state,
         status: newStatus,
@@ -276,7 +275,7 @@ class Example6 extends React.Component<Props, State> {
 
     return new Promise(resolve => {
       setTimeout(() => {
-        this.setState((state:any,props:any)=>{
+        this.setState((state: any, props: any) => {
           return {
             ...state,
             graphqlQuery: this.graphqlService.buildQuery()
@@ -345,7 +344,7 @@ class Example6 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <div className="row">
           <div className="col-sm-5">

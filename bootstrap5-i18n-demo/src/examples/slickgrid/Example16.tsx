@@ -1,4 +1,4 @@
-import { ReactGridInstance, Column, ExtensionName, Filters, Formatters, GridOption, ReactSlickgridComponent, OnEventArgs } from '../../slickgrid-react';
+import { ReactGridInstance, Column, ExtensionName, Filters, Formatters, GridOption, ReactSlickgridComponent, OnEventArgs } from 'slickgrid-react';
 import React from 'react';
 import BaseSlickGridState from './state-slick-grid-base';
 
@@ -168,7 +168,6 @@ export default class Example16 extends React.Component<Props, State> {
   }
 
   onMoveRows(_e: Event, args: any) {
-    console.log('onMoveRows', _e, args)
     // rows and insertBefore references,
     // note that these references are assuming that the dataset isn't filtered at all
     // which is not always the case so we will recalcualte them and we won't use these reference afterward
@@ -312,7 +311,7 @@ export default class Example16 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
-        <div className="subtitle" dangerouslySetInnerHTML={{__html: this.subTitle}}></div>
+        <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <div className="row">
           <div className="col-sm-12">
