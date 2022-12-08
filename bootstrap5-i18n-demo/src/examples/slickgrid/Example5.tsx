@@ -10,7 +10,7 @@ import {
   Metrics,
   OperatorType,
   Pagination,
-  ReactSlickgridComponent,
+  ReactSlickgrid,
   GridOption,
   Column,
 } from 'slickgrid-react';
@@ -589,17 +589,17 @@ export default class Example5 extends React.Component<Props, State> {
 
             <span className="ms-2">
               <label>Programmatically go to first/last page:</label>
-              <button className="btn btn-outline-secondary btn-xs" data-test="goto-first-page" onClick={() => this.goToFirstPage()}>
+              <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page" onClick={() => this.goToFirstPage()}>
                 <i className="fa fa-caret-left fa-lg"></i>
               </button>
-              <button className="btn btn-outline-secondary btn-xs" data-test="goto-last-page" onClick={() => this.goToLastPage()}>
+              <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-last-page" onClick={() => this.goToLastPage()}>
                 <i className="fa fa-caret-right fa-lg"></i>
               </button>
             </span>
           </div>
         </div>
 
-        <ReactSlickgridComponent gridId="grid5"
+        <ReactSlickgrid gridId="grid5"
           columnDefinitions={this.state.columnDefinitions}
           gridOptions={this.state.gridOptions}
           dataset={this.state.dataset}

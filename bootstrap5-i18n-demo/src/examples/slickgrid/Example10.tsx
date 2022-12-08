@@ -1,4 +1,4 @@
-import { ReactGridInstance, Column, FieldType, Filters, Formatters, GridOption, GridStateChange, ReactSlickgridComponent } from 'slickgrid-react';
+import { ReactGridInstance, Column, FieldType, Filters, Formatters, GridOption, GridStateChange, ReactSlickgrid } from 'slickgrid-react';
 import React from 'react';
 import './example10.scss'; // provide custom CSS/SASS styling
 
@@ -303,13 +303,13 @@ export default class Example10 extends React.Component<Props, State> {
         <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <div className="row">
-          <div className="col-sm-4" style={{ maxWidth: '170px' }}>
+          <div className="col-sm-4" style={{ maxWidth: '175px' }}>
             Pagination
-            <button className="btn btn-outline-secondary btn-xs px-1" data-test="goto-first-page"
+            <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page"
               onClick={() => this.goToGrid1FirstPage()}>
               <i className="fa fa-caret-left fa-lg"></i>
             </button>
-            <button className="btn btn-outline-secondary btn-xs px-1" data-test="goto-last-page" onClick={() => this.goToGrid1LastPage()}>
+            <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-last-page" onClick={() => this.goToGrid1LastPage()}>
               <i className="fa fa-caret-right fa-lg"></i>
             </button>
           </div>
@@ -322,7 +322,7 @@ export default class Example10 extends React.Component<Props, State> {
         </div>
 
         <div className="overflow-hidden">
-          <ReactSlickgridComponent gridId="grid1"
+          <ReactSlickgrid gridId="grid1"
             columnDefinitions={this.state.columnDefinitions1}
             gridOptions={this.state.gridOptions1!}
             dataset={this.state.dataset1}
@@ -335,7 +335,7 @@ export default class Example10 extends React.Component<Props, State> {
         <hr className="col-md-6 offset-md-1" />
 
         <div className="row">
-          <div className="col-sm-4 col-md-3" style={{ maxWidth: '185px' }}>
+          <div className="col-sm-4 col-md-3" style={{ maxWidth: '190px' }}>
             <label htmlFor="enableGrid2Pagination">
               Pagination:
               <input type="checkbox" id="enableGrid2Pagination"
@@ -344,17 +344,17 @@ export default class Example10 extends React.Component<Props, State> {
                 data-test="toggle-pagination-grid2" />
             </label>
             {this.isGrid2WithPagination && <span style={{ marginLeft: '5px' }}>
-              <button className="btn btn-outline-secondary btn-xs px-1" data-test="goto-first-page"
+              <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page"
                 onClick={() => this.goToGrid2FirstPage()}>
                 <i className="fa fa-caret-left fa-lg"></i>
               </button>
-              <button className="btn btn-outline-secondary btn-xs px-1" data-test="goto-last-page"
+              <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-last-page"
                 onClick={() => this.goToGrid2LastPage()}>
                 <i className="fa fa-caret-right fa-lg"></i>
               </button>
             </span>}
           </div>
-          <div className="col-sm-7">
+          <div className="col-sm-8">
             <div className="alert alert-success">
               <strong>(multi-select) Selected Row(s):</strong>
               <span data-test="grid2-selections">{this.state.selectedTitles}</span>
@@ -363,7 +363,7 @@ export default class Example10 extends React.Component<Props, State> {
         </div>
 
         <div className="overflow-hidden">
-          <ReactSlickgridComponent gridId="grid2"
+          <ReactSlickgrid gridId="grid2"
             columnDefinitions={this.state.columnDefinitions2}
             gridOptions={this.state.gridOptions2!}
             dataset={this.state.dataset2}

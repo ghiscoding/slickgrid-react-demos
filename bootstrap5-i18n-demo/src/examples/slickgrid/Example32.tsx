@@ -11,7 +11,7 @@ import {
   GridOption,
   LongTextEditorOption,
   ReactGridInstance,
-  ReactSlickgridComponent,
+  ReactSlickgrid,
   SlickGrid,
   SlickNamespace,
   SortComparers,
@@ -886,7 +886,7 @@ export default class Example32 extends React.Component<Props, State> {
         </div>
 
         <div id="smaller-container" style={{ width: '950px' }}>
-          <ReactSlickgridComponent gridId="grid32"
+          <ReactSlickgrid gridId="grid32"
             columnDefinitions={this.state.columnDefinitions}
             gridOptions={this.state.gridOptions}
             dataset={this.state.dataset}

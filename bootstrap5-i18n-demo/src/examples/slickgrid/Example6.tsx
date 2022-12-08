@@ -12,7 +12,7 @@ import {
   MultipleSelectOption,
   OperatorType,
   SortDirection,
-  ReactSlickgridComponent,
+  ReactSlickgrid,
 } from 'slickgrid-react';
 import React from 'react';
 import BaseSlickGridState from './state-slick-grid-base';
@@ -398,10 +398,10 @@ class Example6 extends React.Component<Props, State> {
             <div className="row" style={{ marginBottom: '5px' }}>
               <div className="col-md-12">
                 <label>Programmatically go to first/last page:</label>
-                <button className="btn btn-outline-secondary btn-xs" data-test="goto-first-page" onClick={() => this.goToFirstPage()}>
+                <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page" onClick={() => this.goToFirstPage()}>
                   <i className="fa fa-caret-left fa-lg"></i>
                 </button>
-                <button className="btn btn-outline-secondary btn-xs" data-test="goto-last-page" onClick={() => this.goToLastPage()}>
+                <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-last-page" onClick={() => this.goToLastPage()}>
                   <i className="fa fa-caret-right fa-lg"></i>
                 </button>
               </div>
@@ -416,7 +416,7 @@ class Example6 extends React.Component<Props, State> {
 
         <hr />
 
-        <ReactSlickgridComponent gridId="grid6"
+        <ReactSlickgrid gridId="grid6"
           columnDefinitions={this.state.columnDefinitions}
           gridOptions={this.state.gridOptions}
           dataset={this.state.dataset}

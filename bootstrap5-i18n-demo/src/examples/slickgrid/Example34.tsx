@@ -9,7 +9,7 @@ import {
   GridOption,
   GroupTotalFormatters,
   ReactGridInstance,
-  ReactSlickgridComponent,
+  ReactSlickgrid,
 } from 'slickgrid-react';
 import { faker } from '@faker-js/faker';
 import sparkline from '@fnando/sparkline';
@@ -422,7 +422,7 @@ export default class Example34 extends React.Component<Props, State> {
             </div>
           </div>
 
-          <ReactSlickgridComponent gridId="grid34"
+          <ReactSlickgrid gridId="grid34"
             columnDefinitions={this.state.columnDefinitions}
             gridOptions={this.state.gridOptions}
             dataset={this.state.dataset}
