@@ -10270,10 +10270,10 @@ slice-ansi@^4.0.0:
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
 
-slickgrid-react@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/slickgrid-react/-/slickgrid-react-2.0.3.tgz#59139e2a4ea87759e821f216abcdcc1f30bdfca2"
-  integrity sha512-U/XtoS/+3TtNCWesbslnynkTwslamNSt0QI1PtrKCRxsWrGtUjOgMqJkksTZsSht6KkgZuAKzq3wSJU/9Ns3yA==
+slickgrid-react@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/slickgrid-react/-/slickgrid-react-2.0.4.tgz#1fe5b866d367dd83608ec32dcdbe13317e5e2903"
+  integrity sha512-FU41b9/6dRXKXxZUnxski8k59eNMFDuXxiHq4MSURNdJeIwtJpaSROGIuXW4ctARP2sDvo2XwPN849ojdHEA/Q==
   dependencies:
     "@slickgrid-universal/common" "~2.1.3"
     "@slickgrid-universal/custom-footer-component" "~2.1.3"
