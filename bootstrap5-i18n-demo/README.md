@@ -19,7 +19,7 @@ Again the following dependencies are totally **optional**
 
 ### Install and Start Demo
 ```bash
-git clone https://github.com/slickclub/slickgrid-react-demos
+git clone https://github.com/slickgrid-stellar/slickgrid-react-demos
 cd bootstrap5-i18n-demo
 npm install # OR yarn install
 npm dev     # OR yarn start
