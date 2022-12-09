@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  ReactGridInstance,
+  SlickgridReactInstance,
   Column,
   FieldType,
   Formatter,
   Formatters,
   GridOption,
-  ReactSlickgrid,
+  SlickgridReact,
 } from 'slickgrid-react';
 import React from 'react';
 import BaseSlickGridState from './state-slick-grid-base';
@@ -57,7 +57,7 @@ export default class Example2 extends React.Component<Props, State> {
     </ul>
   `;
 
-  reactGrid!: ReactGridInstance;
+  reactGrid!: SlickgridReactInstance;
   resizerPaused = false;
 
   constructor(public readonly props: Props) {
@@ -77,7 +77,7 @@ export default class Example2 extends React.Component<Props, State> {
     this.defineGrid();
   }
 
-  reactGridReady(reactGrid: ReactGridInstance) {
+  reactGridReady(reactGrid: SlickgridReactInstance) {
     this.reactGrid = reactGrid;
   }
 
@@ -216,7 +216,7 @@ export default class Example2 extends React.Component<Props, State> {
           Pause auto-resize: <b>{this.resizerPaused}</b>
         </button>
 
-        <ReactSlickgrid gridId="grid2"
+        <SlickgridReact gridId="grid2"
           columnDefinitions={this.state.columnDefinitions}
           gridOptions={this.state.gridOptions}
           dataset={this.state.dataset}

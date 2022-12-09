@@ -3,14 +3,14 @@ import { GridOdataService, OdataServiceApi, OdataOption } from '@slickgrid-unive
 import moment from 'moment-mini';
 
 import {
-  ReactGridInstance,
+  SlickgridReactInstance,
   FieldType,
   Filters,
   GridStateChange,
   Metrics,
   OperatorType,
   Pagination,
-  ReactSlickgrid,
+  SlickgridReact,
   GridOption,
   Column,
 } from 'slickgrid-react';
@@ -62,7 +62,7 @@ export default class Example5 extends React.Component<Props, State> {
       </li>
     </ul>
   `;
-  reactGrid!: ReactGridInstance;
+  reactGrid!: SlickgridReactInstance;
 
   constructor(public readonly props: Props) {
     super(props);
@@ -88,7 +88,7 @@ export default class Example5 extends React.Component<Props, State> {
     this.defineGrid();
   }
 
-  reactGridReady(reactGrid: ReactGridInstance) {
+  reactGridReady(reactGrid: SlickgridReactInstance) {
     this.reactGrid = reactGrid;
   }
 
@@ -599,7 +599,7 @@ export default class Example5 extends React.Component<Props, State> {
           </div>
         </div>
 
-        <ReactSlickgrid gridId="grid5"
+        <SlickgridReact gridId="grid5"
           columnDefinitions={this.state.columnDefinitions}
           gridOptions={this.state.gridOptions}
           dataset={this.state.dataset}
