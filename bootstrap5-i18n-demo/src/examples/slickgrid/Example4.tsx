@@ -1,3 +1,4 @@
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import moment from 'moment-mini';
 import React from 'react';
 
@@ -233,7 +234,8 @@ export default class Example4 extends React.Component<Props, State> {
           { columnId: 'duration', direction: 'DESC' },
           { columnId: 'complete', direction: 'ASC' }
         ],
-      }
+      },
+      registerExternalResources: [new ExcelExportService()],
     };
   }
 
