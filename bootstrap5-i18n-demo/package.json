@@ -38,13 +38,13 @@
     ]
   },
   "dependencies": {
-    "@slickgrid-universal/composite-editor-component": "~2.2.1",
-    "@slickgrid-universal/custom-tooltip-plugin": "~2.2.1",
-    "@slickgrid-universal/excel-export": "~2.2.1",
-    "@slickgrid-universal/graphql": "~2.2.1",
-    "@slickgrid-universal/odata": "~2.2.1",
-    "@slickgrid-universal/rxjs-observable": "~2.2.1",
-    "@slickgrid-universal/text-export": "~2.2.1",
+    "@slickgrid-universal/composite-editor-component": "^2.3.0",
+    "@slickgrid-universal/custom-tooltip-plugin": "^2.3.0",
+    "@slickgrid-universal/excel-export": "^2.3.0",
+    "@slickgrid-universal/graphql": "^2.3.0",
+    "@slickgrid-universal/odata": "^2.3.0",
+    "@slickgrid-universal/rxjs-observable": "^2.3.0",
+    "@slickgrid-universal/text-export": "^2.3.0",
     "dompurify": "^2.4.1",
     "font-awesome": "^4.7.0",
     "i18next": "^22.1.4",
@@ -55,7 +55,7 @@
     "react-i18next": "^12.1.1",
     "react-scripts": "^5.0.1",
     "regenerator-runtime": "^0.13.11",
-    "slickgrid-react": "^2.1.1"
+    "slickgrid-react": "^2.2.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
