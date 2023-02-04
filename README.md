@@ -1,11 +1,11 @@
 # Slickgrid-React Demos
-## Multiple Demos of the [Slickgrid-React](https://github.com/slickgrid-stellar/slickgrid-react) library
+## Multiple Demos of the [Slickgrid-React](https://github.com/ghiscoding/slickgrid-react) library
 
 ### Installation
 Git clone the demo and npm install it, then run and enjoy fully working demo.
 
 ```sh
-git clone https://github.com/slickgrid-stellar/slickgrid-react-demos
+git clone https://github.com/ghiscoding/slickgrid-react-demos
 cd slickgrid-react-demos
 npm install # or yarn install
 npm run dev # or yarn dev

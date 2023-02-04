@@ -16,7 +16,7 @@ interface State {
 export default class Example10 extends React.Component<Props, State> {
   title = 'Example 10: Multiple Grids with Row Selection';
   subTitle = `
-    Row selection, single or multi-select (<a href="https://github.com/slickgrid-stellar/slickgrid-react/wiki/Row-Selection" target="_blank">Wiki docs</a>).
+    Row selection, single or multi-select (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Row-Selection" target="_blank">Wiki docs</a>).
     <ul>
       <li>Single Select, you can click on any cell to make the row active</li>
       <li>Multiple Selections, you need to specifically click on the checkbox to make 1 or more selections</li>
@@ -160,7 +160,8 @@ export default class Example10 extends React.Component<Props, State> {
 
         // you can toggle these 2 properties to show the "select all" checkbox in different location
         hideInFilterHeaderRow: false,
-        hideInColumnTitleRow: true
+        hideInColumnTitleRow: true,
+        applySelectOnAllPages: true, // when clicking "Select All", should we apply it to all pages (defaults to true)
       },
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
@@ -255,9 +256,15 @@ export default class Example10 extends React.Component<Props, State> {
     if (gridStateChanges.gridState!.rowSelection) {
       this.selectedGrid2IDs = (gridStateChanges.gridState!.rowSelection.filteredDataContextIds || []) as number[];
       this.selectedGrid2IDs = this.selectedGrid2IDs.sort((a, b) => a - b); // sort by ID
+
+      let selectedTitles = this.selectedGrid2IDs.map(dataContextId => `Task ${dataContextId}`).join(',');
+      if (selectedTitles.length > 293) {
+        selectedTitles = selectedTitles.substring(0, 293) + '...';
+      }
+
       this.setState((state: State) => ({
         ...state,
-        selectedTitles: this.selectedGrid2IDs.map(dataContextId => `Task ${dataContextId}`).join(','),
+        selectedTitles,
       }));
     }
   }
@@ -295,7 +302,7 @@ export default class Example10 extends React.Component<Props, State> {
           <span className="float-end font18">
             see&nbsp;
             <a target="_blank"
-              href="https://github.com/slickgrid-stellar/slickgrid-react/blob/master/src/examples/slickgrid/Example10.tsx">
+              href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example10.tsx">
               <span className="fa fa-link"></span> code
             </a>
           </span>
@@ -303,7 +310,7 @@ export default class Example10 extends React.Component<Props, State> {
         <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
         <div className="row">
-          <div className="col-sm-4" style={{ maxWidth: '175px' }}>
+          <div className="col-sm-4" style={{ maxWidth: '170px' }}>
             Pagination
             <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page"
               onClick={() => this.goToGrid1FirstPage()}>
@@ -335,7 +342,7 @@ export default class Example10 extends React.Component<Props, State> {
         <hr className="col-md-6 offset-md-1" />
 
         <div className="row">
-          <div className="col-sm-4 col-md-3" style={{ maxWidth: '190px' }}>
+          <div className="col-sm-4 col-md-3" style={{ maxWidth: '185px' }}>
             <label htmlFor="enableGrid2Pagination">
               Pagination:
               <input type="checkbox" id="enableGrid2Pagination"
@@ -354,7 +361,7 @@ export default class Example10 extends React.Component<Props, State> {
               </button>
             </span>}
           </div>
-          <div className="col-sm-8">
+          <div className="col-sm-7">
             <div className="alert alert-success">
               <strong>(multi-select) Selected Row(s):</strong>
               <span data-test="grid2-selections">{this.state.selectedTitles}</span>
