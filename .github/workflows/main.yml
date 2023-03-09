@@ -44,7 +44,7 @@ jobs:
           cd bootstrap5-i18n-demo
           yarn install
 
-      - name: Bootstrap 5 Prod Build for GitHub demo website
+      - name: Prod Build for GitHub demo website
         run: |
           cd bootstrap5-i18n-demo
           yarn build
