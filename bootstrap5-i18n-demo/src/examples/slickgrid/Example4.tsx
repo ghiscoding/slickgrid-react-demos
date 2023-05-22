@@ -163,7 +163,7 @@ export default class Example4 extends React.Component<Props, State> {
         filterable: true, filter: { model: Filters.compoundInputNumber }
       },
       {
-        id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, minWidth: 75, exportWithFormatter: false,
+        id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, minWidth: 75,
         type: FieldType.date, filterable: true, filter: { model: Filters.compoundDate }
       },
       {
@@ -316,7 +316,7 @@ export default class Example4 extends React.Component<Props, State> {
     ]);
   }
 
-  refreshMetrics(_e: JQuery.Event, args: any) {
+  refreshMetrics(_e: Event, args: any) {
     if (args?.current >= 0) {
       setTimeout(() => {
         this.setState((state: State) => ({

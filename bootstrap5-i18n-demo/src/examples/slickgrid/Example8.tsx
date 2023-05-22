@@ -43,6 +43,8 @@ class Example8 extends React.Component<Props, State> {
   dataView!: SlickDataView;
 
   constructor(public readonly props: Props) {
+    const defaultLang = 'en';
+
     super(props);
     // define the grid options & columns and then create the grid itself
     this.state = {
@@ -52,6 +54,8 @@ class Example8 extends React.Component<Props, State> {
       selectedLanguage: i18next.language || 'en',
       visibleColumns: []
     };
+
+    i18next.changeLanguage(defaultLang);
   }
 
   componentDidMount() {
