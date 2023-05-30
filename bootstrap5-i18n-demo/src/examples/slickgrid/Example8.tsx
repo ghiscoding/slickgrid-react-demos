@@ -144,7 +144,7 @@ class Example8 extends React.Component<Props, State> {
         hideSortCommands: false,
         hideColumnHideCommand: false,
         // you can use the "onCommand" (in Grid Options) and/or the "action" callback (in Column Definition)
-        onCommand: (_e, args) => {
+        onCommand: (_e: Event, args: any) => {
           if (args.command === 'help') {
             alert('Please help!!!');
           }

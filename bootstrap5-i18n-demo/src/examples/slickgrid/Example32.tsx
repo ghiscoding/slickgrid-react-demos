@@ -517,6 +517,10 @@ export default class Example32 extends React.Component<Props, State> {
     this.setState((state: State) => ({ ...state, isUsingDefaultResize: false }));
   }
 
+  handleOnSelectedRowIdsChanged(args: any) {
+    console.log('Selected Ids:', args.selectedRowIds);
+  }
+
   toggleGridEditReadonly() {
     // first need undo all edits
     this.undoAllEdits();
@@ -891,6 +895,7 @@ export default class Example32 extends React.Component<Props, State> {
             gridOptions={this.state.gridOptions}
             dataset={this.state.dataset}
             onReactGridCreated={$event => this.reactGridReady($event.detail)}
+            onSelectedRowIdsChanged={$event => this.handleOnSelectedRowIdsChanged($event.detail.args)}
           />
         </div>
       </div>
