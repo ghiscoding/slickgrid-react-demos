@@ -53,14 +53,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^12.3.1",
-    "react-scripts": "^5.0.1",
     "regenerator-runtime": "^0.13.11",
-    "slickgrid-react": "^3.0.0"
+    "slickgrid-react": "^3.0.1"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.22.4",
-    "@babel/preset-react": "^7.22.3",
-    "@babel/preset-typescript": "^7.21.5",
     "@faker-js/faker": "^8.0.2",
     "@fnando/sparkline": "^0.3.10",
     "@popperjs/core": "^2.11.8",
@@ -73,6 +69,7 @@
     "@types/fnando__sparkline": "^0.3.4",
     "@types/i18next-xhr-backend": "^1.4.2",
     "@types/jest": "^29.5.1",
+    "@types/moment": "^2.13.0",
     "@types/node": "^18.16.16",
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
@@ -82,7 +79,6 @@
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@typescript-eslint/parser": "^5.59.8",
     "@webpack-cli/serve": "^2.0.4",
-    "babel-loader": "^9.1.2",
     "bootstrap": "^5.2.3",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
@@ -90,6 +86,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
     "custom-event-polyfill": "^1.0.7",
+    "esbuild-loader": "^3.0.1",
     "eslint": "^8.41.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prefer-arrow": "^1.2.3",
@@ -126,6 +123,6 @@
     "npm": ">=6.14.8"
   },
   "resolutions": {
-    "caniuse-lite": "1.0.30001489"
+    "caniuse-lite": "1.0.30001431"
   }
 }
