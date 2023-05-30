@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { GridOdataService, OdataServiceApi, OdataOption } from '@slickgrid-universal/odata';
 import moment from 'moment-mini';
 
@@ -440,19 +439,19 @@ export default class Example5 extends React.Component<Props, State> {
 
   // YOU CAN CHOOSE TO PREVENT EVENT FROM BUBBLING IN THE FOLLOWING 3x EVENTS
   // note however that internally the cancelling the search is more of a rollback
-  handleOnBeforeSort(e: JQuery.Event) {
+  handleOnBeforeSort(e: Event) {
     // e.preventDefault();
     // return false;
     return true;
   }
 
-  handleOnBeforeSearchChange(e: JQuery.Event) {
+  handleOnBeforeSearchChange(e: Event) {
     // e.preventDefault();
     // return false;
     return true;
   }
 
-  handleOnBeforePaginationChange(e: JQuery.Event) {
+  handleOnBeforePaginationChange(e: Event) {
     // e.preventDefault();
     // return false;
     return true;
