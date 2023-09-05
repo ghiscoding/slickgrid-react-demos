@@ -54,7 +54,7 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^12.3.1",
     "regenerator-runtime": "^0.14.0",
-    "slickgrid-react": "^3.2.0"
+    "slickgrid-react": "^3.2.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
