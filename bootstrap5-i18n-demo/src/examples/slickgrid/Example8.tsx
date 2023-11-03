@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import i18next, { TFunction } from 'i18next';
 import { SlickgridReactInstance, Column, Formatters, SlickDataView, SlickGrid, SlickgridReact } from 'slickgrid-react';
 import './example8.scss'; // provide custom CSS/SASS styling
@@ -6,7 +5,6 @@ import React from 'react';
 import BaseSlickGridState from './state-slick-grid-base';
 import { withTranslation } from 'react-i18next';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {
   t: TFunction;
 }
@@ -51,7 +49,7 @@ class Example8 extends React.Component<Props, State> {
       columnDefinitions: [],
       dataset: [],
       gridOptions: undefined,
-      selectedLanguage: i18next.language || 'en',
+      selectedLanguage: defaultLang,
       visibleColumns: []
     };
 
@@ -86,7 +84,7 @@ class Example8 extends React.Component<Props, State> {
     columnDefinitions.forEach((columnDef) => {
       columnDef.header = {
         menu: {
-          items: [
+          commandItems: [
             // add Custom Header Menu Item Commands which will be appended to the existing internal custom items
             // you cannot override an internal command but you can hide them and create your own
             // also note that the internal custom commands are in the positionOrder range of 50-60,
@@ -112,7 +110,7 @@ class Example8 extends React.Component<Props, State> {
                 // for example don't show Help on column "% Complete"
                 return (args.column.id !== 'percentComplete');
               },
-              action: (_e, args) => {
+              action: (_e: Event, args: any) => {
                 // you can use the "action" callback and/or subscribe to the "onCallback" event, they both have the same arguments
                 console.log('execute an action on Help', args);
               }
@@ -123,6 +121,38 @@ class Example8 extends React.Component<Props, State> {
             // you can use "divider" as a string too, but if you do then make sure it's the correct position in the list
             // (since there's no positionOrder when using 'divider')
             // 'divider',
+            {
+              // we can also have multiple nested sub-menus
+              command: 'custom-actions', title: 'Hello', positionOrder: 99,
+              commandItems: [
+                { command: 'hello-world', title: 'Hello World' },
+                { command: 'hello-slickgrid', title: 'Hello SlickGrid' },
+                {
+                  command: 'sub-menu', title: `Let's play`, cssClass: 'green', subMenuTitle: 'choose your game', subMenuTitleCssClass: 'text-italic salmon',
+                  commandItems: [
+                    { command: 'sport-badminton', title: 'Badminton' },
+                    { command: 'sport-tennis', title: 'Tennis' },
+                    { command: 'sport-racquetball', title: 'Racquetball' },
+                    { command: 'sport-squash', title: 'Squash' },
+                  ]
+                }
+              ]
+            },
+            {
+              command: 'feedback', title: 'Feedback', positionOrder: 100,
+              commandItems: [
+                { command: 'request-update', title: 'Request update from supplier', iconCssClass: 'mdi mdi-star', tooltip: 'this will automatically send an alert to the shipping team to contact the user for an update' },
+                'divider',
+                {
+                  command: 'sub-menu', title: 'Contact Us', iconCssClass: 'mdi mdi-account', subMenuTitle: 'contact us...', subMenuTitleCssClass: 'italic',
+                  commandItems: [
+                    { command: 'contact-email', title: 'Email us', iconCssClass: 'mdi mdi-pencil-outline' },
+                    { command: 'contact-chat', title: 'Chat with us', iconCssClass: 'mdi mdi-message-text-outline' },
+                    { command: 'contact-meeting', title: 'Book an appointment', iconCssClass: 'mdi mdi-coffee' },
+                  ]
+                }
+              ]
+            }
           ]
         }
       };
@@ -143,12 +173,21 @@ class Example8 extends React.Component<Props, State> {
       headerMenu: {
         hideSortCommands: false,
         hideColumnHideCommand: false,
+        subItemChevronClass: 'fa fa-chevron-right',
         // you can use the "onCommand" (in Grid Options) and/or the "action" callback (in Column Definition)
         onCommand: (_e: Event, args: any) => {
-          if (args.command === 'help') {
+          // e.preventDefault(); // preventing default event would keep the menu open after the execution
+          const command = args.item?.command;
+          if (command.includes('hello-')) {
+            alert(args?.item.title);
+          } else if (command.includes('sport-')) {
+            alert('Just do it, play ' + args?.item?.title);
+          } else if (command.includes('contact-')) {
+            alert('Command: ' + args?.item?.command);
+          } else if (args.command === 'help') {
             alert('Please help!!!');
           }
-        }
+        },
       },
       enableTranslate: true,
       i18n: i18next
