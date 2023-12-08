@@ -22,7 +22,7 @@ import React from 'react';
 import BaseSlickGridState from './state-slick-grid-base';
 import './example32.scss'; // provide custom CSS/SASS styling
 
-const NB_ITEMS = 5000;
+const NB_ITEMS = 400;
 const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
 
 // using external SlickGrid JS libraries
@@ -127,9 +127,8 @@ export default class Example32 extends React.Component<Props, State> {
         resizeCharWidthInPx: 7.6,
         resizeCalcWidthRatio: 1, // default ratio is ~0.9 for string but since our text is all uppercase then a higher ratio is needed
         resizeMaxWidthThreshold: 200,
-        filterable: true, columnGroup: 'Common Factor',
-        filter: { model: Filters.compoundInputText },
-        formatter: Formatters.multiple, params: { formatters: [Formatters.uppercase, Formatters.bold] },
+        cssClass: 'text-uppercase text-bold', columnGroup: 'Common Factor',
+        filterable: true, filter: { model: Filters.compoundInputText },
         editor: {
           model: Editors.longText, required: true, alwaysSaveOnEnterKey: true,
           maxLength: 12,
@@ -196,9 +195,9 @@ export default class Example32 extends React.Component<Props, State> {
       },
       {
         id: 'completed', name: 'Completed', field: 'completed', width: 80, minWidth: 75, maxWidth: 100,
-        sortable: true, filterable: true, columnGroup: 'Period',
-        formatter: Formatters.multiple,
-        params: { formatters: [Formatters.checkmark, Formatters.center] },
+        cssClass: 'text-center', columnGroup: 'Period',
+        sortable: true, filterable: true,
+        formatter: Formatters.checkmark,
         exportWithFormatter: false,
         filter: {
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
@@ -338,6 +337,11 @@ export default class Example32 extends React.Component<Props, State> {
       },
       gridWidth: '100%',
       enableAutoResize: true,
+      enablePagination: true,
+      pagination: {
+        pageSize: 10,
+        pageSizes: [10, 200, 500, 5000]
+      },
 
       // resizing by cell content is opt-in
       // we first need to disable the 2 default flags to autoFit/autosize
@@ -357,7 +361,7 @@ export default class Example32 extends React.Component<Props, State> {
       excelExportOptions: {
         exportWithFormatter: false
       },
-      registerExternalResources: [new ExcelExportService()],
+      externalResources: [new ExcelExportService()],
       enableFiltering: true,
       enableRowSelection: true,
       enableCheckboxSelector: true,
@@ -573,6 +577,18 @@ export default class Example32 extends React.Component<Props, State> {
     }
   }
 
+  // change row selection dynamically and apply it to the DataView and the Grid UI
+  setSelectedRowIds() {
+    // change row selection even across multiple pages via DataView
+    this.reactGrid.dataView?.setSelectedIds([3, 4, 11]);
+
+    // you can also provide optional options (all defaults to true)
+    // this.sgb.dataView?.setSelectedIds([4, 5, 8, 10], {
+    //   isRowBeingAdded: true,
+    //   shouldTriggerEvent: true,
+    //   applyGridRowSelection: true
+    // });
+  }
 
   saveAll() {
     // Edit Queue (array increases every time a cell is changed, regardless of item object)
@@ -873,9 +889,14 @@ export default class Example32 extends React.Component<Props, State> {
 
           <div className="mb-2">
             <div className="btn-group btn-group-sm" role="group" aria-label="Basic Editing Commands">
+              <button type="button" className="btn btn-outline-secondary" onClick={() => this.setSelectedRowIds()}
+                data-test="set-dynamic-rows-btn"
+                title="Change Row Selection across multiple pages">
+                <span>Change Row Selection</span>
+              </button>
               <button type="button" className="btn btn-outline-secondary" data-test="toggle-readonly-btn"
                 onClick={() => this.toggleGridEditReadonly()}>
-                <i className="fa fa-table"></i> Toggle Edit/Readonly Grid
+                <i className="fa fa-table"></i> Toggle Readonly
               </button>
               <button type="button" className="btn btn-outline-secondary" data-test="undo-last-edit-btn"
                 onClick={() => this.undoLastEdit()}>
