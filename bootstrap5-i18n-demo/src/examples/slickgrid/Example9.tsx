@@ -26,7 +26,7 @@ interface State extends BaseSlickGridState {
 class Example9 extends React.Component<Props, State> {
   title = 'Example 9: Grid Menu Control';
   subTitle = `
-    This example demonstrates using the <b>Slick.Controls.GridMenu</b> plugin to easily add a Grid Menu (aka hamburger menu) on the top right corner of the grid.<br/>
+    This example demonstrates using the <b>SlickGridMenu</b> plugin to easily add a Grid Menu (aka hamburger menu) on the top right corner of the grid.<br/>
     (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Grid-Menu" target="_blank">Wiki docs</a>)
     <ul>
     <li>You can change the Grid Menu icon, for example "fa-ellipsis-v"&nbsp;&nbsp;<span class="fa fa-ellipsis-v"></span>&nbsp;&nbsp;(which is shown in this example)</li>

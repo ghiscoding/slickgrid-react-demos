@@ -9,15 +9,13 @@ import {
   Formatters,
   GridOption,
   SlickGrid,
-  SlickNamespace,
   SlickgridReact,
-  DOMEvent
+  DOMEvent,
+  SlickEventHandler
 } from 'slickgrid-react';
 import React from 'react';
 import './example20.scss'; // provide custom CSS/SASS styling
 import BaseSlickGridState from './state-slick-grid-base';
-
-declare const Slick: SlickNamespace;
 
 interface Props { }
 interface State extends BaseSlickGridState {
@@ -44,7 +42,7 @@ export default class Example20 extends React.Component<Props, State> {
 
   constructor(public readonly props: Props) {
     super(props);
-    this.slickEventHandler = new Slick.EventHandler();
+    this.slickEventHandler = new SlickEventHandler();
 
     this.state = {
       gridOptions: undefined,
@@ -80,7 +78,7 @@ export default class Example20 extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    // unsubscribe every SlickGrid subscribed event (or use the Slick.EventHandler)
+    // unsubscribe every SlickGrid subscribed event (or use the SlickEventHandler)
     this.slickEventHandler.unsubscribeAll();
   }
 

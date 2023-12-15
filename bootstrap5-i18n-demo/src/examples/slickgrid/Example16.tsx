@@ -8,7 +8,7 @@ interface State extends BaseSlickGridState { }
 export default class Example16 extends React.Component<Props, State> {
   title = 'Example 16: Row Move & Checkbox Selector';
   subTitle = `
-    This example demonstrates using the <b>Slick.Plugins.RowMoveManager</b> plugin to easily move a row in the grid.<br/>
+    This example demonstrates using the <b>SlickRowMoveManager</b> plugin to easily move a row in the grid.<br/>
     <ul>
       <li>Click to select, Ctrl+Click to toggle selection, Shift+Click to select a range.</li>
       <li>Drag one or more rows by the handle (icon) to reorder</li>
@@ -255,7 +255,7 @@ export default class Example16 extends React.Component<Props, State> {
           excludeFromColumnPicker: true,
           excludeFromGridMenu: true,
           excludeFromHeaderMenu: true,
-          formatter: Formatters.editIcon,
+          formatter: Formatters.icon, params: { iconCssClass: 'fa fa-pencil pointer' },
           minWidth: 30,
           maxWidth: 30,
           onCellClick: (clickEvent: Event, args: OnEventArgs) => {
@@ -267,7 +267,7 @@ export default class Example16 extends React.Component<Props, State> {
           excludeFromColumnPicker: true,
           excludeFromGridMenu: true,
           excludeFromHeaderMenu: true,
-          formatter: Formatters.deleteIcon,
+          formatter: Formatters.icon, params: { iconCssClass: 'fa fa-trash pointer' },
           minWidth: 30,
           maxWidth: 30,
           onCellClick: (e: Event, args: OnEventArgs) => {

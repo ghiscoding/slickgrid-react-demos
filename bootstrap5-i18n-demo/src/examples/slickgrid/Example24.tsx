@@ -74,10 +74,10 @@ class Example24 extends React.Component<Props, State> {
     <ul>
       <li>This example demonstrates 2 SlickGrid plugins
       <ol>
-        <li>Using the <b>Slick.Plugins.CellMenu</b> plugin, often used for an Action Menu(s), 1 or more per grid
+        <li>Using the <b>SlickCellMenu</b> plugin, often used for an Action Menu(s), 1 or more per grid
           (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Cell-Menu" target="_blank">Wiki docs</a>).
         </li>
-        <li>Using the <b>Slick.Plugins.ContextMenu</b> plugin, shown after a mouse right+click, only 1 per grid.
+        <li>Using the <b>SlickContextMenu</b> plugin, shown after a mouse right+click, only 1 per grid.
         (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Context-Menu" target="_blank">Wiki docs</a>).
         </li>
       </ol>
@@ -304,7 +304,7 @@ class Example24 extends React.Component<Props, State> {
         // you can customize how the header titles will be styled (defaults to Bold)
         columnHeaderStyle: { font: { bold: true, italic: true } }
       },
-      registerExternalResources: [new ExcelExportService()],
+      externalResources: [new ExcelExportService()],
       i18n: i18next,
 
       enableContextMenu: true,

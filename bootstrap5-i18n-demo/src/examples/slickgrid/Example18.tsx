@@ -250,7 +250,7 @@ export default class Example18 extends React.Component<Props, State> {
       enableExcelExport: true,
       excelExportOptions: { sanitizeDataExport: true },
       textExportOptions: { sanitizeDataExport: true },
-      registerExternalResources: [this.excelExportService, this.textExportService],
+      externalResources: [this.excelExportService, this.textExportService],
     };
 
     this.setState((state: State) => ({
@@ -543,7 +543,7 @@ export default class Example18 extends React.Component<Props, State> {
                           <option value="''">...</option>
                           {
                             this.state.columnDefinitions.map((column) =>
-                              <option value={column.id} key={column.id}>{column.name}</option>
+                              <option value={column.id} key={column.id}>{column.name as string}</option>
                             )
                           }
                         </select>

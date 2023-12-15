@@ -7,15 +7,12 @@ import {
   Column,
   Formatter,
   GridOption,
-  SlickNamespace,
-  SlickgridReact
+  SlickgridReact,
+  SlickEventHandler
 } from 'slickgrid-react';
 import React from 'react';
 
 interface Props { }
-
-declare const Slick: SlickNamespace;
-// declare const Slick: any;
 
 const brandFormatter: Formatter = (_row, _cell, _value, _columnDef, dataContext) => {
   return dataContext && dataContext.brand && dataContext.brand.name || '';
@@ -31,7 +28,7 @@ const mpnFormatter: Formatter = (_row, _cell, _value, _columnDef, dataContext) =
 
 export default class Example17 extends React.Component {
   search = '';
-  private _eventHandler: any = new Slick.EventHandler();
+  private _eventHandler: any = new SlickEventHandler();
 
   title = 'Example 17: Octopart Catalog Search - Remote Model Plugin';
   subTitle = `
@@ -66,8 +63,8 @@ export default class Example17 extends React.Component {
     super(props);
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
-    this.loaderDataView = new Slick.Data.RemoteModel!();
-    this.customDataView = this.loaderDataView && this.loaderDataView.data;
+    // this.loaderDataView = new Slick.Data.RemoteModel!();
+    // this.customDataView = this.loaderDataView && this.loaderDataView.data;
   }
 
   componentDidMount() {
@@ -87,8 +84,8 @@ export default class Example17 extends React.Component {
   reactGridReady(reactGrid: SlickgridReactInstance) {
     this.reactGrid = reactGrid;
     this.gridObj = reactGrid.slickGrid; // grid object
-    this.loaderDataView.setSort('score', -1);
-    this.gridObj.setSortColumn('score', false);
+    // this.loaderDataView.setSort('score', -1);
+    // this.gridObj.setSortColumn('score', false);
 
     // simulate a delayed search to preload the first page
     setTimeout(() => this.searchChanged(this.search), 100);
