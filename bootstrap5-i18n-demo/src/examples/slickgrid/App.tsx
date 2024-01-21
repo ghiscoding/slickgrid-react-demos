@@ -34,6 +34,7 @@ import Example31 from './Example31';
 import Example32 from './Example32';
 import Example33 from './Example33';
 import Example34 from './Example34';
+import Example35 from './Example35';
 
 const routes: Array<{ path: string; route: string; component: any; title: string; }> = [
   { path: 'example1', route: '/example1', component: <Example1 />, title: '1- Basic Grid / 2 Grids' },
@@ -68,6 +69,7 @@ const routes: Array<{ path: string; route: string; component: any; title: string
   { path: 'example32', route: '/example32', component: <Example32 />, title: '32- Columns Resize by Content' },
   { path: 'example33', route: '/example33', component: <Example33 />, title: '33- Regular & Custom Tooltip' },
   { path: 'example34', route: '/example34', component: <Example34 />, title: '34- Real-Time Trading Platform' },
+  { path: 'Example35', route: '/Example35', component: <Example35 />, title: '35- Row Based Editing' },
 ];
 
 export default function Routes() {
@@ -75,21 +77,21 @@ export default function Routes() {
 
   return (
     <div>
-        <NavBar></NavBar>
-        <div className="container-fluid">
-          <div className="panel-wm">
-            <section id="panel-left"
-              className="panel-wm-left au-animate">
-              <ul className="well nav nav-pills nav-stacked">
+      <NavBar></NavBar>
+      <div className="container-fluid">
+        <div className="panel-wm">
+          <section id="panel-left"
+            className="panel-wm-left au-animate">
+            <ul className="well nav nav-pills nav-stacked">
               {routes.map((row) =>
                 <li className="nav-item" key={row.route} >
                   <Link className={`nav-link ${pathname === row.route ? 'active' : ''}`} to={row.route}>{row.title}</Link>
-                    </li>
+                </li>
               )}
-              </ul>
-            </section>
-            <section className="panel-wm-content">
-              <div id="demo-container">
+            </ul>
+          </section>
+          <section className="panel-wm-content">
+            <div id="demo-container">
               <BaseRoutes>
                 {routes.map((row) =>
                   <Route path={row.route} key={row.route}>
