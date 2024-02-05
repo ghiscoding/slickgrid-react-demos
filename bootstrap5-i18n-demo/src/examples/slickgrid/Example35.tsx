@@ -6,7 +6,7 @@ import {
   SlickGrid,
   SlickgridReact,
   SlickgridReactInstance,
-} from '../../slickgrid-react';
+} from 'slickgrid-react';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 
