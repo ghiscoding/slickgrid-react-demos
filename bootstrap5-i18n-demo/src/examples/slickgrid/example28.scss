@@ -1,3 +1,4 @@
+@import '@slickgrid-universal/common/dist/styles/sass/slickgrid-theme-salesforce.lite.scss';
 
 .icon {
     align-items: center;
@@ -5,6 +6,19 @@
     justify-content: center;
     height: 1.5rem;
     width: 1.5rem;
+}
+
+.avg-total {
+  color: #ac76ff;
+}
+.bold {
+  font-weight: bold;
+}
+.total-suffix {
+  margin-left: 10px;
+}
+.hidden {
+  display: none;
 }
 
 /** You can use the following code OR use the .color-x CSS classes */
