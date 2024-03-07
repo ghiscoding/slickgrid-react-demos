@@ -52,7 +52,7 @@ const priorityExportFormatter: Formatter = (_row, _cell, value, _columnDef, _dat
   if (!value) {
     return '';
   }
-  const gridOptions: GridOption = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
+  const gridOptions = grid.getOptions() as GridOption;
   const i18n = gridOptions.i18n;
   const count = +(value >= 3 ? 3 : value);
   const key = count === 3 ? 'HIGH' : (count === 2 ? 'MEDIUM' : 'LOW');
@@ -62,23 +62,24 @@ const priorityExportFormatter: Formatter = (_row, _cell, value, _columnDef, _dat
 
 // create a custom translate Formatter (typically you would move that a separate file, for separation of concerns)
 const taskTranslateFormatter: Formatter = (_row, _cell, value, _columnDef, _dataContext, grid: SlickGrid) => {
-  const gridOptions: GridOption = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
+  const gridOptions = grid.getOptions() as GridOption;
   const i18n = gridOptions.i18n;
 
   return i18n?.t('TASK_X', { x: value }) ?? '';
 };
 
 class Example24 extends React.Component<Props, State> {
+  private _darkModeGrid = false;
   title = 'Example 24: Cell Menu & Context Menu Plugins';
   subTitle = `Add Cell Menu and Context Menu
     <ul>
       <li>This example demonstrates 2 SlickGrid plugins
       <ol>
         <li>Using the <b>SlickCellMenu</b> plugin, often used for an Action Menu(s), 1 or more per grid
-          (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Cell-Menu" target="_blank">Wiki docs</a>).
+          (<a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/cell-menu" target="_blank">Docs</a>).
         </li>
         <li>Using the <b>SlickContextMenu</b> plugin, shown after a mouse right+click, only 1 per grid.
-        (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Context-Menu" target="_blank">Wiki docs</a>).
+        (<a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/context-menu" target="_blank">Docs</a>).
         </li>
       </ol>
       <li>It will also "autoAdjustDrop" (bottom/top) and "autoAlignSide" (left/right) by default but could be turned off</li>
@@ -126,6 +127,11 @@ class Example24 extends React.Component<Props, State> {
 
     // define the grid options & columns and then create the grid itself
     this.defineGrid();
+  }
+
+  componentWillUnmount(): void {
+    document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+    document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
   }
 
   reactGridReady(reactGrid: SlickgridReactInstance) {
@@ -554,6 +560,18 @@ class Example24 extends React.Component<Props, State> {
     this.setState((state: State) => ({ ...state, selectedLanguage: nextLanguage }));
   }
 
+  toggleDarkModeGrid() {
+    this._darkModeGrid = !this._darkModeGrid;
+    if (this._darkModeGrid) {
+      document.querySelector<HTMLDivElement>('.panel-wm-content')!.classList.add('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'dark';
+    } else {
+      document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
+    }
+    this.reactGrid.slickGrid?.setOptions({ darkMode: this._darkModeGrid });
+  }
+
   render() {
     return !this.state.gridOptions ? '' : (
       <div id="demo-container" className="container-fluid">
@@ -566,6 +584,9 @@ class Example24 extends React.Component<Props, State> {
               <span className="fa fa-link"></span> code
             </a>
           </span>
+          <button className="btn btn-outline-secondary btn-sm ms-2" onClick={() => this.toggleDarkModeGrid()} data-test="toggle-dark-mode">
+            <span>Toggle Dark Mode</span>
+          </button>
         </h2>
         <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 

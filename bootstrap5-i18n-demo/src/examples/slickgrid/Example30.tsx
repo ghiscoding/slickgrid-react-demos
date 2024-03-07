@@ -1,8 +1,8 @@
-import { SlickCompositeEditor, SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import { SlickCompositeEditor, SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
+import React from 'react';
 
 import {
-  SlickgridReactInstance,
   AutocompleterOption,
   Column,
   CompositeEditorModalType,
@@ -18,12 +18,12 @@ import {
   GridStateChange,
   LongTextEditorOption,
   OnCompositeEditorChangeEventArgs,
-  SlickGrid,
-  SortComparers,
-  SlickgridReact,
   SlickGlobalEditorLock,
+  SlickgridReactInstance,
+  SlickGrid,
+  SlickgridReact,
+  SortComparers,
 } from 'slickgrid-react';
-import React from 'react';
 import './example30.scss'; // provide custom CSS/SASS styling
 import BaseSlickGridState from './state-slick-grid-base';
 
@@ -38,12 +38,12 @@ const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
  * @returns {boolean} isEditable
  */
 function checkItemIsEditable(dataContext: any, columnDef: Column, grid: SlickGrid) {
-  const gridOptions = grid && grid.getOptions && grid.getOptions();
+  const gridOptions = grid.getOptions() as GridOption;
   const hasEditor = columnDef.editor;
   const isGridEditable = gridOptions.editable;
-  let isEditable = !!(isGridEditable && hasEditor);
+  let isEditable = Boolean(isGridEditable && hasEditor);
 
-  if (dataContext && columnDef && gridOptions && gridOptions.editable) {
+  if (dataContext && columnDef && gridOptions?.editable) {
     switch (columnDef.id) {
       case 'finish':
         // case 'percentComplete':
@@ -61,9 +61,8 @@ function checkItemIsEditable(dataContext: any, columnDef: Column, grid: SlickGri
   return isEditable;
 }
 
-
 const customEditableInputFormatter: Formatter = (_row, _cell, value, columnDef, _dataContext, grid) => {
-  const gridOptions = grid && grid.getOptions && grid.getOptions();
+  const gridOptions = grid.getOptions() as GridOption;
   const isEditableLine = gridOptions.editable && columnDef.editor;
   value = (value === null || value === undefined) ? '' : value;
   return isEditableLine ? { text: value, addClasses: 'editable-field', toolTip: 'Click to Edit' } : value;
@@ -89,9 +88,11 @@ interface State extends BaseSlickGridState {
   complexityLevelList: Array<{ value: number; label: string; }>;
 }
 export default class Example30 extends React.Component<Props, State> {
+  private _darkModeGrid = false;
+
   title = 'Example 30: Composite Editor Modal';
   subTitle = `Composite Editor allows you to Create, Clone, Edit, Mass Update & Mass Selection Changes inside a nice Modal Window.
-  <br>The modal is simply populated by looping through your column definition list and also uses a lot of the same logic as inline editing (see <a href="https://github.com/ghiscoding/slickgrid-react/wiki/Composite-Editor-Modal" target="_blank">Composite Editor - Wiki</a>.)`;
+  <br>The modal is simply populated by looping through your column definition list and also uses a lot of the same logic as inline editing (see <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/composite-editor-modal" target="_blank">Composite Editor - Wiki</a>.)`;
 
   compositeEditorInstance: SlickCompositeEditorComponent;
   reactGrid!: SlickgridReactInstance;
@@ -126,6 +127,11 @@ export default class Example30 extends React.Component<Props, State> {
 
     // define the grid options & columns and then create the grid itself
     this.defineGrids();
+  }
+
+  componentWillUnmount() {
+    document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+    document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
   }
 
   /* Define grid Options and Columns */
@@ -259,7 +265,7 @@ export default class Example30 extends React.Component<Props, State> {
           } as FlatpickrOption,
           massUpdate: true,
           validator: (value, args) => {
-            const dataContext = args && args.item;
+            const dataContext = args?.item;
             if (dataContext && (dataContext.completed && !value)) {
               return { valid: false, msg: 'You must provide a "Finish" date when "Completed" is checked.' };
             }
@@ -506,7 +512,7 @@ export default class Example30 extends React.Component<Props, State> {
   handleValidationError(_e: Event, args: any) {
     if (args.validationResults) {
       let errorMsg = args.validationResults.msg || '';
-      if (args.editor && (args.editor instanceof SlickCompositeEditor)) {
+      if (args?.editor instanceof SlickCompositeEditor) {
         if (args.validationResults.errors) {
           errorMsg += '\n';
           for (const error of args.validationResults.errors) {
@@ -529,11 +535,9 @@ export default class Example30 extends React.Component<Props, State> {
   handleOnBeforeEditCell(e: Event, args: any) {
     const { column, item, grid } = args;
 
-    if (column && item) {
-      if (!checkItemIsEditable(item, column, grid)) {
-        e.stopImmediatePropagation();
-        return false;
-      }
+    if (column && item && !checkItemIsEditable(item, column, grid)) {
+      e.stopImmediatePropagation();
+      return false;
     }
     return true;
   }
@@ -638,6 +642,11 @@ export default class Example30 extends React.Component<Props, State> {
       resetFormButtonIconCssClass: 'fa fa-undo',
       onClose: () => Promise.resolve(confirm('You have unsaved changes, are you sure you want to close this window?')),
       onError: (error) => alert(error.message),
+      onRendered: (modalElm) => {
+        // Bootstrap requires extra attribute when toggling Dark Mode (data-bs-theme="dark")
+        // we need to manually add this attribute  ourselve before opening the Composite Editor Modal
+        modalElm.dataset.bsTheme = this._darkModeGrid ? 'dark' : 'light';
+      },
       onSave: (formValues, _selection, dataContext) => {
         const serverResponseDelay = 50;
 
@@ -679,6 +688,18 @@ export default class Example30 extends React.Component<Props, State> {
 
     // dynamically change SlickGrid editable grid option
     this.reactGrid.slickGrid.setOptions({ editable: isGridEditable });
+  }
+
+  toggleDarkModeGrid() {
+    this._darkModeGrid = !this._darkModeGrid;
+    if (this._darkModeGrid) {
+      document.querySelector<HTMLDivElement>('.panel-wm-content')!.classList.add('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'dark';
+    } else {
+      document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
+    }
+    this.reactGrid.slickGrid?.setOptions({ darkMode: this._darkModeGrid });
   }
 
   removeUnsavedStylingFromCell(_item: any, column: Column, row: number) {
@@ -988,6 +1009,9 @@ export default class Example30 extends React.Component<Props, State> {
       <div id="demo-container" className="container-fluid">
         <h2>
           {this.title}
+          <button className="btn btn-outline-secondary btn-sm ms-2" onClick={() => this.toggleDarkModeGrid()} data-test="toggle-dark-mode">
+            <span>Toggle Dark Mode</span>
+          </button>
           <span className="float-end font18">
             see&nbsp;
             <a target="_blank"

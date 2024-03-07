@@ -21,7 +21,6 @@ import React from 'react';
 
 import BaseSlickGridState from './state-slick-grid-base';
 import './example32.scss'; // provide custom CSS/SASS styling
-import { SlickCompositeEditor } from '@slickgrid-universal/composite-editor-component';
 
 const NB_ITEMS = 400;
 const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
@@ -34,7 +33,7 @@ const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
  * @returns {boolean} isEditable
  */
 function checkItemIsEditable(dataContext: any, columnDef: Column, grid: SlickGrid) {
-  const gridOptions = grid && grid.getOptions && grid.getOptions();
+  const gridOptions = grid.getOptions() as GridOption;
   const hasEditor = columnDef.editor;
   const isGridEditable = gridOptions.editable;
   let isEditable = !!(isGridEditable && hasEditor);
@@ -58,7 +57,7 @@ function checkItemIsEditable(dataContext: any, columnDef: Column, grid: SlickGri
 }
 
 const customEditableInputFormatter: Formatter = (_row, _cell, value, columnDef, _dataContext, grid) => {
-  const gridOptions = grid && grid.getOptions && grid.getOptions();
+  const gridOptions = grid.getOptions() as GridOption;
   const isEditableLine = gridOptions.editable && columnDef.editor;
   value = (value === null || value === undefined) ? '' : value;
   return isEditableLine ? { text: value, addClasses: 'editable-field', toolTip: 'Click to Edit' } : value;
@@ -66,8 +65,8 @@ const customEditableInputFormatter: Formatter = (_row, _cell, value, columnDef, 
 
 // you can create custom validator to pass to an inline editor
 const myCustomTitleValidator = (value: any, args: any) => {
-  if ((value === null || value === undefined || !value.length) && (args.compositeEditorOptions && args.compositeEditorOptions.modalType === 'create' || args.compositeEditorOptions.modalType === 'edit')) {
-    // we will only check if the field is supplied when it's an inline editing OR a composite editor of type create/edit
+  if (value === null || value === undefined || !value.length) {
+    // we will only check if the field is supplied when it's an inline editing
     return { valid: false, msg: 'This is a required field.' };
   } else if (!/^(task\s\d+)*$/i.test(value)) {
     return { valid: false, msg: 'Your title is invalid, it must start with "Task" followed by a number.' };
@@ -377,7 +376,6 @@ export default class Example32 extends React.Component<Props, State> {
       rowHeight: 33,
       headerRowHeight: 35,
       editCommandHandler: (item, column, editCommand) => {
-        // composite editors values are saved as array, so let's convert to array in any case and we'll loop through these values
         const prevSerializedValues = Array.isArray(editCommand.prevSerializedValue) ? editCommand.prevSerializedValue : [editCommand.prevSerializedValue];
         const serializedValues = Array.isArray(editCommand.serializedValue) ? editCommand.serializedValue : [editCommand.serializedValue];
         const editorColumns = this.state.columnDefinitions.filter((col) => col.editor !== undefined);
@@ -398,8 +396,7 @@ export default class Example32 extends React.Component<Props, State> {
           }
         });
 
-        // queued editor only keeps 1 item object even when it's a composite editor,
-        // so we'll push only 1 change at the end but with all columns modified
+        // queued editor, so we'll push only 1 change at the end but with all columns modified
         // this way we can undo the entire row change (for example if user changes 3 field in the editor modal, then doing a undo last change will undo all 3 in 1 shot)
         this.editQueue.push({ item, columns: modifiedColumns, editCommand });
       },
@@ -458,16 +455,14 @@ export default class Example32 extends React.Component<Props, State> {
   handleValidationError(_e: Event, args: any) {
     if (args.validationResults) {
       let errorMsg = args.validationResults.msg || '';
-      if (args.editor && (args.editor instanceof SlickCompositeEditor)) {
-        if (args.validationResults.errors) {
-          errorMsg += '\n';
-          for (const error of args.validationResults.errors) {
-            const columnName = error.editor.args.column.name;
-            errorMsg += `${columnName.toUpperCase()}: ${error.msg}`;
-          }
+      if (args.editor && args.validationResults.errors) {
+        errorMsg += '\n';
+        for (const error of args.validationResults.errors) {
+          const columnName = error.editor.args.column.name;
+          errorMsg += `${columnName.toUpperCase()}: ${error.msg}`;
         }
-        console.log(errorMsg);
       }
+      console.log(errorMsg);
     } else {
       alert(args.validationResults.msg);
     }
