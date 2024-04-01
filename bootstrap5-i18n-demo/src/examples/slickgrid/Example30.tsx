@@ -1,4 +1,5 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import { SlickCompositeEditor, SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
 import React from 'react';
 
@@ -88,7 +89,7 @@ interface State extends BaseSlickGridState {
   complexityLevelList: Array<{ value: number; label: string; }>;
 }
 export default class Example30 extends React.Component<Props, State> {
-  private _darkModeGrid = false;
+  private _darkMode = false;
 
   title = 'Example 30: Composite Editor Modal';
   subTitle = `Composite Editor allows you to Create, Clone, Edit, Mass Update & Mass Selection Changes inside a nice Modal Window.
@@ -138,7 +139,8 @@ export default class Example30 extends React.Component<Props, State> {
   defineGrids() {
     const columnDefinitions: Column[] = [
       {
-        id: 'title', name: 'Title', field: 'title', sortable: true, type: FieldType.string, minWidth: 75,
+        id: 'title', name: '<span title="Task must always be followed by a number" class="color-warning-dark fa fa-exclamation-triangle"></span> Title <span title="Title is always rendered as UPPERCASE" class="fa fa-info-circle"></span>',
+        field: 'title', sortable: true, type: FieldType.string, minWidth: 75,
         cssClass: 'text-uppercase fw-bold', columnGroup: 'Common Factor',
         filterable: true, filter: { model: Filters.compoundInputText },
         editor: {
@@ -405,7 +407,7 @@ export default class Example30 extends React.Component<Props, State> {
       excelExportOptions: {
         exportWithFormatter: false
       },
-      externalResources: [new ExcelExportService(), this.compositeEditorInstance],
+      externalResources: [new ExcelExportService(), new SlickCustomTooltip(), this.compositeEditorInstance],
       enableFiltering: true,
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
@@ -451,6 +453,15 @@ export default class Example30 extends React.Component<Props, State> {
       },
       // when using the cellMenu, you can change some of the default options and all use some of the callback methods
       enableCellMenu: true,
+      gridMenu: {
+        hideToggleDarkModeCommand: false, // hidden by default
+        onCommand: (_, args) => {
+          if (args.command === 'toggle-dark-mode') {
+            this._darkMode = !this._darkMode; // keep local toggle var in sync
+            this.toggleBodyBackground();
+          }
+        }
+      }
     };
 
     this.setState((state: State) => ({
@@ -536,7 +547,7 @@ export default class Example30 extends React.Component<Props, State> {
     const { column, item, grid } = args;
 
     if (column && item && !checkItemIsEditable(item, column, grid)) {
-      e.stopImmediatePropagation();
+      e.preventDefault(); // OR eventData.preventDefault();
       return false;
     }
     return true;
@@ -645,7 +656,7 @@ export default class Example30 extends React.Component<Props, State> {
       onRendered: (modalElm) => {
         // Bootstrap requires extra attribute when toggling Dark Mode (data-bs-theme="dark")
         // we need to manually add this attribute  ourselve before opening the Composite Editor Modal
-        modalElm.dataset.bsTheme = this._darkModeGrid ? 'dark' : 'light';
+        modalElm.dataset.bsTheme = this._darkMode ? 'dark' : 'light';
       },
       onSave: (formValues, _selection, dataContext) => {
         const serverResponseDelay = 50;
@@ -690,16 +701,20 @@ export default class Example30 extends React.Component<Props, State> {
     this.reactGrid.slickGrid.setOptions({ editable: isGridEditable });
   }
 
-  toggleDarkModeGrid() {
-    this._darkModeGrid = !this._darkModeGrid;
-    if (this._darkModeGrid) {
+  toggleDarkMode() {
+    this._darkMode = !this._darkMode;
+    this.toggleBodyBackground();
+    this.reactGrid.slickGrid?.setOptions({ darkMode: this._darkMode });
+  }
+
+  toggleBodyBackground() {
+    if (this._darkMode) {
       document.querySelector<HTMLDivElement>('.panel-wm-content')!.classList.add('dark-mode');
       document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'dark';
     } else {
       document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
       document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
     }
-    this.reactGrid.slickGrid?.setOptions({ darkMode: this._darkModeGrid });
   }
 
   removeUnsavedStylingFromCell(_item: any, column: Column, row: number) {
@@ -1009,7 +1024,7 @@ export default class Example30 extends React.Component<Props, State> {
       <div id="demo-container" className="container-fluid">
         <h2>
           {this.title}
-          <button className="btn btn-outline-secondary btn-sm ms-2" onClick={() => this.toggleDarkModeGrid()} data-test="toggle-dark-mode">
+          <button className="btn btn-outline-secondary btn-sm ms-2" onClick={() => this.toggleDarkMode()} data-test="toggle-dark-mode">
             <span>Toggle Dark Mode</span>
           </button>
           <span className="float-end font18">
