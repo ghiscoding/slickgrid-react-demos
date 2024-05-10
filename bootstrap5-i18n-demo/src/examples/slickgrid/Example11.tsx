@@ -19,7 +19,7 @@ interface Props { }
 export default class Example11 extends React.Component {
   title = 'Example 11: Add / Update / Highlight a Datagrid Item';
   subTitle = `
-  Add / Update / Hightlight an Item from the Datagrid (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Add,-Update-or-Highlight-a-Datagrid-Item" target="_blank">Wiki docs</a>).
+  Add / Update / Hightlight an Item from the Datagrid (<a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/add-update-highlight" target="_blank">Docs</a>).
   <ul>
     <li><b>Note:</b> this demo is <b>only</b> on the datagrid (client) side, you still need to deal with the backend yourself</li>
     <li>Adding an item, will always be showing as the 1st item in the grid because that is the best visual place to add it</li>
@@ -32,7 +32,7 @@ export default class Example11 extends React.Component {
     </ul>
     <li>You can also add CSS class(es) on the fly (or on page load) on rows with certain criteria, (e.g. click on last button)
     <ul>
-      <li>Example, click on button "Highlight Rows with Duration over 50" to see row styling changing. <a href="https://github.com/ghiscoding/slickgrid-react/wiki/Dynamically-Add-CSS-Classes-to-Item-Rows" target="_blank">Wiki doc</a></li>
+      <li>Example, click on button "Highlight Rows with Duration over 50" to see row styling changing. <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/dynamic-item-metadata" target="_blank">Wiki doc</a></li>
     </ul>
   </ul>
   `;
@@ -74,7 +74,8 @@ export default class Example11 extends React.Component {
         id: 'delete',
         field: 'id',
         excludeFromHeaderMenu: true,
-        formatter: Formatters.icon, params: { iconCssClass: 'fa fa-trash pointer' },
+        formatter: Formatters.icon,
+        params: { iconCssClass: 'mdi mdi-trash-can pointer' },
         minWidth: 30,
         maxWidth: 30,
         // use onCellClick OR grid.onClick.subscribe which you can see down below
@@ -131,7 +132,7 @@ export default class Example11 extends React.Component {
       },
       {
         id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven',
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         type: FieldType.number,
         editor: {
           model: Editors.checkbox
@@ -287,7 +288,7 @@ export default class Example11 extends React.Component {
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example11.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
@@ -297,26 +298,26 @@ export default class Example11 extends React.Component {
           <span>
             <label>Scroll: </label>
             <div className="btn-group mx-1" role="group" aria-label="...">
-              <button className="btn btn-sm btn-outline-secondary" data-test="scroll-top-btn" onClick={() => this.scrollGridTop()}>
-                <i className="fa fa-arrow-up"></i>
+              <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="scroll-top-btn" onClick={() => this.scrollGridTop()}>
+                <i className="mdi mdi-arrow-down mdi-rotate-180"></i>
               </button>
-              <button className="btn btn-sm btn-outline-secondary" data-test="scroll-bottom-btn"
+              <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="scroll-bottom-btn"
                 onClick={() => this.scrollGridBottom()}>
-                <i className="fa fa-arrow-down"></i>
+                <i className="mdi mdi-arrow-down"></i>
               </button>
             </div>
-            <button className="btn btn-sm btn-outline-secondary" data-test="add-new-item-top-btn"
+            <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="add-new-item-top-btn"
               onClick={() => this.addNewItem('top')}>Add New Mocked Item (top)</button>
             <button className="btn btn-sm btn-outline-secondary mx-1" data-test="add-new-item-bottom-btn"
               onClick={() => this.addNewItem('bottom')}>Add New Mocked Item
               (bottom)</button>
-            <button className="btn btn-sm btn-outline-secondary" data-test="update-second-item-btn"
+            <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="update-second-item-btn"
               onClick={() => this.updateSecondItem()}>
               Update 2nd Row Item with Random Duration
             </button>
             <button className="btn btn-sm btn-outline-secondary mx-1" data-test="highlight-row5-btn"
               onClick={() => this.highlighFifthRow()}>Highlight 5th Row</button>
-            <button className="btn btn-sm btn-outline-secondary" data-test="highlight-duration40-btn"
+            <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="highlight-duration40-btn"
               onClick={() => this.changeDurationBackgroundColor()}>
               Highlight Rows with Duration over 50
             </button>

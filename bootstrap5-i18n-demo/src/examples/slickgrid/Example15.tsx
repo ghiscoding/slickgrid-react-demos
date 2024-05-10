@@ -33,7 +33,7 @@ const NB_ITEMS = 500;
 class Example15 extends React.Component<Props, State> {
   title = 'Example 15: Grid State & Presets using Local Storage';
   subTitle = `
-  Grid State & Preset (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Grid-State-&-Preset" target="_blank">Wiki docs</a>)
+  Grid State & Preset (<a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/grid-state-preset" target="_blank">Docs</a>)
   <br/>
   <ul class="small">
     <li>Uses Local Storage to persist the Grid State and uses Grid Options "presets" to put the grid back to it's previous state</li>
@@ -80,11 +80,11 @@ class Example15 extends React.Component<Props, State> {
 
   /** Clear the Grid State from Local Storage and reset the grid to it's original state */
   clearGridStateFromLocalStorage() {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
     // this.reactGrid.slickGrid.setColumns(this.reactGrid.gridService.getAllColumnDefinitions());
     // this.reactGrid.slickGrid.autosizeColumns();
     this.reactGrid.gridService.resetGrid(this.getColumnDefinitions());
     this.reactGrid.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
+    setTimeout(() => localStorage[LOCAL_STORAGE_KEY] = null);
   }
 
   /* Define grid Options and Columns */
@@ -181,7 +181,7 @@ class Example15 extends React.Component<Props, State> {
         type: FieldType.date, filterable: true, filter: { model: Filters.compoundDate }
       },
       {
-        id: 'completed', field: 'completed', nameKey: 'COMPLETED', minWidth: 85, maxWidth: 85, formatter: Formatters.checkmark, width: 100,
+        id: 'completed', field: 'completed', nameKey: 'COMPLETED', minWidth: 85, maxWidth: 85, formatter: Formatters.checkmarkMaterial, width: 100,
         type: FieldType.boolean,
         sortable: true,
         filterable: true,
@@ -277,20 +277,20 @@ class Example15 extends React.Component<Props, State> {
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example15.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
         <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
 
-        <button className="btn btn-outline-secondary btn-sm" data-test="reset-button"
+        <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="reset-button"
           onClick={() => this.clearGridStateFromLocalStorage()}>
-          <i className="fa fa-times me-1"></i>
+          <i className="mdi mdi-close me-1"></i>
           Clear Grid State from Local Storage &amp; Reset Grid
         </button>
 
-        <button className="btn btn-outline-secondary btn-sm mx-1" data-test="language-button" onClick={() => this.switchLanguage()}>
-          <i className="fa fa-language me-1"></i>
+        <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="language-button" onClick={() => this.switchLanguage()}>
+          <i className="mdi mdi-translate me-1"></i>
           Switch Language
         </button>
         <strong>Locale: </strong>

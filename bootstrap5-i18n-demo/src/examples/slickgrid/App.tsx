@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, Navigate, Route, Routes as BaseRoutes, useLocation } from 'react-router-dom';
 
 import { NavBar } from '../../NavBar';
@@ -75,6 +75,14 @@ const routes: Array<{ path: string; route: string; component: any; title: string
 export default function Routes() {
   const pathname = useLocation().pathname;
 
+  // scroll to active link route
+  useEffect(() => {
+    const linkElm = document.querySelector('.nav-link.active');
+    if (linkElm) {
+      linkElm.scrollIntoView({ block: 'nearest' });
+    }
+  }, [pathname]);
+
   return (
     <div>
       <NavBar></NavBar>
@@ -84,7 +92,7 @@ export default function Routes() {
             <ul className="well nav nav-pills nav-stacked">
               <li className="nav-item fw-bold nav-docs">
                 <a className="nav-link" href="https://ghiscoding.gitbook.io/slickgrid-react/" target="_blank">
-                  <i className="fa fa-book"></i> Documentation
+                  📘 Documentation
                 </a>
               </li>
               {routes.map((row) =>
