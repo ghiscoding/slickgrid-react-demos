@@ -43,7 +43,7 @@ interface State extends BaseSlickGridState {
 export default class Example25 extends React.Component<Props, State> {
   title = 'Example 25: GraphQL Basic API without Pagination';
   subTitle = `
-  Use basic GraphQL query with any external public APIs (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/GraphQL" target="_blank">Wiki docs</a>).
+  Use basic GraphQL query with any external public APIs (<a href="https://ghiscoding.gitbook.io/slickgrid-react/backend-services/graphql" target="_blank">Docs</a>).
   <ul>
     <li>This Examples uses a Public GraphQL API that you can find at this link <a href="https://countries.trevorblades.com/" target="_blank">https://countries.trevorblades.com/</a></li>
     <li>Compare to the regular and default GraphQL implementation, you will find the following differences</li>
@@ -209,13 +209,13 @@ export default class Example25 extends React.Component<Props, State> {
         preProcess: () => this.displaySpinner(true),
         process: (query) => this.getCountries(query),
         postProcess: (result: GraphqlResult<Country>) => {
-          this.setState((state: State, props: Props) => ({ ...state, metrics: result.metrics }));
+          this.setState((state: State) => ({ ...state, metrics: result.metrics }));
           this.displaySpinner(false);
         }
       } as GraphqlServiceApi
     };
 
-    this.setState((state: State, props: Props) => ({
+    this.setState((state: State) => ({
       ...state,
       gridOptions,
       columnDefinitions,
@@ -227,7 +227,7 @@ export default class Example25 extends React.Component<Props, State> {
       ? { text: 'processing...', class: 'alert alert-danger' }
       : { text: 'finished', class: 'alert alert-success' };
 
-    this.setState((state: State, props: any) => ({
+    this.setState((state: State) => ({
       ...state,
       status: newStatus,
       processing: isProcessing,
@@ -310,7 +310,7 @@ export default class Example25 extends React.Component<Props, State> {
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example25.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
@@ -321,7 +321,7 @@ export default class Example25 extends React.Component<Props, State> {
             <div className={this.state.status.class} role="alert" data-test="status">
               <strong>Status: </strong> {this.state.status.text}
               {this.state.processing ? <span>
-                <i className="fa fa-refresh fa-spin fa-lg fa-fw"></i>
+                <i className="mdi mdi-sync mdi-spin"></i>
               </span> : ''}
             </div>
           </div>

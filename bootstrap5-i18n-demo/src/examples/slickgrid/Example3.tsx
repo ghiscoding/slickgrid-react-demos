@@ -11,14 +11,14 @@ import {
   EditorValidator,
   FieldType,
   Filters,
-  FlatpickrOption,
   Formatters,
   OnEventArgs,
   OperatorType,
   SortComparers,
+  SlickGlobalEditorLock,
   SlickgridReact,
   GridOption,
-  SlickGlobalEditorLock,
+  type VanillaCalendarOption,
 } from 'slickgrid-react';
 import { CustomInputEditor } from './custom-inputEditor';
 import { CustomInputFilter } from './custom-inputFilter';
@@ -35,12 +35,8 @@ const URL_COUNTRY_NAMES = 'assets/data/country_names.json';
 const myCustomTitleValidator: EditorValidator = (value: any) => {
   // you can get the Editor Args which can be helpful, e.g. we can get the Translate Service from it
   // const grid = args && args.grid;
-  // const gridOptions = (grid && grid.getOptions) ? grid.getOptions() : {};
+  // const gridOptions = grid.getOptions() as GridOption;
   // const i18n = gridOptions.i18n;
-
-  // to get the editor object, you'll need to use 'internalColumnEditor'
-  // don't use 'editor' property since that one is what SlickGrid uses internally by it's editor factory
-  // const columnEditor = args && args.column && args.column.internalColumnEditor;
 
   if (value === null || value === undefined || !value.length) {
     return { valid: false, msg: 'This is a required field' };
@@ -74,7 +70,7 @@ interface State extends BaseSlickGridState {
 export default class Example3 extends React.Component<Props, State> {
   title = 'Example 3: Editors / Delete';
   subTitle = `
-  Grid with Inline Editors and onCellClick actions (<a href='https://github.com/ghiscoding/slickgrid-react/wiki/Editors' target='_blank'>Wiki docs</a>).
+  Grid with Inline Editors and onCellClick actions (<a href='https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/editors' target='_blank'>Docs</a>).
   <ul>
     <li>Multiple Editors & Filters are available: AutoComplete, Checkbox, Date, Slider, SingleSelect, MultipleSelect, Float, Text, LongText... even Custom Editor</li>
     <li>When using 'enableCellNavigation: true', clicking on a cell will automatically make it active &amp; selected.</li>
@@ -129,7 +125,8 @@ export default class Example3 extends React.Component<Props, State> {
         excludeFromColumnPicker: true,
         excludeFromGridMenu: true,
         excludeFromHeaderMenu: true,
-        formatter: Formatters.icon, params: { iconCssClass: 'fa fa-pencil pointer' },
+        formatter: Formatters.icon,
+        params: { iconCssClass: 'mdi mdi-pencil pointer' },
         minWidth: 30,
         maxWidth: 30,
         // use onCellClick OR grid.onClick.subscribe which you can see down below
@@ -151,7 +148,8 @@ export default class Example3 extends React.Component<Props, State> {
         excludeFromColumnPicker: true,
         excludeFromGridMenu: true,
         excludeFromHeaderMenu: true,
-        formatter: Formatters.icon, params: { iconCssClass: 'fa fa-trash pointer' },
+        formatter: Formatters.icon,
+        params: { iconCssClass: 'mdi mdi-trash-can pointer' },
         minWidth: 30,
         maxWidth: 30,
         // use onCellClick OR grid.onClick.subscribe which you can see down below
@@ -244,7 +242,7 @@ export default class Example3 extends React.Component<Props, State> {
           collection: Array.from(Array(101).keys()).map((k) => ({
             value: k,
             label: k,
-            symbol: '<i className="fa fa-percent" style="color:cadetblue"></i>',
+            symbol: '<i className="mdi mdi-percent-outline" style="color:cadetblue"></i>',
           })),
           customStructure: {
             value: 'value',
@@ -304,9 +302,8 @@ export default class Example3 extends React.Component<Props, State> {
         saveOutputType: FieldType.dateUtc, // save output date format
         editor: {
           model: Editors.date,
-          // override any of the Flatpickr options through 'filterOptions'
-          // please note that there's no TSlint on this property since it's generic for any filter, so make sure you entered the correct filter option(s)
-          editorOptions: { minDate: 'today' } as FlatpickrOption,
+          // override any of the calendar options through 'filterOptions'
+          editorOptions: { range: { min: 'today' } } as VanillaCalendarOption,
         },
       },
       {
@@ -327,7 +324,7 @@ export default class Example3 extends React.Component<Props, State> {
             minLength: 3,
             forceUserInput: true,
             fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
-              /** with Angular Http, note this demo won't work because of CORS */
+              /** with React Http, note this demo won't work because of CORS */
               // this.http.get(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`).subscribe(data => updateCallback(data));
 
               /** with JSONP AJAX will work locally but not on the GitHub demo because of CORS */
@@ -350,7 +347,7 @@ export default class Example3 extends React.Component<Props, State> {
           filterOptions: {
             minLength: 3,
             fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
-              /** with Angular Http, note this demo won't work because of CORS */
+              /** with React Http, note this demo won't work because of CORS */
               // this.http.get(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`).subscribe(data => updateCallback(data));
 
               /** with JSONP AJAX will work locally but not on the GitHub demo because of CORS */
@@ -415,7 +412,7 @@ export default class Example3 extends React.Component<Props, State> {
             { value: false, label: 'False' },
           ],
         },
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         editor: {
           model: Editors.checkbox,
         },
@@ -591,7 +588,7 @@ export default class Example3 extends React.Component<Props, State> {
     // mock a dataset
     const tempDataset: any[] = [];
     for (let i = startingIndex; i < startingIndex + itemCount; i++) {
-      const randomYear = 2000 + Math.floor(Math.random() * 10);
+      const randomYear = 2000 + this.randomBetween(4, 15);
       const randomFinishYear =
         new Date().getFullYear() - 3 + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
       const randomMonth = Math.floor(Math.random() * 11);
@@ -623,6 +620,10 @@ export default class Example3 extends React.Component<Props, State> {
       });
     }
     return tempDataset;
+  }
+
+  randomBetween(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   onCellChanged(_e: Event, args: any) {
@@ -715,15 +716,7 @@ export default class Example3 extends React.Component<Props, State> {
       columnDefinitions: this.state.columnDefinitions.slice(),
     }));
 
-    // NOTE if you use an Extensions (Checkbox Selector, Row Detail, ...) that modifies the column definitions in any way
-    // you MUST use the code below, first you must reassign the Editor facade (from the internalColumnEditor back to the editor)
-    // in other words, SlickGrid is not using the same as Slickgrid-React uses (editor with a "model" and other properties are a facade, SlickGrid only uses what is inside the model)
     /*
-    const allColumns = this.reactGrid.gridService.getAllColumnDefinitions();
-    const allOriginalColumns = allColumns.map((column) => {
-      column.editor = column.internalColumnEditor;
-      return column;
-    });
     // remove your column the full set of columns
     // and use slice or spread [...] to trigger an React dirty change
     allOriginalColumns.pop();
@@ -784,7 +777,7 @@ export default class Example3 extends React.Component<Props, State> {
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example3.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
@@ -816,8 +809,8 @@ export default class Example3 extends React.Component<Props, State> {
             </span>
             <div className='row col-sm-12'>
               <span>
-                <button className='btn btn-outline-secondary btn-sm me-1' data-test='undo-btn' onClick={() => this.undo()}>
-                  <i className='fa fa-undo me-1'></i>
+                <button className='btn btn-outline-secondary btn-sm btn-icon me-1' data-test='undo-btn' onClick={() => this.undo()}>
+                  <i className='mdi mdi-undo me-1'></i>
                   Undo last edit(s)
                 </button>
                 <label className='checkbox-inline control-label me-1' htmlFor='autoCommitEdit'>
@@ -833,11 +826,11 @@ export default class Example3 extends React.Component<Props, State> {
             </div>
             <div className='row' style={marginTop5px}>
               <div className='col-sm-12'>
-                <button className='btn btn-outline-secondary btn-sm' onClick={() => this.reactGrid.filterService.clearFilters()}>
+                <button className='btn btn-outline-secondary btn-sm btn-icon' onClick={() => this.reactGrid.filterService.clearFilters()}>
                   Clear Filters
                 </button>
                 <button
-                  className='btn btn-outline-secondary btn-sm mx-1' onClick={() => this.reactGrid.sortService.clearSorting()}>
+                  className='btn btn-outline-secondary btn-sm btn-icon mx-1' onClick={() => this.reactGrid.sortService.clearSorting()}>
                   Clear Sorting
                 </button>
                 <button
@@ -860,19 +853,19 @@ export default class Example3 extends React.Component<Props, State> {
             <div className='row' style={marginTop5px}>
               <div className='col-sm-12'>
                 <button
-                  className='btn btn-outline-secondary btn-sm'
+                  className='btn btn-outline-secondary btn-sm btn-icon'
                   data-test='add-title-column'
                   onClick={() => this.dynamicallyAddTitleHeader()}
                 >
-                  <i className='fa fa-plus me-1'></i>
+                  <i className='mdi mdi-shape-square-plus me-1'></i>
                   Dynamically Duplicate Title Column
                 </button>
                 <button
-                  className='btn btn-outline-secondary btn-sm mx-1'
+                  className='btn btn-outline-secondary btn-sm btn-icon mx-1'
                   data-test='remove-title-column'
                   onClick={() => this.dynamicallyRemoveLastColumn()}
                 >
-                  <i className='fa fa-minus me-1'></i>
+                  <i className='mdi mdi-minus me-1'></i>
                   Dynamically Remove Last Column
                 </button>
               </div>

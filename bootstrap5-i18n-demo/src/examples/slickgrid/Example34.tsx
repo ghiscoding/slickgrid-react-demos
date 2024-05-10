@@ -36,17 +36,20 @@ const currencyFormatter: Formatter = (cell: number, row: number, value: string) 
 const priceFormatter: Formatter = (_cell, _row, value, _col, dataContext) => {
   const direction = dataContext.priceChange >= 0 ? 'up' : 'down';
   const fragment = new DocumentFragment();
+  const divElm = document.createElement('div');
+  divElm.className = 'd-inline-flex align-items-center';
   const spanElm = document.createElement('span');
-  spanElm.className = `fa fa-arrow-${direction} text-${direction === 'up' ? 'success' : 'danger'}`;
-  fragment.appendChild(spanElm);
+  spanElm.className = `mdi mdi-arrow-${direction} text-${direction === 'up' ? 'success' : 'danger'}`;
+  divElm.appendChild(spanElm);
+  fragment.appendChild(divElm);
   if (value instanceof HTMLElement) {
-    fragment.appendChild(value);
+    divElm.appendChild(value);
   }
   return fragment;
 };
 
-const transactionTypeFormatter: Formatter = (row: number, cell: number, value: string) =>
-  `<span <span className="fa fa-${value === 'Buy' ? 'plus' : 'minus'}-circle ${value === 'Buy' ? 'text-info' : 'text-warning'}"></span> ${value}`;
+const transactionTypeFormatter: Formatter = (_row, _cell, value: string) =>
+  `<div class="d-inline-flex align-items-center"><span class="me-1 mdi mdi-16px mdi-${value === 'Buy' ? 'plus' : 'minus'}-circle ${value === 'Buy' ? 'text-info' : 'text-warning'}"></span> ${value}</div>`;
 
 const historicSparklineFormatter: Formatter = (row: number, cell: number, value: string, col: Column, dataContext: any) => {
   const svgElem = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -59,6 +62,7 @@ const historicSparklineFormatter: Formatter = (row: number, cell: number, value:
 };
 
 export default class Example34 extends React.Component<Props, State> {
+  private _darkMode = false;
   title = 'Example 34: Real-Time Trading Platform';
   subTitle = `Simulate a stock trading platform with lot of price changes
   <ul>
@@ -98,6 +102,8 @@ export default class Example34 extends React.Component<Props, State> {
 
   componentWillUnmount() {
     this.stopSimulation();
+    document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+    document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
   }
 
   reactGridReady(reactGrid: SlickgridReactInstance) {
@@ -199,7 +205,7 @@ export default class Example34 extends React.Component<Props, State> {
       },
       draggableGrouping: {
         dropPlaceHolderText: 'Drop a column header here to group by any of these available columns: Currency, Market or Type',
-        deleteIconCssClass: 'fa fa-times',
+        deleteIconCssClass: 'mdi mdi-close',
       },
       enableDraggableGrouping: true,
       createPreHeaderPanel: true,
@@ -367,6 +373,22 @@ export default class Example34 extends React.Component<Props, State> {
     this.reactGrid.resizerService.resizeGrid();
   }
 
+  toggleDarkMode() {
+    this._darkMode = !this._darkMode;
+    this.toggleBodyBackground();
+    this.reactGrid.slickGrid?.setOptions({ darkMode: this._darkMode });
+  }
+
+  toggleBodyBackground() {
+    if (this._darkMode) {
+      document.querySelector<HTMLDivElement>('.panel-wm-content')!.classList.add('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'dark';
+    } else {
+      document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
+    }
+  }
+
   private randomNumber(min: number, max: number, floor = true) {
     const number = Math.random() * (max - min + 1) + min;
     return floor ? Math.floor(number) : number;
@@ -377,11 +399,15 @@ export default class Example34 extends React.Component<Props, State> {
       <div>
         <h2>
           {this.title}
+          <button className="btn btn-outline-secondary btn-sm btn-icon ms-2" onClick={() => this.toggleDarkMode()} data-test="toggle-dark-mode">
+            <i className="mdi mdi-theme-light-dark"></i>
+            <span>Toggle Dark Mode</span>
+          </button>
           <span className="float-end font18">
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example34.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
@@ -399,13 +425,13 @@ export default class Example34 extends React.Component<Props, State> {
                 </span>
               </div>
               <span className="ms-3 me-1">
-                <button className="btn btn-outline-secondary btn-sm" data-test="start-btn" onClick={() => this.startSimulation()}>
-                  <li className="fa fa-play"></li> Start Simulation
+                <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="start-btn" onClick={() => this.startSimulation()}>
+                  <li className="mdi mdi-play-circle-outline"></li> Start Simulation
                 </button>
               </span>
               <span className="me-3">
-                <button className="btn btn-outline-secondary btn-sm" data-test="stop-btn" onClick={() => this.stopSimulation()}>
-                  <li className="fa fa-stop"></li> Stop Simulation
+                <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="stop-btn" onClick={() => this.stopSimulation()}>
+                  <li className="mdi mdi-stop-circle-outline"></li> Stop Simulation
                 </button>
               </span>
               <span className="mx-1">
@@ -422,8 +448,8 @@ export default class Example34 extends React.Component<Props, State> {
                   onInput={($event) => this.handleHighlightDuration(+($event.target as HTMLInputElement).value)} />
               </span>
               <div className="ms-auto">
-                <button className="btn btn-outline-secondary btn-sm" onClick={() => this.toggleFullScreen()}>
-                  <li className={this.state.isFullScreen ? 'fa fa-compress' : 'fa fa-arrows-alt'}></li> Toggle Full-Screen
+                <button className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => this.toggleFullScreen()}>
+                  <li className={this.state.isFullScreen ? 'mdi mdi-arrow-collapse' : 'mdi mdi-arrow-expand'}></li> Toggle Full-Screen
                 </button>
               </div>
             </div>

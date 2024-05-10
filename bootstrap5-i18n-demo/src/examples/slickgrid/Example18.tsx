@@ -30,10 +30,11 @@ interface State extends BaseSlickGridState {
 }
 
 export default class Example18 extends React.Component<Props, State> {
+  private _darkMode = false;
   title = 'Example 18: Draggable Grouping & Aggregators';
   subTitle = `
   <ul>
-    <li>This example shows 3 ways of grouping <a href="https://github.com/ghiscoding/slickgrid-react/wiki/Grouping-&-Aggregators" target="_blank">Wiki docs</a></li>
+    <li>This example shows 3 ways of grouping <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/grouping-aggregators" target="_blank">Docs</a></li>
     <ol>
       <li>Drag any Column Header on the top placeholder to group by that column (support moti-columns grouping by adding more columns to the drop area).</li>
       <li>Use buttons and defined functions to group by whichever field you want</li>
@@ -75,6 +76,11 @@ export default class Example18 extends React.Component<Props, State> {
     this.defineGrid();
   }
 
+  componentWillUnmount() {
+    document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+    document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
+  }
+
   /* Define grid Options and Columns */
   defineGrid() {
     const columnDefinitions: Column[] = [
@@ -86,7 +92,7 @@ export default class Example18 extends React.Component<Props, State> {
         sortable: true,
         grouping: {
           getter: 'title',
-          formatter: (g) => `Title: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Title: ${g.value}  <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -104,7 +110,7 @@ export default class Example18 extends React.Component<Props, State> {
         groupTotalsFormatter: GroupTotalFormatters.sumTotals,
         grouping: {
           getter: 'duration',
-          formatter: (g) => `Duration: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Duration: ${g.value}  <span class="text-primary">(${g.count} items)</span>`,
           comparer: (a, b) => {
             return this.state.durationOrderByCount ? (a.count - b.count) : SortComparers.numeric(a.value, b.value, SortDirectionNumber.asc);
           },
@@ -126,7 +132,7 @@ export default class Example18 extends React.Component<Props, State> {
         groupTotalsFormatter: GroupTotalFormatters.avgTotalsPercentage,
         grouping: {
           getter: 'percentComplete',
-          formatter: (g) => `% Complete: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `% Complete: ${g.value}  <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -146,7 +152,7 @@ export default class Example18 extends React.Component<Props, State> {
         exportWithFormatter: true,
         grouping: {
           getter: 'start',
-          formatter: (g) => `Start: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Start: ${g.value}  <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -166,7 +172,7 @@ export default class Example18 extends React.Component<Props, State> {
         exportWithFormatter: true,
         grouping: {
           getter: 'finish',
-          formatter: (g) => `Finish: ${g.value} <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Finish: ${g.value} <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -186,7 +192,7 @@ export default class Example18 extends React.Component<Props, State> {
         type: FieldType.number,
         grouping: {
           getter: 'cost',
-          formatter: (g) => `Cost: ${g.value} <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Cost: ${g.value} <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -204,10 +210,10 @@ export default class Example18 extends React.Component<Props, State> {
           collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
           model: Filters.singleSelect
         },
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         grouping: {
           getter: 'effortDriven',
-          formatter: (g) => `Effort-Driven: ${g.value ? 'True' : 'False'} <span style="color:green">(${g.count} items)</span>`,
+          formatter: (g) => `Effort-Driven: ${g.value ? 'True' : 'False'} <span class="text-primary">(${g.count} items)</span>`,
           aggregators: [
             new Aggregators.Sum('cost')
           ],
@@ -241,11 +247,12 @@ export default class Example18 extends React.Component<Props, State> {
       },
       draggableGrouping: {
         dropPlaceHolderText: 'Drop a column header here to group by the column',
-        // groupIconCssClass: 'fa fa-outdent',
-        deleteIconCssClass: 'fa fa-times',
+        // groupIconCssClass: 'mdi mdi-drag-vertical',
+        deleteIconCssClass: 'mdi mdi-close',
         onGroupChanged: (_e, args) => this.onGroupChanged(args),
         onExtensionRegistered: (extension) => this.draggableGroupingPlugin = extension,
       },
+      darkMode: this._darkMode,
       enableTextExport: true,
       enableExcelExport: true,
       excelExportOptions: { sanitizeDataExport: true },
@@ -464,16 +471,36 @@ export default class Example18 extends React.Component<Props, State> {
     this.gridObj.setPreHeaderPanelVisibility(!this.gridObj.getOptions().showPreHeaderPanel);
   }
 
+  toggleDarkMode() {
+    this._darkMode = !this._darkMode;
+    this.toggleBodyBackground();
+    this.reactGrid.slickGrid?.setOptions({ darkMode: this._darkMode });
+  }
+
+  toggleBodyBackground() {
+    if (this._darkMode) {
+      document.querySelector<HTMLDivElement>('.panel-wm-content')!.classList.add('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'dark';
+    } else {
+      document.querySelector('.panel-wm-content')!.classList.remove('dark-mode');
+      document.querySelector<HTMLDivElement>('#demo-container')!.dataset.bsTheme = 'light';
+    }
+  }
+
   render() {
     return !this.state.gridOptions ? '' : (
       <div id="demo-container" className="container-fluid">
         <h2>
           {this.title}
+          <button className="btn btn-outline-secondary btn-sm btn-icon ms-2" onClick={() => this.toggleDarkMode()} data-test="toggle-dark-mode">
+            <i className="mdi mdi-theme-light-dark"></i>
+            <span>Toggle Dark Mode</span>
+          </button>
           <span className="float-end font18">
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example18.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
@@ -482,49 +509,49 @@ export default class Example18 extends React.Component<Props, State> {
         <form className="form-inline" onSubmit={(e) => e.preventDefault()}>
           <div className="row">
             <div className="col-sm-12">
-              <button className="btn btn-outline-secondary btn-xs" data-test="add-500-rows-btn" onClick={() => this.setData(500)}>
+              <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="add-500-rows-btn" onClick={() => this.setData(500)}>
                 500 rows
               </button>
-              <button className="btn btn-outline-secondary btn-xs" data-test="add-50k-rows-btn" onClick={() => this.setData(50000)}>
+              <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="add-50k-rows-btn" onClick={() => this.setData(50000)}>
                 50k rows
               </button>
-              <button className="btn btn-outline-secondary btn-xs" data-test="clear-grouping-btn" onClick={() => this.clearGroupsAndSelects()}>
-                <i className="fa fa-times"></i> Clear grouping
+              <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="clear-grouping-btn" onClick={() => this.clearGroupsAndSelects()}>
+                <i className="mdi mdi-close"></i> Clear grouping
               </button>
-              <button className="btn btn-outline-secondary btn-xs" data-test="collapse-all-btn" onClick={() => this.collapseAllGroups()}>
-                <i className="fa fa-compress"></i> Collapse all groups
+              <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="collapse-all-btn" onClick={() => this.collapseAllGroups()}>
+                <i className="mdi mdi-arrow-collapse"></i> Collapse all groups
               </button>
-              <button className="btn btn-outline-secondary btn-xs" data-test="expand-all-btn" onClick={() => this.expandAllGroups()}>
-                <i className="fa fa-expand"></i> Expand all groups
+              <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="expand-all-btn" onClick={() => this.expandAllGroups()}>
+                <i className="mdi mdi-arrow-expand"></i> Expand all groups
               </button>
-              <button className="btn btn-outline-secondary btn-xs" onClick={() => this.toggleDraggableGroupingRow()}>
+              <button className="btn btn-outline-secondary btn-xs btn-icon" onClick={() => this.toggleDraggableGroupingRow()}>
                 Toggle Draggable Grouping Row
               </button>
-              <button className="btn btn-outline-secondary btn-xs" onClick={() => this.exportToExcel()}>
-                <i className="fa fa-file-excel-o text-success"></i> Export to Excel
+              <button className="btn btn-outline-secondary btn-xs btn-icon" onClick={() => this.exportToExcel()}>
+                <i className="mdi mdi-file-excel-outline text-success"></i> Export to Excel
               </button>
             </div>
           </div>
 
           <div className="row">
             <div className="col-sm-12">
-              <button className="btn btn-outline-secondary btn-xs" data-test="group-duration-sort-value-btn"
+              <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="group-duration-sort-value-btn"
                 onClick={() => this.groupByDurationOrderByCount(false)}>
                 Group by duration &amp; sort groups by value
               </button>
-              <button className="btn btn-outline-secondary btn-xs" data-test="group-duration-sort-count-btn"
+              <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="group-duration-sort-count-btn"
                 onClick={() => this.groupByDurationOrderByCount(true)}>
                 Group by duration &amp; sort groups by count
               </button>
-              <button className="btn btn-outline-secondary btn-xs" data-test="group-duration-effort-btn"
+              <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="group-duration-effort-btn"
                 onClick={() => this.groupByDurationEffortDriven()}>
                 Group by Duration then Effort-Driven
               </button>
-              <button className="btn btn-outline-secondary btn-xs" data-test="set-dynamic-filter"
+              <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="set-dynamic-filter"
                 onClick={() => this.setFiltersDynamically()}>
                 Set Filters Dynamically
               </button>
-              <button className="btn btn-outline-secondary btn-xs" data-test="set-dynamic-sorting"
+              <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="set-dynamic-sorting"
                 onClick={() => this.setSortingDynamically()}>
                 Set Sorting Dynamically
               </button>

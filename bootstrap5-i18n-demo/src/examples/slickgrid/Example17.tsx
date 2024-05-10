@@ -7,8 +7,8 @@ import {
   Column,
   Formatter,
   GridOption,
-  SlickgridReact,
-  SlickEventHandler
+  SlickEventHandler,
+  SlickgridReact
 } from 'slickgrid-react';
 import React from 'react';
 
@@ -28,7 +28,7 @@ const mpnFormatter: Formatter = (_row, _cell, _value, _columnDef, dataContext) =
 
 export default class Example17 extends React.Component {
   search = '';
-  private _eventHandler: any = new SlickEventHandler();
+  private _eventHandler = new SlickEventHandler();
 
   title = 'Example 17: Octopart Catalog Search - Remote Model Plugin';
   subTitle = `
@@ -82,13 +82,13 @@ export default class Example17 extends React.Component {
   }
 
   reactGridReady(reactGrid: SlickgridReactInstance) {
-    this.reactGrid = reactGrid;
-    this.gridObj = reactGrid.slickGrid; // grid object
+    // this.reactGrid = reactGrid;
+    // this.gridObj = reactGrid.slickGrid; // grid object
     // this.loaderDataView.setSort('score', -1);
     // this.gridObj.setSortColumn('score', false);
 
-    // simulate a delayed search to preload the first page
-    setTimeout(() => this.searchChanged(this.search), 100);
+    // // simulate a delayed search to preload the first page
+    // setTimeout(() => this.searchChanged(this.search), 100);
   }
 
   defineGrid() {
@@ -114,7 +114,7 @@ export default class Example17 extends React.Component {
   hookAllLoaderEvents() {
     if (this._eventHandler && this._eventHandler.subscribe && this.loaderDataView && this.loaderDataView.onDataLoading && this.loaderDataView.onDataLoaded) {
       this._eventHandler.subscribe(this.loaderDataView.onDataLoading, () => this.loading = true);
-      this._eventHandler.subscribe(this.loaderDataView.onDataLoaded, (_e: Event, args: any) => {
+      this._eventHandler.subscribe(this.loaderDataView.onDataLoaded, (_e: any, args: any) => {
         if (args && this.gridObj && this.gridObj.invalidateRow && this.gridObj.updateRowCount && this.gridObj.render) {
           for (let i = args.from; i <= args.to; i++) {
             this.gridObj.invalidateRow(i);
@@ -161,7 +161,7 @@ export default class Example17 extends React.Component {
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example17.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
@@ -186,7 +186,7 @@ export default class Example17 extends React.Component {
 
         {this.loading && <div className="alert alert-warning col-md-6"
           role="alert">
-          <i className="fa fa-refresh fa-spin fa-lg fa-fw"></i>
+          <i className="mdi mdi-sync mdi-spin"></i>
           <span>Loading...</span>
         </div>}
 

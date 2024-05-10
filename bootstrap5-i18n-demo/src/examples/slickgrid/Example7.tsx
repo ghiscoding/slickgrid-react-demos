@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { Column, GridOption, SlickgridReactInstance, SlickgridReact } from 'slickgrid-react';
 import './example7.scss';
@@ -25,7 +24,7 @@ export default class Example7 extends React.Component<Props, State> {
   subTitle = `
     This example demonstrates using the <b>SlickHeaderButtons</b> plugin to easily add buttons to colum headers.
     These buttons can be specified directly in the column definition, and are very easy to configure and use.
-    (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Header-Menu-&-Header-Buttons" target="_blank">Wiki docs</a>)
+    (<a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/header-menu-header-buttons" target="_blank">Docs</a>)
     <ul>
       <li>Resize the 1st column to see all icon/command</li>
       <li>Mouse hover the 2nd column to see it's icon/command</li>
@@ -129,13 +128,13 @@ export default class Example7 extends React.Component<Props, State> {
     const command = args.command;
 
     if (command === 'toggle-highlight') {
-      if (button.cssClass === 'fa fa-circle red') {
+      if (button.cssClass === 'mdi mdi-lightbulb-on text-danger') {
         if (gridNo === 1) {
           delete columns1WithHighlightingById[column.id];
         } else {
           delete columns2WithHighlightingById[column.id];
         }
-        button.cssClass = 'fa fa-circle-o red faded';
+        button.cssClass = 'mdi mdi-lightbulb-outline text-warning faded';
         button.tooltip = 'Highlight negative numbers.';
       } else {
         if (gridNo === 1) {
@@ -143,7 +142,7 @@ export default class Example7 extends React.Component<Props, State> {
         } else {
           columns2WithHighlightingById[column.id] = true;
         }
-        button.cssClass = 'fa fa-circle red';
+        button.cssClass = 'mdi mdi-lightbulb-on text-danger';
         button.tooltip = 'Remove highlight.';
       }
       if (gridNo === 1) {
@@ -177,7 +176,7 @@ export default class Example7 extends React.Component<Props, State> {
         header: {
           buttons: [
             {
-              cssClass: 'fa fa-circle-o red faded',
+              cssClass: 'mdi mdi-lightbulb-outline text-warning faded',
               command: 'toggle-highlight',
               tooltip: 'Highlight negative numbers.',
               itemVisibilityOverride: (args: any) => {
@@ -204,25 +203,25 @@ export default class Example7 extends React.Component<Props, State> {
     columnDefinitions[0].header = {
       buttons: [
         {
-          cssClass: 'fa fa-tag',
+          cssClass: 'mdi mdi-message-text',
           handler: () => {
             alert('Tag');
           }
         },
         {
-          cssClass: 'fa fa-comment',
+          cssClass: 'mdi mdi-forum-outline',
           handler: () => {
             alert('Comment');
           }
         },
         {
-          cssClass: 'fa fa-info-circle',
+          cssClass: 'mdi mdi-information',
           handler: () => {
             alert('Info');
           }
         },
         {
-          cssClass: 'fa fa-question-circle',
+          cssClass: 'mdi mdi-help-circle',
           handler: () => {
             alert('Help');
           }
@@ -240,7 +239,7 @@ export default class Example7 extends React.Component<Props, State> {
     columnDefinitions[1].header = {
       buttons: [
         {
-          cssClass: 'fa fa-question-circle',
+          cssClass: 'mdi mdi-help-circle',
           showOnHover: true,
           tooltip: 'This button only appears on hover.',
           handler: () => {
@@ -276,7 +275,7 @@ export default class Example7 extends React.Component<Props, State> {
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example7.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>

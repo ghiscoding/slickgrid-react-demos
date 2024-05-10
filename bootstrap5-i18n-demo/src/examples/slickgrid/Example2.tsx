@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   SlickgridReactInstance,
   Column,
@@ -8,6 +7,7 @@ import {
   GridOption,
   SlickgridReact,
 } from 'slickgrid-react';
+import DOMPurify from 'dompurify';
 import React from 'react';
 import BaseSlickGridState from './state-slick-grid-base';
 
@@ -28,13 +28,13 @@ interface State extends BaseSlickGridState { }
 // create my custom Formatter with the Formatter type
 const myCustomCheckmarkFormatter: Formatter<DataItem> = (_row, _cell, value) => {
   // you can return a string of a object (of type FormatterResultObject), the 2 types are shown below
-  return value ? `<i class="fa fa-fire red" aria-hidden="true"></i>` : { text: '<i class="fa fa-snowflake-o" aria-hidden="true"></i>', addClasses: 'lightblue', toolTip: 'Freezing' };
+  return value ? `<i class="mdi mdi-fire red" aria-hidden="true"></i>` : { text: '<i class="mdi mdi-snowflake" aria-hidden="true"></i>', addClasses: 'lightblue', toolTip: 'Freezing' };
 };
 
 const customEnableButtonFormatter: Formatter<DataItem> = (_row: number, _cell: number, value: any) => {
   return `<span style="margin-left: 5px">
       <button class="btn btn-xs btn-default">
-        <i class="fa ${value ? 'fa-check-circle' : 'fa-circle-thin'} fa-lg" style="color: ${value ? 'black' : 'lavender'}"></i>
+        <i class="fa ${value ? 'mdi-check-circle' : 'mdi-circle'}" style="color: ${value ? 'black' : 'lavender'}"></i>
       </button>
     </span>`;
 };
@@ -45,7 +45,7 @@ interface Props { }
 export default class Example2 extends React.Component<Props, State> {
   title = 'Example 2: Grid with Formatters';
   subTitle = `
-    Grid with Custom and/or included Slickgrid Formatters (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Formatters" target="_blank">Wiki docs</a>).
+    Grid with Custom and/or included Slickgrid Formatters (<a href="https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/formatters" target="_blank">Docs</a>).
     <ul>
       <li>The 2 last columns are using Custom Formatters</li>
       <ul><li>The "Completed" column uses a the "onCellClick" event and a formatter to simulate a toggle action</li></ul>
@@ -115,6 +115,7 @@ export default class Example2 extends React.Component<Props, State> {
         hideTotalItemCount: true,
         hideLastUpdateTimestamp: true
       },
+      sanitizer: (dirtyHtml) => DOMPurify.sanitize(dirtyHtml, { ADD_ATTR: ['level'], RETURN_TRUSTED_TYPE: true }),
 
       // you customize all formatter at once certain options through "formatterOptions" in the Grid Options
       // or independently through the column definition "params", the option names are the same
@@ -206,12 +207,12 @@ export default class Example2 extends React.Component<Props, State> {
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example2.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
         <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>
-        <button className="btn btn-outline-secondary btn-sm"
+        <button className="btn btn-outline-secondary btn-sm btn-icon"
           onClick={() => this.togglePauseResizer()}>
           Pause auto-resize: <b>{this.resizerPaused}</b>
         </button>

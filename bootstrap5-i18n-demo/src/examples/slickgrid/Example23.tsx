@@ -1,7 +1,7 @@
-import i18next, { TFunction } from 'i18next';
-import moment from 'moment-mini';
+import { addDay, format } from '@formkit/tempo';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import i18next, { TFunction } from 'i18next';
 
 import { CustomInputFilter } from './custom-inputFilter';
 import {
@@ -54,7 +54,7 @@ const taskTranslateFormatter: Formatter = (_row, _cell, value, _columnDef, _data
 class Example23 extends React.Component<Props, State> {
   title = 'Example 23: Filtering from Range of Search Values';
   subTitle = `
-    This demo shows how to use Filters with Range of Search Values (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Range-Filters" target="_blank">Wiki docs</a>)
+    This demo shows how to use Filters with Range of Search Values (<a href="https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/filters/range-filters" target="_blank">Docs</a>)
     <br/>
     <ul class="small">
       <li>All input filters support the following operators: (>, >=, <, <=, <>, !=, =, ==, *) and now also the (..) for an input range
@@ -63,12 +63,6 @@ class Example23 extends React.Component<Props, State> {
         <li>For a numeric range defined in an input filter (must be of type text), you can use 2 dots (..) to represent a range</li>
         <li>example: typing "10..90" will filter values between 10 and 90 (but excluding the number 10 and 90)</li>
       </ul>
-      <ul>
-        <li>note that the examples shown below for the operator, are case sensitive</li>
-        <li>by default the range are not inclusive which would be the same as defining the filter options to "operator: 'RangeExclusive'" or "operator: OperatoryType.rangeExclusive"</li>
-        <li>you can also set the inverse (inclusive) by defining the filter options to "operator: 'RangeInclusive'" or "operator: OperatoryType.rangeIncluside"</li>
-      </ul>
-      <li>Date Range with Flatpickr Date Picker, they will also use the locale, choose a start date then drag or click on the end date</li>
     </ul>
   `;
 
@@ -170,7 +164,7 @@ class Example23 extends React.Component<Props, State> {
       },
       {
         id: 'completed', name: 'Completed', field: 'completed', nameKey: 'COMPLETED', minWidth: 85, maxWidth: 90,
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         exportWithFormatter: true, // you can set this property in the column definition OR in the grid options, column def has priority over grid options
         filterable: true,
         filter: {
@@ -181,8 +175,9 @@ class Example23 extends React.Component<Props, State> {
       }
     ];
 
-    const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
+    const today = new Date();
+    const presetLowestDay = format(addDay(new Date(), -2), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), today.getDate() < 14 ? 30 : 25), 'YYYY-MM-DD');
 
     const gridOptions: GridOption = {
       autoResize: {
@@ -229,7 +224,7 @@ class Example23 extends React.Component<Props, State> {
     const tempDataset: any[] = [];
     for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
       const randomDuration = randomBetween(0, 365);
-      const randomYear = randomBetween(moment().year(), moment().year() + 1);
+      const randomYear = randomBetween(new Date().getFullYear(), new Date().getFullYear() + 1);
       const randomMonth = randomBetween(0, 12);
       const randomDay = randomBetween(10, 28);
       const randomPercent = randomBetween(0, 100);
@@ -251,7 +246,7 @@ class Example23 extends React.Component<Props, State> {
   }
 
   clearFilters() {
-    this.setState((state: State, props: Props) => {
+    this.setState((state: State) => {
       return {
         ...state,
         selectedPredefinedFilter: ''
@@ -272,14 +267,16 @@ class Example23 extends React.Component<Props, State> {
   refreshMetrics(_e: Event, args: any) {
     if (args && args.current >= 0) {
       setTimeout(() => {
-        this.setState((state: State, props: Props) => ({
-          ...state,
-          metrics: {
-            startTime: new Date(),
-            itemCount: args?.current ?? 0,
-            totalItemCount: state.dataset?.length || 0
-          }
-        }));
+        this.setState((state: State) => {
+          return {
+            ...state,
+            metrics: {
+              startTime: new Date(),
+              itemCount: args?.current ?? 0,
+              totalItemCount: state.dataset?.length || 0
+            }
+          };
+        });
       });
     }
   }
@@ -288,12 +285,17 @@ class Example23 extends React.Component<Props, State> {
     const selectedVal = (e.target as HTMLSelectElement)?.value ?? '';
     const selectedColumn = this.state.columnDefinitions.find(c => c.id === selectedVal);
 
-    this.setState((state: State) => ({ ...state, selectedColumn }));
+    this.setState((state: State) => {
+      return {
+        ...state,
+        selectedColumn,
+      };
+    });
   }
 
   setFiltersDynamically() {
-    const presetLowestDay = moment().add(-5, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(25, 'days').format('YYYY-MM-DD');
+    const presetLowestDay = format(addDay(new Date(), -5), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), 25), 'YYYY-MM-DD');
 
     // we can Set Filters Dynamically (or different filters) afterward through the FilterService
     this.reactGrid.filterService.updateFilters([
@@ -320,7 +322,7 @@ class Example23 extends React.Component<Props, State> {
   predefinedFilterChanged(e: React.ChangeEvent<HTMLSelectElement>) {
     const newPredefinedFilter = (e.target as HTMLSelectElement)?.value ?? '';
     let filters: CurrentFilter[] = [];
-    const currentYear = moment().year();
+    const currentYear = new Date().getFullYear();
 
     switch (newPredefinedFilter) {
       case 'currentYearTasks':
@@ -345,7 +347,7 @@ class Example23 extends React.Component<Props, State> {
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example23.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
@@ -354,31 +356,31 @@ class Example23 extends React.Component<Props, State> {
         <br />
 
         {this.state.metrics && <span><><b>Metrics:</b>
-          {moment(this.state.metrics.endTime).format('YYYY-MM-DD HH:mm:ss')}
+          {this.state.metrics.endTime ? format(this.state.metrics.endTime, 'YYYY-MM-DD HH:mm:ss') : ''}
           | {this.state.metrics.itemCount} of {this.state.metrics.totalItemCount} items </>
         </span>}
 
         <form className="row row-cols-lg-auto g-1 align-items-center" onSubmit={(e) => e.preventDefault()}>
           <div className="col">
-            <button className="btn btn-outline-secondary btn-sm" data-test="clear-filters"
+            <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-filters"
               onClick={() => this.reactGrid.filterService.clearFilters()}>
               Clear Filters
             </button>
           </div>
           <div className="col">
-            <button className="btn btn-outline-secondary btn-sm" data-test="clear-sorting"
+            <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-sorting"
               onClick={() => this.reactGrid.sortService.clearSorting()}>
               Clear Sorting
             </button>
           </div>
           <div className="col">
-            <button className="btn btn-outline-secondary btn-sm" data-test="set-dynamic-filter"
+            <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-filter"
               onClick={() => this.setFiltersDynamically()}>
               Set Filters Dynamically
             </button>
           </div>
           <div className="col">
-            <button className="btn btn-outline-secondary btn-sm" data-test="set-dynamic-sorting"
+            <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-sorting"
               onClick={() => this.setSortingDynamically()}>
               Set Sorting Dynamically
             </button>
@@ -399,8 +401,8 @@ class Example23 extends React.Component<Props, State> {
 
         <div className="row mt-2">
           <div className="col">
-            <button className="btn btn-outline-secondary btn-sm me-1" data-test="language" onClick={() => this.switchLanguage()}>
-              <i className="fa fa-language me-1"></i>
+            <button className="btn btn-outline-secondary btn-sm btn-icon me-1" data-test="language" onClick={() => this.switchLanguage()}>
+              <i className="mdi mdi-translate me-1"></i>
               Switch Language
             </button>
             <b>Locale: </b> <span style={{ fontStyle: 'italic' }} data-test="selected-locale">{this.state.selectedLanguage + '.json'}</span>

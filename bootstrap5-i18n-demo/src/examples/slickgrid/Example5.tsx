@@ -1,5 +1,5 @@
+import { format } from '@formkit/tempo';
 import { GridOdataService, OdataServiceApi, OdataOption } from '@slickgrid-universal/odata';
-import moment from 'moment-mini';
 
 import {
   SlickgridReactInstance,
@@ -42,7 +42,7 @@ export default class Example5 extends React.Component<Props, State> {
   title = 'Example 5: Grid with Backend OData Service';
   subTitle = `
     Use it when you need to support Pagination with a OData endpoint (for simple JSON, use a regular grid)<br/>
-    Take a look at the (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/OData" target="_blank">Wiki documentation</a>)
+    Take a look at the (<a href="https://ghiscoding.gitbook.io/slickgrid-react/backend-services/odata" target="_blank">Wiki documentation</a>)
     <br/>
     <ul class="small">
       <li>Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported</li>
@@ -53,7 +53,7 @@ export default class Example5 extends React.Component<Props, State> {
         <li>The other operators can be used on column type number for example: ">=100" (greater than or equal to 100)</li>
       </ul>
       <li>OData Service could be replaced by other Service type in the future (GraphQL or whichever you provide)</li>
-      <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://github.com/ghiscoding/slickgrid-react/wiki/Grid-State-&-Preset" target="_blank">Wiki - Grid Preset</a>
+      <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/grid-state-preset" target="_blank">Wiki - Grid Preset</a>
       <li><span class="text-danger">NOTE:</span> For demo purposes, the last column (filter & sort) will always throw an
         error and its only purpose is to demo what would happen when you encounter a backend server error
         (the UI should rollback to previous state before you did the action).
@@ -503,7 +503,7 @@ export default class Example5 extends React.Component<Props, State> {
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example5.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
@@ -523,7 +523,7 @@ export default class Example5 extends React.Component<Props, State> {
             <div className={this.state.status.class} role="alert" data-test="status">
               <strong>Status: </strong> {this.state.status.text}
               {this.state.processing && <span>
-                <i className="fa fa-refresh fa-spin fa-lg fa-fw"></i>
+                <i className="mdi mdi-sync mdi-spin"></i>
               </span>}
             </div>
           </div>
@@ -537,15 +537,15 @@ export default class Example5 extends React.Component<Props, State> {
         <div className="row">
           <div className="col-sm-4">
 
-            <button className="btn btn-outline-secondary btn-sm" data-test="set-dynamic-filter" onClick={() => this.setFiltersDynamically()}>
+            <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-filter" onClick={() => this.setFiltersDynamically()}>
               Set Filters Dynamically
             </button>
-            <button className="btn btn-outline-secondary btn-sm mx-1" data-test="set-dynamic-sorting" onClick={() => this.setSortingDynamically()}>
+            <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="set-dynamic-sorting" onClick={() => this.setSortingDynamically()}>
               Set Sorting Dynamically
             </button>
             <br />
             {this.state.metrics && <span><><b>Metrics:</b>
-              {moment(this.state.metrics.endTime).format('YYYY-MM-DD HH:mm:ss')}
+              {this.state.metrics?.endTime ? format(this.state.metrics.endTime, 'YYYY-MM-DD HH:mm:ss') : ''}
               | {this.state.metrics.itemCount} of {this.state.metrics.totalItemCount} items </>
             </span>}
           </div>
@@ -588,12 +588,14 @@ export default class Example5 extends React.Component<Props, State> {
 
             <span className="ms-2">
               <label>Programmatically go to first/last page:</label>
-              <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page" onClick={() => this.goToFirstPage()}>
-                <i className="fa fa-caret-left fa-lg"></i>
-              </button>
-              <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-last-page" onClick={() => this.goToLastPage()}>
-                <i className="fa fa-caret-right fa-lg"></i>
-              </button>
+              <div className="btn-group" role="group">
+                <button className="btn btn-outline-secondary btn-xs btn-icon px-2" data-test="goto-first-page" onClick={() => this.goToFirstPage()}>
+                  <i className="mdi mdi-page-first"></i>
+                </button>
+                <button className="btn btn-outline-secondary btn-xs btn-icon px-2" data-test="goto-last-page" onClick={() => this.goToLastPage()}>
+                  <i className="mdi mdi-page-last"></i>
+                </button>
+              </div>
             </span>
           </div>
         </div>

@@ -26,7 +26,7 @@ export class CustomInputEditor implements Editor {
 
   /** Get Column Editor object */
   get columnEditor(): ColumnEditor {
-    return this.columnDef?.internalColumnEditor ?? {};
+    return this.columnDef?.editor ?? {};
   }
 
   /** Get the Validator function, can be passed in Editor property or Column Definition */
@@ -91,8 +91,8 @@ export class CustomInputEditor implements Editor {
   }
 
   isValueChanged(): boolean {
-    const lastEventKey = this._lastInputEvent?.key;
-    if (this.columnEditor?.alwaysSaveOnEnterKey && lastEventKey === 'Enter') {
+    const lastKeyEvent = this._lastInputEvent?.key;
+    if (this.columnEditor?.alwaysSaveOnEnterKey && lastKeyEvent === 'Enter') {
       return true;
     }
     return (!(this.inputElm.value === '' && this.defaultValue === null)) && (this.inputElm.value !== this.defaultValue);

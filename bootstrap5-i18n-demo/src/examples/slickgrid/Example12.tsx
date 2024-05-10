@@ -21,7 +21,7 @@ import BaseSlickGridState from './state-slick-grid-base';
 const NB_ITEMS = 1500;
 
 const taskTranslateFormatter: Formatter = (_row, _cell, value, _columnDef, _dataContext, grid) => {
-  const gridOptions: GridOption = (grid && typeof grid.getOptions === 'function') ? grid.getOptions() : {};
+  const gridOptions = grid.getOptions() as GridOption;
 
   return gridOptions.i18n?.t('TASK_X', { x: value }) ?? '';
 };
@@ -36,7 +36,7 @@ interface State extends BaseSlickGridState {
 class Example12 extends React.Component<Props, State> {
   title = 'Example 12: Localization (i18n)';
   subTitle = `Support multiple locales with the i18next plugin, following these steps.
-    Take a look at the (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/Localization" target="_blank">Wiki documentation</a>)
+    Take a look at the (<a href="https://ghiscoding.gitbook.io/slickgrid-react/localization/localization" target="_blank">Wiki documentation</a>)
     <ol class="small">
       <li>You first need to "enableTranslate" in the Grid Options</li>
       <li>In the Column Definitions, you have following options</li>
@@ -56,9 +56,9 @@ class Example12 extends React.Component<Props, State> {
         <ul>
           <li>What if your select options have totally different value/label pair? In this case, you can use the <b>customStructure: { label: 'customLabel', value: 'customValue'}</b> to change the property name(s) to use.'</li>
           <li>What if you want to use "customStructure" and translation? Simply pass this flag <b>enableTranslateLabel: true</b></li>
-          <li>More info on the Select Filter <a href="https://github.com/ghiscoding/slickgrid-react/wiki/Select-Filter" target="_blank">Wiki page</a>
+          <li>More info on the Select Filter <a href="https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/filters/select-filter" target="_blank">Wiki page</a>
         </ul>
-        <li>For more info about "Download to File", read the <a href="https://github.com/ghiscoding/slickgrid-react/wiki/Export-to-File" target="_blank">Wiki page</a></li>
+        <li>For more info about "Download to File", read the <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/export-to-text-file" target="_blank">Wiki page</a></li>
       </ol>
     `;
 
@@ -113,14 +113,14 @@ class Example12 extends React.Component<Props, State> {
         exportWithFormatter: false,
         filterable: true,
         type: FieldType.number,
-        filter: { model: Filters.slider, /* operator: '>=',*/ filterOptions: { hideSliderNumber: true } }
+        filter: { model: Filters.slider, /* operator: '>=',*/ params: { hideSliderNumber: true } }
       },
       { id: 'start', name: 'Start', field: 'start', nameKey: 'START', formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
       { id: 'finish', name: 'Finish', field: 'finish', nameKey: 'FINISH', formatter: Formatters.dateIso, outputType: FieldType.dateIso, type: FieldType.date, minWidth: 100, filterable: true, filter: { model: Filters.compoundDate } },
       {
         id: 'completedBool', name: 'Completed', field: 'completedBool', nameKey: 'COMPLETED', minWidth: 100,
         sortable: true,
-        formatter: Formatters.checkmark,
+        formatter: Formatters.checkmarkMaterial,
         exportCustomFormatter: Formatters.translateBoolean,
         filterable: true,
         filter: {
@@ -283,7 +283,7 @@ class Example12 extends React.Component<Props, State> {
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example12.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
@@ -293,8 +293,8 @@ class Example12 extends React.Component<Props, State> {
 
         <div className="row">
           <div className="col-sm-12">
-            <button className="btn btn-outline-secondary btn-sm me-1" data-test="language-button" onClick={() => this.switchLanguage()}>
-              <i className="fa fa-language me-1"></i>
+            <button className="btn btn-outline-secondary btn-sm btn-icon me-1" data-test="language-button" onClick={() => this.switchLanguage()}>
+              <i className="mdi mdi-translate me-1"></i>
               Switch Language
             </button>
             <label>Locale:</label>
@@ -303,22 +303,22 @@ class Example12 extends React.Component<Props, State> {
             </span>
 
             <span style={{ marginLeft: '20px' }}>
-              <button className="btn btn-outline-secondary btn-sm" onClick={() => this.exportToFile('csv')}>
-                <i className="fa fa-download me-1"></i>
+              <button className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => this.exportToFile('csv')}>
+                <i className="mdi mdi-download me-1"></i>
                 Download to CSV
               </button>
-              <button className="btn btn-outline-secondary btn-sm mx-1" onClick={() => this.exportToFile('txt')}>
-                <i className="fa fa-download me-1"></i>
+              <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" onClick={() => this.exportToFile('txt')}>
+                <i className="mdi mdi-download me-1"></i>
                 Download to Text
               </button>
-              <button className="btn btn-outline-secondary btn-sm" onClick={() => this.exportToExcel()}>
-                <i className="fa fa-file-excel-o text-success me-1"></i>
+              <button className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => this.exportToExcel()}>
+                <i className="mdi mdi-file-excel-outline text-success me-1"></i>
                 Download to Excel
               </button>
             </span>
             <span style={{ marginLeft: '10px' }}>
-              <button className="btn btn-outline-secondary btn-sm" onClick={() => this.dynamicallyAddTitleHeader()}>
-                <i className="fa fa-plus me-1"></i>
+              <button className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => this.dynamicallyAddTitleHeader()}>
+                <i className="mdi mdi-shape-square-plus me-1"></i>
                 Dynamically Duplicate Title Column
               </button>
             </span>

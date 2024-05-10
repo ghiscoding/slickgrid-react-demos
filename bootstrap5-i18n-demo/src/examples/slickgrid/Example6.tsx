@@ -1,6 +1,6 @@
+import { addDay, format } from '@formkit/tempo';
 import { GraphqlService, GraphqlPaginatedResult, GraphqlServiceApi, GraphqlServiceOption, } from '@slickgrid-universal/graphql';
 import i18next, { TFunction } from 'i18next';
-import moment from 'moment-mini';
 import {
   CursorPageInfo,
   FieldType,
@@ -30,16 +30,18 @@ interface State extends BaseSlickGridState {
   selectedLanguage: string,
   metrics?: Metrics,
   status: Status,
+  serverWaitDelay: number
 }
 
 const defaultPageSize = 20;
 const GRAPHQL_QUERY_DATASET_NAME = 'users';
+const FAKE_SERVER_DELAY = 250;
 
 class Example6 extends React.Component<Props, State> {
   title = 'Example 6: Grid with Backend GraphQL Service';
   subTitle = `
   Use it when you need to support Pagination with a GraphQL endpoint (for simple JSON, use a regular grid).
-  <br/>Take a look at the (<a href="https://github.com/ghiscoding/slickgrid-react/wiki/GraphQL" target="_blank">Wiki docs</a>)
+  <br/>Take a look at the (<a href="https://ghiscoding.gitbook.io/slickgrid-react/backend-services/graphql" target="_blank">Docs</a>)
     <ul class="small">
       <li><span class="red bold">(*) NO DATA SHOWN</span> - just change filters &amp; page and look at the "GraphQL Query" changing</li>
       <li>Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported</li>
@@ -48,7 +50,7 @@ class Example6 extends React.Component<Props, State> {
         <li>The (*) can be used as startsWith (ex.: "abc*" => startsWith "abc") / endsWith (ex.: "*xyz" => endsWith "xyz")</li>
         <li>The other operators can be used on column type number for example: ">=100" (greater or equal than 100)</li>
       </ul>
-      <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://github.com/ghiscoding/slickgrid-react/wiki/Grid-State-&-Preset" target="_blank">Wiki - Grid Preset</a>
+      <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/grid-state-preset" target="_blank">Wiki - Grid Preset</a>
     </ul>
   `;
 
@@ -69,6 +71,7 @@ class Example6 extends React.Component<Props, State> {
       isWithCursor: false,
       selectedLanguage: defaultLang,
       status: {} as Status,
+      serverWaitDelay: FAKE_SERVER_DELAY, // server simulation with default of 250ms but 50ms for Cypress tests
     };
 
     i18next.changeLanguage(defaultLang);
@@ -156,8 +159,8 @@ class Example6 extends React.Component<Props, State> {
   }
 
   getGridOptions() {
-    const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
+    const presetLowestDay = format(addDay(new Date(), -2), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), 20), 'YYYY-MM-DD');
 
     return {
       enableFiltering: true,
@@ -245,7 +248,7 @@ class Example6 extends React.Component<Props, State> {
       ? { text: 'processing...', class: 'alert alert-danger' }
       : { text: 'finished', class: 'alert alert-success' };
 
-    this.setState((state: any) => {
+    this.setState((state: any, props: any) => {
       return {
         ...state,
         status: newStatus,
@@ -312,13 +315,13 @@ class Example6 extends React.Component<Props, State> {
           };
         });
         if (this.state.isWithCursor) {
-          // When using cursor pagination, the pagination service needs to updated with the PageInfo data from the latest request
+          // When using cursor pagination, the pagination service needs to be updated with the PageInfo data from the latest request
           // This might be done automatically if using a framework specific slickgrid library
           // Note because of this timeout, this may cause race conditions with rapid clicks!
           this.reactGrid?.paginationService?.setCursorPageInfo((mockedResult.data[GRAPHQL_QUERY_DATASET_NAME].pageInfo));
         }
         resolve(mockedResult);
-      }, 150);
+      }, this.state.serverWaitDelay);
     });
   }
 
@@ -340,8 +343,8 @@ class Example6 extends React.Component<Props, State> {
   }
 
   setFiltersDynamically() {
-    const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
+    const presetLowestDay = format(addDay(new Date(), -2), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), 20), 'YYYY-MM-DD');
 
     // we can Set Filters Dynamically (or different filters) afterward through the FilterService
     this.reactGrid?.filterService.updateFilters([
@@ -362,8 +365,8 @@ class Example6 extends React.Component<Props, State> {
   }
 
   resetToOriginalPresets() {
-    const presetLowestDay = moment().add(-2, 'days').format('YYYY-MM-DD');
-    const presetHighestDay = moment().add(20, 'days').format('YYYY-MM-DD');
+    const presetLowestDay = format(addDay(new Date(), -2), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), 20), 'YYYY-MM-DD');
 
     this.reactGrid.filterService.updateFilters([
       // you can use OperatorType or type them as string, e.g.: operator: 'EQ'
@@ -385,6 +388,11 @@ class Example6 extends React.Component<Props, State> {
     });
   }
 
+  serverDelayChanged(e: React.FormEvent<HTMLInputElement>) {
+    const newDelay = +(e.target as HTMLInputElement)?.value ?? '';
+    this.setState((state: State) => ({ ...state, serverWaitDelay: newDelay }));
+  }
+
   setIsWithCursor(newValue: boolean) {
     this.setState((state: State) => ({ ...state, isWithCursor: newValue }));
     this.resetOptions({ useCursor: newValue });
@@ -394,12 +402,12 @@ class Example6 extends React.Component<Props, State> {
   private resetOptions(options: Partial<GraphqlServiceOption>) {
     const graphqlService = this.state.gridOptions!.backendServiceApi!.service as GraphqlService;
     this.reactGrid.paginationService!.setCursorBased(options.useCursor as boolean);
+    this.reactGrid.paginationService?.goToFirstPage();
     graphqlService.updateOptions(options);
     this.setState((state: State) => ({
       ...state,
       gridOptions: { ...this.state.gridOptions },
     }));
-    this.reactGrid.paginationService?.goToFirstPage();
   }
 
   async switchLanguage() {
@@ -417,7 +425,7 @@ class Example6 extends React.Component<Props, State> {
             see&nbsp;
             <a target="_blank"
               href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example6.tsx">
-              <span className="fa fa-link"></span> code
+              <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
         </h2>
@@ -428,29 +436,35 @@ class Example6 extends React.Component<Props, State> {
             <div className={this.state.status.class} role="alert" data-test="status">
               <strong>Status: </strong> {this.state.status.text}
               {this.state.processing ? <span>
-                <i className="fa fa-refresh fa-spin fa-lg fa-fw"></i>
+                <i className="mdi mdi-sync mdi-spin"></i>
               </span> : ''}
             </div>
 
             <div className="row">
               <div className="col-md-12">
-                <button className="btn btn-outline-secondary btn-sm" data-test="clear-filters-sorting"
+                <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-filters-sorting"
                   onClick={() => this.clearAllFiltersAndSorts()} title="Clear all Filters & Sorts">
-                  <i className="fa fa-filter text-danger me-1"></i>
+                  <i className="mdi mdi-filter-remove-outline"></i>
                   Clear all Filter & Sorts
                 </button>
-                <button className="btn btn-outline-secondary btn-sm mx-1" data-test="set-dynamic-filter"
+                <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="set-dynamic-filter"
                   onClick={() => this.setFiltersDynamically()}>
                   Set Filters Dynamically
                 </button>
-                <button className="btn btn-outline-secondary btn-sm" data-test="set-dynamic-sorting"
+                <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-sorting"
                   onClick={() => this.setSortingDynamically()}>
                   Set Sorting Dynamically
                 </button>
-                <button className="btn btn-outline-secondary btn-sm" data-test="reset-presets"
+                <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="reset-presets"
                   onClick={() => this.resetToOriginalPresets()}>
                   Reset Original Presets
                 </button>
+                <label htmlFor="serverdelay" className="ml-4">Server Delay: </label>
+                <input id="serverdelay" type="number"
+                  defaultValue={this.state.serverWaitDelay}
+                  data-test="server-delay" style={{ width: '55px' }}
+                  onInput={($event) => this.serverDelayChanged($event)}
+                  title="input a fake timer delay to simulate slow server response" />
               </div>
             </div>
 
@@ -458,9 +472,9 @@ class Example6 extends React.Component<Props, State> {
 
             <div className="row">
               <div className="col-md-12">
-                <button className="btn btn-outline-secondary btn-sm mx-1" onClick={() => this.switchLanguage()}
+                <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" onClick={() => this.switchLanguage()}
                   data-test="language-button">
-                  <i className="fa fa-language me-1"></i>
+                  <i className="mdi mdi-translate me-1"></i>
                   Switch Language
                 </button>
                 <b>Locale: </b>
@@ -485,7 +499,7 @@ class Example6 extends React.Component<Props, State> {
             </div>
             <br />
             {this.state.metrics && <span><><b>Metrics: </b>
-              {moment(this.state.metrics.endTime).format('YYYY-MM-DD HH:mm:ss')}
+              {this.state.metrics.endTime ? format(this.state.metrics.endTime, 'YYYY-MM-DD HH:mm:ss') : ''}
               | {this.state.metrics.executionTime}ms
               | {this.state.metrics.totalItemCount} items </>
             </span>}
@@ -493,12 +507,14 @@ class Example6 extends React.Component<Props, State> {
             <div className="row" style={{ marginBottom: '5px' }}>
               <div className="col-md-12">
                 <label>Programmatically go to first/last page:</label>
-                <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page" onClick={() => this.goToFirstPage()}>
-                  <i className="fa fa-caret-left fa-lg"></i>
-                </button>
-                <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-last-page" onClick={() => this.goToLastPage()}>
-                  <i className="fa fa-caret-right fa-lg"></i>
-                </button>
+                <div className="btn-group" role="group">
+                  <button className="btn btn-outline-secondary btn-xs btn-icon px-2" data-test="goto-first-page" onClick={() => this.goToFirstPage()}>
+                    <i className="mdi mdi-page-first"></i>
+                  </button>
+                  <button className="btn btn-outline-secondary btn-xs btn-icon px-2" data-test="goto-last-page" onClick={() => this.goToLastPage()}>
+                    <i className="mdi mdi-page-last"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
