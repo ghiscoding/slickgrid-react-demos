@@ -1,7 +1,7 @@
-@import '@slickgrid-universal/common/dist/styles/sass/variables';
-
 $navbar-height: 56px;
 $side-menu-width: 250px;
+
+@import '@slickgrid-universal/common/dist/styles/sass/variables';
 
 .bold {
   font-weight: bold;
@@ -9,14 +9,6 @@ $side-menu-width: 250px;
 
 .italic {
   font-style: italic;
-}
-
-.faded {
-  opacity: 0.2;
-}
-
-.faded:hover {
-  opacity: 0.5;
 }
 
 .font18 {
@@ -27,14 +19,28 @@ $side-menu-width: 250px;
   padding: 5px;
 }
 
-.btn-group-xs>.btn,
-.btn-xs {
-  padding: 6px 2px;
-  font-size: .875rem;
-  line-height: .5;
-  border-radius: .2rem;
-  margin: 0 2px;
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+  padding  : 1px 5px;
+  font-size  : 12px;
+  line-height  : 1.5;
+  border-radius : 3px;
+  margin: 0;
   font-size: 12px;
+  height: 22px;
+  vertical-align: middle;
+}
+
+.mdi-pencil.pointer:hover {
+  color: #00bfff;
+}
+.mdi-trash-can.pointer:hover {
+  color: #ff002b;
 }
 
 .body-content {
@@ -57,11 +63,11 @@ $side-menu-width: 250px;
 }
 
 .faded {
-  opacity: 0.2;
+  opacity: 0.7;
 }
 
 .faded:hover {
-  opacity: 0.5;
+  opacity: 0.9;
 }
 
 section {
@@ -81,7 +87,7 @@ section {
 }
 
 .panel-wm {
-  padding-top: $navbar-height;
+  padding: #{$navbar-height} 0 0 0;
 
   .nav-stacked {
     padding-bottom: 30px;
@@ -97,15 +103,15 @@ section {
   }
 
   .panel-wm-content {
-    padding-left: ($side-menu-width + 5px);
-    padding-right: 15px;
+    margin-left: $side-menu-width;
+    padding: 0 1rem;
   }
 
   .panel-wm-left {
     position: fixed;
     z-index: 400;
     transition: left 0.15s;
-    top: calc(#{$navbar-height});
+    top: $navbar-height;
     bottom: 0;
     left: 0;
     background-color: #f5f5f5;
