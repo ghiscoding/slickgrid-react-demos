@@ -1,7 +1,7 @@
 import {
   Aggregators,
-  createDomElement,
   Column,
+  createDomElement,
   deepCopy,
   FieldType,
   Filters,
