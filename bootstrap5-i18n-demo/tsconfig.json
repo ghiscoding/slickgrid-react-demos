@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "es2018",
+    "target": "es2022",
     "module": "esnext",
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
@@ -17,8 +17,12 @@
     "strict": true,
     "jsx": "react",
     "lib": [
-      "es2018",
+      "es2022",
       "dom"
+    ],
+    "types": [
+      "jest",
+      "node"
     ],
     "typeRoots": [
       "node_modules/@types",
@@ -28,17 +32,18 @@
   "exclude": [
     "react_project",
     "dist",
-    "jspm_packages",
     "node_modules",
     "**/*.spec.ts"
   ],
   "filesGlob": [
     "./src/**/*.ts",
+    "./src/**/*.tsx",
     "./test/**/*.ts",
     "./custom_typings/**/*.d.ts"
   ],
   "include": [
     "src/**/*.ts",
+    "src/**/*.tsx",
     "src/typings/**/*.ts"
   ],
   "typeAcquisition": { "include": ["jest"] }

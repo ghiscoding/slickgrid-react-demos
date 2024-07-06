@@ -1,4 +1,4 @@
-import { Column, GridOption } from 'slickgrid-react';
+import type { Column, GridOption } from 'slickgrid-react';
 
 export default class BaseSlickGridState {
   dataset?: any[];

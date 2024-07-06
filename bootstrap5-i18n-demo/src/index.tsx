@@ -1,6 +1,5 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
-import 'flatpickr/dist/flatpickr.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import i18n from 'i18next';
 import Backend from 'i18next-http-backend';
 import React from 'react';
@@ -44,7 +43,3 @@ root.render(
     <App />
   </HashRouter>
 );
-
-// load necessary Flatpickr Locale(s), but make sure it's imported AFTER loading Slickgrid-React plugin
-// delaying the import will work for our use case
-setTimeout(() => import('flatpickr/dist/l10n/fr'));

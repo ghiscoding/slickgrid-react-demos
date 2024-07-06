@@ -1,21 +1,21 @@
 import { addDay, format as tempoFormat } from '@formkit/tempo';
-import { GraphqlService, GraphqlPaginatedResult, GraphqlServiceApi, GraphqlServiceOption, } from '@slickgrid-universal/graphql';
-import i18next, { TFunction } from 'i18next';
+import { GraphqlService, type GraphqlPaginatedResult, type GraphqlServiceApi, type GraphqlServiceOption, } from '@slickgrid-universal/graphql';
+import i18next, { type TFunction } from 'i18next';
 import {
-  CursorPageInfo,
+  type CursorPageInfo,
   FieldType,
   Filters,
   Formatters,
-  GridStateChange,
-  Metrics,
-  MultipleSelectOption,
+  type GridStateChange,
+  type Metrics,
+  type MultipleSelectOption,
   OperatorType,
   SortDirection,
   SlickgridReact,
-  SlickgridReactInstance,
+  type SlickgridReactInstance,
 } from 'slickgrid-react';
 import React from 'react';
-import BaseSlickGridState from './state-slick-grid-base';
+import type BaseSlickGridState from './state-slick-grid-base';
 import { withTranslation } from 'react-i18next';
 
 interface Status { text: string, class: string }
@@ -177,8 +177,9 @@ class Example6 extends React.Component<Props, State> {
   }
 
   getGridOptions() {
-    const presetLowestDay = tempoFormat(addDay(new Date(), -2), 'YYYY-MM-DD');
-    const presetHighestDay = tempoFormat(addDay(new Date(), 20), 'YYYY-MM-DD');
+    const currentYear = new Date().getFullYear();
+    const presetLowestDay = `${currentYear}-01-01`;
+    const presetHighestDay = `${currentYear}-02-15`;
 
     return {
       enableFiltering: true,
@@ -281,7 +282,7 @@ class Example6 extends React.Component<Props, State> {
       ? { text: 'processing...', class: 'alert alert-danger' }
       : { text: 'finished', class: 'alert alert-success' };
 
-    this.setState((state: any, props: any) => {
+    this.setState((state: any) => {
       return {
         ...state,
         status: newStatus,
@@ -341,7 +342,7 @@ class Example6 extends React.Component<Props, State> {
 
     return new Promise(resolve => {
       setTimeout(() => {
-        this.setState((state: any, props: any) => {
+        this.setState((state: any) => {
           return {
             ...state,
             graphqlQuery: this.graphqlService.buildQuery()
@@ -376,8 +377,9 @@ class Example6 extends React.Component<Props, State> {
   }
 
   setFiltersDynamically() {
-    const presetLowestDay = tempoFormat(addDay(new Date(), -2), 'YYYY-MM-DD');
-    const presetHighestDay = tempoFormat(addDay(new Date(), 20), 'YYYY-MM-DD');
+    const currentYear = new Date().getFullYear();
+    const presetLowestDay = `${currentYear}-01-01`;
+    const presetHighestDay = `${currentYear}-02-15`;
 
     // we can Set Filters Dynamically (or different filters) afterward through the FilterService
     this.reactGrid?.filterService.updateFilters([
@@ -398,8 +400,9 @@ class Example6 extends React.Component<Props, State> {
   }
 
   resetToOriginalPresets() {
-    const presetLowestDay = tempoFormat(addDay(new Date(), -2), 'YYYY-MM-DD');
-    const presetHighestDay = tempoFormat(addDay(new Date(), 20), 'YYYY-MM-DD');
+    const currentYear = new Date().getFullYear();
+    const presetLowestDay = `${currentYear}-01-01`;
+    const presetHighestDay = `${currentYear}-02-15`;
 
     this.reactGrid.filterService.updateFilters([
       // you can use OperatorType or type them as string, e.g.: operator: 'EQ'
@@ -423,7 +426,7 @@ class Example6 extends React.Component<Props, State> {
   }
 
   serverDelayChanged(e: React.FormEvent<HTMLInputElement>) {
-    const newDelay = +(e.target as HTMLInputElement)?.value ?? '';
+    const newDelay = +((e.target as HTMLInputElement)?.value ?? '');
     this.setState((state: State) => ({ ...state, serverWaitDelay: newDelay }));
   }
 

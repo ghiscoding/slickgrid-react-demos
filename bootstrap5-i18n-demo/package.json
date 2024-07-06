@@ -22,8 +22,9 @@
   "main": "dist/commonjs/index.js",
   "typings": "dist/commonjs/index.d.ts",
   "scripts": {
+    "prebuild": "npm run lint",
     "build": "webpack --env production",
-    "lint": "eslint src/slickgrid-react --ext .ts",
+    "lint": "eslint .",
     "dev": "webpack serve --env development"
   },
   "browserslist": [
@@ -31,12 +32,6 @@
     "> 1%",
     "not dead"
   ],
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "dependencies": {
     "@slickgrid-universal/composite-editor-component": "^5.3.3",
     "@slickgrid-universal/custom-tooltip-plugin": "^5.3.3",
@@ -89,6 +84,8 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^17.9.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-react": "^7.34.3",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "file-loader": "6.2.0",
     "html-loader": "5.0.0",
     "html-webpack-plugin": "5.6.0",
