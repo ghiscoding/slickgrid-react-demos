@@ -14,6 +14,7 @@ import {
   SlickgridReact,
   type SlickgridReactInstance,
 } from 'slickgrid-react';
+import SAMPLE_COLLECTION_DATA_URL from './data/customers_100.json?url';
 
 import type BaseSlickGridState from './state-slick-grid-base';
 import './example39.scss';
@@ -33,7 +34,6 @@ interface State extends BaseSlickGridState {
   tagDataClass: string,
 }
 
-const sampleDataRoot = 'assets/data';
 const GRAPHQL_QUERY_DATASET_NAME = 'users';
 const FAKE_SERVER_DELAY = 250;
 
@@ -105,7 +105,7 @@ class Example39 extends React.Component<Props, State> {
             property: 'company',
             sortDesc: false
           },
-          collectionAsync: fetch(`${sampleDataRoot}/customers_100.json`).then(e => e.json()),
+          collectionAsync: fetch(SAMPLE_COLLECTION_DATA_URL).then(e => e.json()),
           filterOptions: {
             filter: true // adds a filter on top of the multi-select dropdown
           } as MultipleSelectOption
@@ -248,7 +248,7 @@ class Example39 extends React.Component<Props, State> {
       let orderByField = '';
       let orderByDir = '';
 
-      fetch(`${sampleDataRoot}/customers_100.json`)
+      fetch(SAMPLE_COLLECTION_DATA_URL)
         .then(e => e.json())
         .then((data: any) => {
           let filteredData: Array<{ id: number; name: string; gender: string; company: string; category: { id: number; name: string; }; }> = data;
@@ -349,7 +349,7 @@ class Example39 extends React.Component<Props, State> {
             },
           };
 
-          setTimeout(() => {
+          window.setTimeout(() => {
             this.setState((state: State) => ({
               ...state,
               graphqlQuery: this.state.gridOptions!.backendServiceApi!.service.buildQuery()
@@ -406,7 +406,7 @@ class Example39 extends React.Component<Props, State> {
                   Infinite scrolling allows the grid to lazy-load rows from the server when reaching the scroll bottom (end) position.
                   In its simplest form, the more the user scrolls down, the more rows get loaded.
                   If we reached the end of the dataset and there is no more data to load, then we'll assume to have the entire dataset loaded in memory.
-                  This contrast with the regular Pagination approach which will hold only hold data for 1 page at a time.
+                  This contrast with the regular Pagination approach which will only hold a single page data at a time.
                 </li>
                 <li>NOTES</li>
                 <ol>

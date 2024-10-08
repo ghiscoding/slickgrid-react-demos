@@ -24,12 +24,12 @@ import {
   SortComparers,
   type VanillaCalendarOption,
 } from 'slickgrid-react';
+import URL_COUNTRIES_COLLECTION from './data/countries.json';
 
 import './example30.scss'; // provide custom CSS/SASS styling
 import type BaseSlickGridState from './state-slick-grid-base';
 
 const NB_ITEMS = 500;
-const URL_COUNTRIES_COLLECTION = 'assets/data/countries.json';
 
 /**
  * Check if the current item (cell) is editable or not
@@ -332,7 +332,7 @@ export default class Example30 extends React.Component<Props, State> {
           model: Editors.autocompleter,
           massUpdate: true,
           customStructure: { label: 'name', value: 'code' },
-          collectionAsync: fetch(URL_COUNTRIES_COLLECTION),
+          collectionAsync: Promise.resolve(URL_COUNTRIES_COLLECTION),
           editorOptions: { minLength: 0 }
         },
         filter: {
@@ -670,7 +670,7 @@ export default class Example30 extends React.Component<Props, State> {
         // when processing a mass update or mass selection
         if (modalType === 'mass-update' || modalType === 'mass-selection') {
           return new Promise((resolve, reject) => {
-            setTimeout(() => {
+            window.setTimeout(() => {
               if (formValues.percentComplete >= 50) {
                 resolve(true);
               } else {
@@ -683,7 +683,7 @@ export default class Example30 extends React.Component<Props, State> {
           // we'll just apply the change without any rejection from the server and
           // note that we also have access to the "dataContext" which is only available for these modal
           console.log(`${modalType} item data context`, dataContext);
-          return new Promise(resolve => setTimeout(() => resolve(true), serverResponseDelay));
+          return new Promise(resolve => window.setTimeout(() => resolve(true), serverResponseDelay));
         }
       }
     });
