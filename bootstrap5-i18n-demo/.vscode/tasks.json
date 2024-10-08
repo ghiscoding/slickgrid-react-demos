@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build Webpack Bootstrap 5 Demo Page",
+      "label": "Build Bootstrap 5 Demo Page",
       "type": "shell",
       "command": "npm run build",
       "options": {
@@ -11,7 +11,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Start Webpack Bootstrap 5 Demo Page",
+      "label": "Start Bootstrap 5 Demo Page",
       "type": "shell",
       "command": "yarn start",
       "options": {

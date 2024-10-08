@@ -6,8 +6,6 @@
     "baseUrl": "./",
     "types": [
       "cypress",
-      "jest",
-      "jest-extended",
       "node"
     ]
   },
@@ -16,5 +14,5 @@
     "src/typings/**/*.ts",
     "**/*.d.ts"
   ],
-  "typeAcquisition": { "include": ["jest"] }
+  "typeAcquisition": { "include": [] }
 }

@@ -8,7 +8,7 @@ Git clone the demo and npm install it, then run and enjoy fully working demo.
 git clone https://github.com/ghiscoding/slickgrid-react-demos
 cd slickgrid-react-demos
 npm install # or yarn install
-npm run dev # or yarn dev
+npm run start # or yarn start
 ```
 
 ##### Build Demo
