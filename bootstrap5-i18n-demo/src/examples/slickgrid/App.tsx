@@ -20,6 +20,7 @@ import Example15 from './Example15';
 import Example16 from './Example16';
 import Example17 from './Example17';
 import Example18 from './Example18';
+import Example19 from './Example19';
 import Example20 from './Example20';
 import Example21 from './Example21';
 import Example22 from './Example22';
@@ -41,6 +42,7 @@ import Example38 from './Example38';
 import Example39 from './Example39';
 import Example40 from './Example40';
 import Example41 from './Example41';
+import Example42 from './Example42';
 
 const routes: Array<{ path: string; route: string; component: any; title: string; }> = [
   { path: 'example1', route: '/example1', component: <Example1 />, title: '1- Basic Grid / 2 Grids' },
@@ -61,6 +63,7 @@ const routes: Array<{ path: string; route: string; component: any; title: string
   { path: 'example16', route: '/example16', component: <Example16 />, title: '16- Row Move Plugin' },
   { path: 'example17', route: '/example17', component: <Example17 />, title: '17- Remote Model' },
   { path: 'example18', route: '/example18', component: <Example18 />, title: '18- Draggable Grouping' },
+  { path: 'example19', route: '/example19', component: <Example19 />, title: '19- Row Detail' },
   { path: 'example20', route: '/example20', component: <Example20 />, title: '20- Pinned Columns/Rows' },
   { path: 'example21', route: '/example21', component: <Example21 />, title: '21- Grid AutoHeight (full height)' },
   { path: 'example22', route: '/example22', component: <Example22 />, title: '22- with Bootstrap Tabs' },
@@ -82,6 +85,7 @@ const routes: Array<{ path: string; route: string; component: any; title: string
   { path: 'example39', route: '/example39', component: <Example39 />, title: '39- Infinite Scroll with GraphQL' },
   { path: 'example40', route: '/example40', component: <Example40 />, title: '40- Infinite Scroll from JSON data' },
   { path: 'example41', route: '/example41', component: <Example41 />, title: '41- Drag & Drop' },
+  { path: 'example42', route: '/example42', component: <Example42 />, title: '42- Custom Pagination' },
 ];
 
 export default function Routes() {
