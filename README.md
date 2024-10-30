@@ -6,7 +6,7 @@ Git clone the demo and npm install it, then run and enjoy fully working demo.
 
 ```sh
 git clone https://github.com/ghiscoding/slickgrid-react-demos
-cd slickgrid-react-demos
+cd slickgrid-react-demos/bootstrap5-i18n-demo
 npm install # or yarn install
 npm run start # or yarn start
 ```
