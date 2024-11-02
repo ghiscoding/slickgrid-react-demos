@@ -10,7 +10,6 @@ import App from './examples/slickgrid/App';
 import localeEn from './assets/locales/en/translation.json';
 import localeFr from './assets/locales/fr/translation.json';
 import './styles.scss';
-import './slickgrid.scss';
 
 i18n
   .use(Backend)
