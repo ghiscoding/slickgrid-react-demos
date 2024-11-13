@@ -114,7 +114,7 @@ export default class Example2 extends React.Component<Props, State> {
         hideTotalItemCount: true,
         hideLastUpdateTimestamp: true
       },
-      sanitizer: (dirtyHtml) => DOMPurify.sanitize(dirtyHtml, { ADD_ATTR: ['level'], RETURN_TRUSTED_TYPE: true }),
+      sanitizer: (dirtyHtml) => DOMPurify.sanitize(dirtyHtml, { ADD_ATTR: ['level'], RETURN_TRUSTED_TYPE: true }) as string,
 
       // you customize all formatter at once certain options through "formatterOptions" in the Grid Options
       // or independently through the column definition "params", the option names are the same
