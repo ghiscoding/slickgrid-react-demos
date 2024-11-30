@@ -523,10 +523,7 @@ export default class Example3 extends React.Component<Props, State> {
         const collectionEditor = requisiteColumnDef.editor!.collection;
         const collectionFilter = requisiteColumnDef.filter!.collection;
 
-        if (
-          Array.isArray(collectionEditor) &&
-          Array.isArray(collectionFilter)
-        ) {
+        if (Array.isArray(collectionEditor) && Array.isArray(collectionFilter)) {
           // add the new row to the grid
           this.reactGrid.gridService.addItem(newRows[0], {
             highlightRow: false,
