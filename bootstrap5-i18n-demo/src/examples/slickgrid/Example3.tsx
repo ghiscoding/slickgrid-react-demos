@@ -1,7 +1,5 @@
-import fetchJsonp from 'fetch-jsonp';
 import i18next from 'i18next';
 import React from 'react';
-
 import {
   type AutocompleterOption,
   type Column,
@@ -20,10 +18,11 @@ import {
   type SlickgridReactInstance,
   type VanillaCalendarOption,
 } from 'slickgrid-react';
+
 import { CustomInputEditor } from './custom-inputEditor';
 import { CustomInputFilter } from './custom-inputFilter';
+import fetchJsonp from './jsonp';
 import type BaseSlickGridState from './state-slick-grid-base';
-
 import SAMPLE_COLLECTION_DATA from './data/collection_100_numbers.json';
 import SAMPLE_COLLECTION_DATA_URL from './data/collection_100_numbers.json?url';
 import COUNTRIES_COLLECTION from './data/countries.json';
@@ -329,7 +328,7 @@ export default class Example3 extends React.Component<Props, State> {
               // this.http.get(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`).subscribe(data => updateCallback(data));
 
               /** with JSONP AJAX will work locally but not on the GitHub demo because of CORS */
-              fetchJsonp(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
+              fetchJsonp<string[]>(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
                 .then((response) => response.json())
                 .then((json) => updateCallback(json))
                 .catch((ex) => console.log('invalid JSONP response', ex));
@@ -352,7 +351,7 @@ export default class Example3 extends React.Component<Props, State> {
               // this.http.get(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`).subscribe(data => updateCallback(data));
 
               /** with JSONP AJAX will work locally but not on the GitHub demo because of CORS */
-              fetchJsonp(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
+              fetchJsonp<string[]>(`http://gd.geobytes.com/AutoCompleteCity?q=${searchText}`)
                 .then((response) => response.json())
                 .then((json) => updateCallback(json))
                 .catch((ex) => console.log('invalid JSONP response', ex));

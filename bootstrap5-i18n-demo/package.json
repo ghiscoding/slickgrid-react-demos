@@ -42,7 +42,6 @@
     "@slickgrid-universal/rxjs-observable": "^5.10.2",
     "@slickgrid-universal/text-export": "^5.10.2",
     "dompurify": "^3.2.2",
-    "fetch-jsonp": "^1.3.0",
     "i18next": "^23.16.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
