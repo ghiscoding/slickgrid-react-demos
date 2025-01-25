@@ -143,6 +143,7 @@ export default class Example28 extends React.Component<Props, State> {
 
     const gridOptions: GridOption = {
       autoResize: {
+        autoHeight: false,
         container: '#demo-container',
         rightPadding: 10
       },
@@ -323,7 +324,7 @@ export default class Example28 extends React.Component<Props, State> {
       }));
 
       // scroll into the position, after insertion cycle, where the item was added
-      setTimeout(() => {
+      window.setTimeout(() => {
         const rowIndex = this.reactGrid.dataView.getRowById(popFolderItem.id) as number;
         this.reactGrid.slickGrid.scrollRowIntoView(rowIndex + 3);
       }, 10);
@@ -435,8 +436,8 @@ export default class Example28 extends React.Component<Props, State> {
         <div className="row">
           <div className="col-md-7">
             <button onClick={() => this.addNewFile()} data-test="add-item-btn" className="btn btn-xs btn-icon btn-primary mx-1">
-              <span className="mdi mdi-shape-square-plus me-1"></span>
-              <span>Add New Pop Song</span>
+              <span className="mdi mdi-shape-square-plus me-1 text-white"></span>
+              <span className="text-white">Add New Pop Song</span>
             </button>
             <button onClick={() => this.deleteFile()} data-test="remove-item-btn" className="btn btn-outline-secondary btn-xs btn-icon" disabled={this.state.isRemoveLastInsertedPopSongDisabled}>
               <span className="mdi mdi-minus me-1"></span>
