@@ -1,7 +1,6 @@
 import 'bootstrap';
 import i18n from 'i18next';
 import Backend from 'i18next-http-backend';
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { initReactI18next } from 'react-i18next';
 import { HashRouter } from 'react-router-dom';

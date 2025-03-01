@@ -273,6 +273,7 @@ class Example6 extends React.Component<Props, State> {
       } as GraphqlServiceApi
     };
   }
+
   clearAllFiltersAndSorts() {
     if (this.reactGrid?.gridService) {
       this.reactGrid.gridService.clearAllFiltersAndSorts();
@@ -343,7 +344,7 @@ class Example6 extends React.Component<Props, State> {
     };
 
     return new Promise(resolve => {
-      setTimeout(() => {
+      window.setTimeout(() => {
         this.setState((state: any) => {
           return {
             ...state,
@@ -421,7 +422,7 @@ class Example6 extends React.Component<Props, State> {
       { columnId: 'name', direction: 'asc' },
       { columnId: 'company', direction: SortDirection.DESC }
     ]);
-    setTimeout(() => {
+    window.setTimeout(() => {
       this.reactGrid.paginationService?.changeItemPerPage(20);
       this.reactGrid.paginationService?.goToPageNumber(2);
     });

@@ -549,6 +549,7 @@ export default class Example5 extends React.Component<Props, State> {
             </a>
           </span>
         </h2>
+
         <div className="row">
           <div className="col-sm-9">
             <div className="subtitle" dangerouslySetInnerHTML={{ __html: this.subTitle }}></div>

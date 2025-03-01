@@ -176,9 +176,8 @@ class Example23 extends React.Component<Props, State> {
       }
     ];
 
-    const today = new Date();
     const presetLowestDay = format(addDay(new Date(), -2), 'YYYY-MM-DD');
-    const presetHighestDay = format(addDay(new Date(), today.getDate() < 14 ? 28 : 25), 'YYYY-MM-DD');
+    const presetHighestDay = format(addDay(new Date(), 25), 'YYYY-MM-DD');
 
     const gridOptions: GridOption = {
       autoResize: {
@@ -266,8 +265,8 @@ class Example23 extends React.Component<Props, State> {
   }
 
   refreshMetrics(_e: Event, args: any) {
-    if (args && args.current >= 0) {
-      setTimeout(() => {
+    if (args?.current >= 0) {
+      window.setTimeout(() => {
         this.setState((state: State) => {
           return {
             ...state,

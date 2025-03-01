@@ -37,14 +37,14 @@
     /* use a different active cell color to make it a bit more obvious */
     box-shadow: inset 0 0 0 1px #e35ddc;
   }
-}
-.slick-cell .cellValue {
-  float: right;
-  font-size: 14px;
-}
-.slick-cell .valueComment {
-  color: #7c8983;
-  font-size: 12px;
-  font-style: italic;
-  width: fit-content;
+  .cellValue {
+    float: right;
+    font-size: 14px;
+  }
+  .valueComment {
+    color: #7c8983;
+    font-size: 12px;
+    font-style: italic;
+    width: fit-content;
+  }
 }

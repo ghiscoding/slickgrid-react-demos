@@ -123,10 +123,10 @@ export default class Example27 extends React.Component<Props, State> {
 
         // you can optionally sort by a different column and/or sort direction
         // this is the recommend approach, unless you are 100% that your original array is already sorted (in most cases it's not)
-        initialSort: {
-          columnId: 'title',
-          direction: 'ASC'
-        },
+        // initialSort: {
+        //   columnId: 'title',
+        //   direction: 'ASC'
+        // },
         // we can also add a custom Formatter just for the title text portion
         titleFormatter: (_row, _cell, value, _def, dataContext) => {
           let prefix = '';
@@ -232,7 +232,7 @@ export default class Example27 extends React.Component<Props, State> {
   }
 
   hideSpinner() {
-    setTimeout(() => {
+    window.setTimeout(() => {
       this.setState((state: State) => ({ ...state, loadingClass: '' }));
     }, 200); // delay the hide spinner a bit to avoid show/hide too quickly
   }
@@ -403,8 +403,8 @@ export default class Example27 extends React.Component<Props, State> {
         <div className="row">
           <div className="col-md-12">
             <button onClick={() => this.addNewRow()} data-test="add-item-btn" className="btn btn-primary btn-xs btn-icon mx-1">
-              <span className="mdi mdi-plus color-white me-1"></span>
-              <span>Add New Item to "Task 1" group</span>
+              <span className="mdi mdi-plus text-white me-1"></span>
+              <span className="text-white">Add New Item to "Task 1" group</span>
             </button>
             <button onClick={() => this.updateFirstRow()} data-test="update-item-btn" className="btn btn-outline-secondary btn-xs btn-icon mx-1">
               <span className="icon mdi mdi-pencil me-1"></span>

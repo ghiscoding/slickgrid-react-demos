@@ -504,7 +504,7 @@ export default class Example30 extends React.Component<Props, State> {
         start: new Date(randomYear, randomMonth, randomDay, randomDay, randomTime, randomTime, randomTime),
         finish: (isCompleted || (i % 3 === 0 && (randomFinish > new Date() && i > 3)) ? (isCompleted ? new Date() : randomFinish) : ''), // make sure the random date is earlier than today and it's index is bigger than 3
         cost: (i % 33 === 0) ? null : Math.round(Math.random() * 10000) / 100,
-        completed: (isCompleted || (i % 3 === 0 && (randomFinish > new Date() && i > 3))),
+        completed: (isCompleted && i > 5) || (i % 3 === 0 && randomFinish > new Date() && i > 3),
         product: { id: this.mockProducts()[randomItemId]?.id, itemName: this.mockProducts()[randomItemId]?.itemName, },
         origin: (i % 2) ? { code: 'CA', name: 'Canada' } : { code: 'US', name: 'United States' },
       };
@@ -968,11 +968,11 @@ export default class Example30 extends React.Component<Props, State> {
     return `<div class="autocomplete-container-list">
       <div class="autocomplete-left">
         <!--<img src="http://i.stack.imgur.com/pC1Tv.jpg" width="50" />-->
-        <span class="fa ${item.icon}"></span>
+        <span class="mdi ${item.icon}"></span>
       </div>
       <div>
         <span class="autocomplete-top-left">
-          <span class="fa ${item.itemTypeName === 'I' ? 'mdi-information-outline' : 'mdi-content-copy'}"></span>
+          <span class="mdi ${item.itemTypeName === 'I' ? 'mdi-information-outline' : 'mdi-content-copy'}"></span>
           ${item.itemName}
         </span>
       <div>
@@ -986,11 +986,11 @@ export default class Example30 extends React.Component<Props, State> {
     return `<div class="autocomplete-container-list">
           <div class="autocomplete-left">
             <!--<img src="http://i.stack.imgur.com/pC1Tv.jpg" width="50" />-->
-            <span class="fa ${item.icon}"></span>
+            <span class="mdi ${item.icon}"></span>
           </div>
           <div>
             <span class="autocomplete-top-left">
-              <span class="fa ${item.itemTypeName === 'I' ? 'mdi-information-outline' : 'mdi-content-copy'}"></span>
+              <span class="mdi ${item.itemTypeName === 'I' ? 'mdi-information-outline' : 'mdi-content-copy'}"></span>
               ${item.itemName}
             </span>
             <span class="autocomplete-top-right">${formatNumber(item.listPrice, 2, 2, false, '$')}</span>
@@ -1082,8 +1082,7 @@ export default class Example30 extends React.Component<Props, State> {
           onCompositeEditorChange={$event => this.handleOnCompositeEditorChange($event.detail.eventData, $event.detail.args)}
           onItemDeleted={$event => this.handleItemDeleted($event.detail)}
           onGridStateChanged={$event => this.handleOnGridStateChanged($event.detail)}
-          onFilterChanged={() => this.handleReRenderUnsavedStyling()}
-          onPaginationChanged={() => this.handleReRenderUnsavedStyling()}
+          onRowsOrCountChanged={() => this.handleReRenderUnsavedStyling()}
           onValidationError={$event => this.handleValidationError($event.detail.eventData, $event.detail.args)}
         />
       </div>

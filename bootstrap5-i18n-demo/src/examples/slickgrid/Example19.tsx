@@ -34,7 +34,6 @@ function randomNumber(min: number, max: number) {
 export default class Example19 extends React.Component<Props, State> {
   private _darkMode = false;
   reactGrid!: SlickgridReactInstance;
-  shouldResetOnSort = false;
 
   constructor(public readonly props: Props) {
     super(props);
@@ -120,8 +119,8 @@ export default class Example19 extends React.Component<Props, State> {
         const itemDetail = item;
 
         // let's add some extra properties to our item for a better async simulation
-        itemDetail.assignee = randomNames[randomNumber(0, 10)];
-        itemDetail.reporter = randomNames[randomNumber(0, 10)];
+        itemDetail.assignee = randomNames[randomNumber(0, 9)] || '';
+        itemDetail.reporter = randomNames[randomNumber(0, 9)] || '';
 
         // resolve the data after delay specified
         resolve(itemDetail);
@@ -279,7 +278,7 @@ export default class Example19 extends React.Component<Props, State> {
 
   render() {
     return !this.state.gridOptions ? '' : (
-      <div className="demo40">
+      <div className="demo19">
         <div id="demo-container" className="container-fluid">
           <h2>
             Example 19: Row Detail View

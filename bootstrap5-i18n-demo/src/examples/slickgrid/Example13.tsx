@@ -288,6 +288,8 @@ export default class Example13 extends React.Component<Props, State> {
   }
 
   groupByDuration() {
+    // you need to manually add the sort icon(s) in UI
+    this.reactGrid.filterService.setSortColumnIcons([{ columnId: 'duration', sortAsc: true }]);
     this.dataviewObj.setGrouping({
       getter: 'duration',
       formatter: (g) => `Duration: ${g.value} <span style="color:green">(${g.count} items)</span>`,
@@ -301,9 +303,6 @@ export default class Example13 extends React.Component<Props, State> {
       aggregateCollapsed: false,
       lazyTotalsCalculation: true
     } as Grouping);
-
-    // you need to manually add the sort icon(s) in UI
-    this.reactGrid.filterService.setSortColumnIcons([{ columnId: 'duration', sortAsc: true }]);
     this.gridObj.invalidate(); // invalidate all rows and re-render
   }
 
@@ -326,7 +325,9 @@ export default class Example13 extends React.Component<Props, State> {
   }
 
   groupByDurationEffortDriven() {
-    this.reactGrid.filterService.setSortColumnIcons([]);
+    // you need to manually add the sort icon(s) in UI
+    const sortColumns = [{ columnId: 'duration', sortAsc: true }, { columnId: 'effortDriven', sortAsc: true }];
+    this.reactGrid.filterService.setSortColumnIcons(sortColumns);
     this.dataviewObj.setGrouping([
       {
         getter: 'duration',
@@ -349,15 +350,17 @@ export default class Example13 extends React.Component<Props, State> {
         lazyTotalsCalculation: true
       }
     ] as Grouping[]);
-
-    // you need to manually add the sort icon(s) in UI
-    const sortColumns = [{ columnId: 'duration', sortAsc: true }, { columnId: 'effortDriven', sortAsc: true }];
-    this.reactGrid.filterService.setSortColumnIcons(sortColumns);
     this.gridObj.invalidate(); // invalidate all rows and re-render
   }
 
   groupByDurationEffortDrivenPercent() {
-    this.reactGrid.filterService.setSortColumnIcons([]);
+    // you need to manually add the sort icon(s) in UI
+    const sortColumns = [
+      { columnId: 'duration', sortAsc: true },
+      { columnId: 'effortDriven', sortAsc: true },
+      { columnId: 'percentComplete', sortAsc: true }
+    ];
+    this.reactGrid.filterService.setSortColumnIcons(sortColumns);
     this.dataviewObj.setGrouping([
       {
         getter: 'duration',
@@ -389,14 +392,6 @@ export default class Example13 extends React.Component<Props, State> {
         lazyTotalsCalculation: true
       }
     ] as Grouping[]);
-
-    // you need to manually add the sort icon(s) in UI
-    const sortColumns = [
-      { columnId: 'duration', sortAsc: true },
-      { columnId: 'effortDriven', sortAsc: true },
-      { columnId: 'percentComplete', sortAsc: true }
-    ];
-    this.reactGrid.filterService.setSortColumnIcons(sortColumns);
     this.gridObj.invalidate(); // invalidate all rows and re-render
   }
 
