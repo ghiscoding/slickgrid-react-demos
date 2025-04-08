@@ -82,8 +82,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "engines": {
-    "node": ">=16.15.0",
-    "npm": ">=8.5.0"
+    "node": ">=20.0.0"
   },
   "resolutions": {
     "caniuse-lite": "1.0.30001701"
