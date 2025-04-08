@@ -19,7 +19,7 @@ const Example9: React.FC = () => {
   const defaultLang = 'en';
   const [columnDefinitions, setColumnDefinitions] = useState<Column[]>([]);
   const [dataset, setDataset] = useState<any[]>([]);
-  const [gridOptions, setGridOptions] = useState<GridOption | undefined>(undefined);
+  const [gridOptions, setGridOptions] = useState<GridOption>();
   const [selectedLanguage, setSelectedLanguage] = useState<string>(defaultLang);
   const [hideSubTitle, setHideSubTitle] = useState(false);
 

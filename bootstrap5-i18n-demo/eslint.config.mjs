@@ -32,7 +32,7 @@ export default tseslint.config(
       },
       parser: tseslint.parser,
       parserOptions: {
-        project: ['./tsconfig.json'],
+        project: ['./tsconfig.json', './test/tsconfig.spec.json', './test/cypress/tsconfig.json'],
         tsconfigRootDir: import.meta.dirname,
       }
     },
@@ -64,6 +64,7 @@ export default tseslint.config(
       'no-case-declarations': 'off',
       'no-prototype-builtins': 'off',
       'no-extra-boolean-cast': 'off',
+      "react-hooks/exhaustive-deps": 'off',
       'semi': 'off',
     }
   });

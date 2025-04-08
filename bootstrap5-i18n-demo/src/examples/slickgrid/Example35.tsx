@@ -242,7 +242,7 @@ const Example35: React.FC = () => {
       },
     };
     reactGridRef.current?.slickGrid.setOptions(gridOptions);
-    gridOptionsRef.current = reactGridRef.current?.slickGrid.getOptions();
+    gridOptionsRef.current = reactGridRef.current?.slickGrid.getOptions() || {};
   }
 
   async function switchLanguage() {
