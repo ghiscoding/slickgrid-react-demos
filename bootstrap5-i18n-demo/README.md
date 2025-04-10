@@ -21,7 +21,7 @@ Again the following dependencies are totally **optional**
 git clone https://github.com/ghiscoding/slickgrid-react-demos
 cd bootstrap5-i18n-demo
 npm install # OR yarn install
-npm dev     # OR yarn start
+npm dev     # OR yarn dev
 ```
 
 Then open your browser to

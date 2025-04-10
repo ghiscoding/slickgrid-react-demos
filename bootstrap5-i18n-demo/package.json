@@ -22,7 +22,7 @@
   "main": "dist/commonjs/index.js",
   "typings": "dist/commonjs/index.d.ts",
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
     "prebuild": "npm run lint",
     "build": "tsc && vite build",
     "preview": "vite preview",
