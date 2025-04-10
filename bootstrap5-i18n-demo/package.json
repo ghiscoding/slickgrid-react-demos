@@ -26,7 +26,7 @@
     "prebuild": "npm run lint",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint ."
+    "lint": "eslint . --no-cache"
   },
   "browserslist": [
     "last 2 version",
@@ -34,20 +34,20 @@
     "not dead"
   ],
   "dependencies": {
-    "@slickgrid-universal/composite-editor-component": "^5.13.3",
-    "@slickgrid-universal/custom-tooltip-plugin": "^5.13.3",
-    "@slickgrid-universal/excel-export": "^5.13.3",
-    "@slickgrid-universal/graphql": "^5.13.3",
-    "@slickgrid-universal/odata": "^5.13.3",
-    "@slickgrid-universal/rxjs-observable": "^5.13.3",
-    "@slickgrid-universal/text-export": "^5.13.3",
+    "@slickgrid-universal/composite-editor-component": "^5.13.4",
+    "@slickgrid-universal/custom-tooltip-plugin": "^5.13.4",
+    "@slickgrid-universal/excel-export": "^5.13.4",
+    "@slickgrid-universal/graphql": "^5.13.4",
+    "@slickgrid-universal/odata": "^5.13.4",
+    "@slickgrid-universal/rxjs-observable": "^5.13.4",
+    "@slickgrid-universal/text-export": "^5.13.4",
     "bootstrap": "^5.3.5",
     "dompurify": "^3.2.5",
     "i18next": "^24.2.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-i18next": "^15.4.1",
-    "slickgrid-react": "^5.13.3"
+    "slickgrid-react": "^5.13.4"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.6.0",
@@ -57,7 +57,7 @@
     "@types/i18next-xhr-backend": "^1.4.2",
     "@types/node": "^22.14.0",
     "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.1",
+    "@types/react-dom": "^19.1.2",
     "@types/sortablejs": "^1.15.8",
     "@types/text-encoding-utf-8": "^1.0.5",
     "@vitejs/plugin-react": "^4.3.4",
