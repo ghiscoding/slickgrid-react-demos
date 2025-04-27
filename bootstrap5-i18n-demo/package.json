@@ -43,7 +43,7 @@
     "@slickgrid-universal/text-export": "^5.14.0",
     "bootstrap": "^5.3.5",
     "dompurify": "^3.2.5",
-    "i18next": "^24.2.3",
+    "i18next": "^23.16.8",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-i18next": "^15.5.1",
