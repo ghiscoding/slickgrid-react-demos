@@ -3,15 +3,13 @@ import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import './Example42-Custom-Pager.scss';
 
-interface Props { }
-
 export interface CustomPagerComponentRef {
   init: (grid: SlickGrid, paginationService: PaginationService, pubSubService: PubSubService) => void;
   dispose: () => void;
   renderPagination: () => void;
 }
 
-const CustomPagerComponent = React.forwardRef<CustomPagerComponentRef, Props>((props, ref) => {
+const CustomPagerComponent = React.forwardRef<CustomPagerComponentRef, any>((_props, ref) => {
   const [currentPagination, setCurrentPagination] = useState<PaginationMetadata>({} as PaginationMetadata);
   const [isLeftPaginationDisabled, setIsLeftPaginationDisabled] = useState(false);
   const [isRightPaginationDisabled, setIsRightPaginationDisabled] = useState(false);
@@ -109,14 +107,17 @@ const CustomPagerComponent = React.forwardRef<CustomPagerComponentRef, Props>((p
           <span className="page-info-from-to">
             <span className="item-from" aria-label="Page Item From" data-test="item-from">
               {currentPagination.dataFrom}
-            </span>-
+            </span>
+            -
             <span className="item-to" aria-label="Page Item To" data-test="item-to">
               {currentPagination.dataTo}
             </span>
             of
           </span>
           <span className="page-info-total-items">
-            <span className="total-items" aria-label="Total Items" data-test="total-items">{currentPagination.totalItems}</span>
+            <span className="total-items" aria-label="Total Items" data-test="total-items">
+              {currentPagination.totalItems}
+            </span>
             <span className="text-items"> items</span>
           </span>
         </span>
@@ -125,26 +126,49 @@ const CustomPagerComponent = React.forwardRef<CustomPagerComponentRef, Props>((p
         <nav aria-label="Page navigation">
           <ul className="custom-pagination-ul">
             <li className={'li page-item seek-first' + (isLeftPaginationDisabled ? ' disabled' : '')}>
-              <a className="pagination-link mdi mdi-page-first icon-seek-first mdi-22px" aria-label="First Page" role="button" onClick={onFirstPageClicked}></a>
+              <a
+                className="pagination-link mdi mdi-page-first icon-seek-first mdi-22px"
+                aria-label="First Page"
+                role="button"
+                onClick={onFirstPageClicked}
+              ></a>
             </li>
             <li className={'li page-item seek-prev' + (isLeftPaginationDisabled ? ' disabled' : '')}>
-              <a className="pagination-link icon-seek-prev mdi mdi-chevron-down mdi-22px mdi-rotate-90" aria-label="Previous Page" role="button" onClick={onPreviousPageClicked}></a>
+              <a
+                className="pagination-link icon-seek-prev mdi mdi-chevron-down mdi-22px mdi-rotate-90"
+                aria-label="Previous Page"
+                role="button"
+                onClick={onPreviousPageClicked}
+              ></a>
             </li>
           </ul>
         </nav>
         <div className="page-number">
           <span className="text-page">Page</span>
-          <span className="page-number" aria-label="Page Number" data-test="page-number-label">{currentPagination.pageNumber}</span>
+          <span className="page-number" aria-label="Page Number" data-test="page-number-label">
+            {currentPagination.pageNumber}
+          </span>
           of
-          <span className="page-count" data-test="page-count">{currentPagination.pageCount}</span>
+          <span className="page-count" data-test="page-count">
+            {currentPagination.pageCount}
+          </span>
         </div>
         <nav aria-label="Page navigation">
           <ul className="custom-pagination-ul">
             <li className={'li page-item seek-next' + (isRightPaginationDisabled ? ' disabled' : '')} onClick={onNextPageClicked}>
-              <a className="pagination-link icon-seek-next mdi mdi-chevron-down mdi-22px mdi-rotate-270" aria-label="Next Page" role="button"></a>
+              <a
+                className="pagination-link icon-seek-next mdi mdi-chevron-down mdi-22px mdi-rotate-270"
+                aria-label="Next Page"
+                role="button"
+              ></a>
             </li>
             <li className={'li page-item seek-end' + (isRightPaginationDisabled ? ' disabled' : '')}>
-              <a className="pagination-link icon-seek-end mdi mdi-page-last mdi-22px" aria-label="Last Page" role="button" onClick={onLastPageClicked}></a>
+              <a
+                className="pagination-link icon-seek-end mdi mdi-page-last mdi-22px"
+                aria-label="Last Page"
+                role="button"
+                onClick={onLastPageClicked}
+              ></a>
             </li>
           </ul>
         </nav>

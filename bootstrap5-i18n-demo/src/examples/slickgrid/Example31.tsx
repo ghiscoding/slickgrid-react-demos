@@ -4,7 +4,6 @@ import { Observable, of, type Subject } from 'rxjs';
 import {
   type Column,
   Editors,
-  FieldType,
   Filters,
   type GridOption,
   type GridStateChange,
@@ -31,10 +30,13 @@ const Example31: React.FC = () => {
   const [odataVersion, setOdataVersion] = useState(2);
   const [odataQuery, setOdataQuery] = useState('');
   const [paginationOptions, setPaginationOptions] = useState<Pagination | undefined>(undefined);
-  const [genderCollection] = useState([{ value: 'male', label: 'male' }, { value: 'female', label: 'female' }]);
+  const [genderCollection] = useState([
+    { value: 'male', label: 'male' },
+    { value: 'female', label: 'female' },
+  ]);
   const [hideSubTitle, setHideSubTitle] = useState(false);
 
-  const gridOptionsRef = useRef<GridOption>();
+  const gridOptionsRef = useRef<GridOption>(null);
   const reactGridRef = useRef<SlickgridReactInstance | null>(null);
 
   useEffect(() => {
@@ -48,27 +50,32 @@ const Example31: React.FC = () => {
   function defineGrid() {
     const columnDefinitions: Column[] = [
       {
-        id: 'name', name: 'Name', field: 'name', sortable: true,
-        type: FieldType.string,
+        id: 'name',
+        name: 'Name',
+        field: 'name',
+        sortable: true,
         filterable: true,
         filter: {
-          model: Filters.compoundInput
-        }
+          model: Filters.compoundInput,
+        },
       },
       {
-        id: 'gender', name: 'Gender', field: 'gender', filterable: true,
+        id: 'gender',
+        name: 'Gender',
+        field: 'gender',
+        filterable: true,
         editor: {
           model: Editors.singleSelect,
           // collection: genderCollection,
-          collectionAsync: of(genderCollection)
+          collectionAsync: of(genderCollection),
         },
         filter: {
           model: Filters.singleSelect,
           collectionAsync: of(genderCollection),
           collectionOptions: {
-            addBlankEntry: true
-          }
-        }
+            addBlankEntry: true,
+          },
+        },
       },
       { id: 'company', name: 'Company', field: 'company', filterable: true, sortable: true },
       { id: 'category_name', name: 'Category', field: 'category/name', filterable: true, sortable: true },
@@ -78,12 +85,12 @@ const Example31: React.FC = () => {
       enableAutoResize: true,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       checkboxSelector: {
         // you can toggle these 2 properties to show the "select all" checkbox in different location
         hideInFilterHeaderRow: false,
-        hideInColumnTitleRow: true
+        hideInColumnTitleRow: true,
       },
       editable: true,
       autoEdit: true,
@@ -98,18 +105,16 @@ const Example31: React.FC = () => {
       pagination: {
         pageSizes: [10, 20, 50, 100, 500],
         pageSize: defaultPageSize,
-        totalItems: 0
+        totalItems: 0,
       },
       presets: {
         // you can also type operator as string, e.g.: operator: 'EQ'
-        filters: [
-          { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
-        ],
+        filters: [{ columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal }],
         sorters: [
           // direction can be written as 'asc' (uppercase or lowercase) and/or use the SortDirection type
           { columnId: 'name', direction: 'asc' },
         ],
-        pagination: { pageNumber: 2, pageSize: 20 }
+        pagination: { pageNumber: 2, pageSize: 20 },
       },
       backendServiceApi: {
         service: new GridOdataService(),
@@ -117,7 +122,7 @@ const Example31: React.FC = () => {
           enableCount: isCountEnabled, // add the count in the OData query, which will return a property named "__count" (v2) or "@odata.count" (v4)
           enableSelect: isSelectEnabled,
           enableExpand: isExpandEnabled,
-          version: odataVersion        // defaults to 2, the query string is slightly different between OData 2 and 4
+          version: odataVersion, // defaults to 2, the query string is slightly different between OData 2 and 4
         },
         preProcess: () => {
           displaySpinner(true);
@@ -127,9 +132,9 @@ const Example31: React.FC = () => {
           setMetrics(response.metrics);
           getCustomerCallback(response);
           displaySpinner(false);
-        }
+        },
       } as OdataServiceApi,
-      externalResources: [new RxJsResource()]
+      externalResources: [new RxJsResource()],
     };
 
     setColumnDefinitions(columnDefinitions);
@@ -167,7 +172,7 @@ const Example31: React.FC = () => {
   }
 
   function displaySpinner(isProcessing: boolean) {
-    const newStatus = (isProcessing)
+    const newStatus = isProcessing
       ? { text: 'loading...', class: 'col-md-2 alert alert-warning' }
       : { text: 'finished!!', class: 'col-md-2 alert alert-success' };
 
@@ -179,7 +184,7 @@ const Example31: React.FC = () => {
     // however we need to force React to do a dirty check, doing a clone object will do just that
     let totalItemCount: number = data['totalRecordCount']; // you can use "totalRecordCount" or any name or "odata.count" when "enableCount" is set
     if (isCountEnabled) {
-      totalItemCount = (odataVersion === 4) ? data['@odata.count'] : data['d']['__count'];
+      totalItemCount = odataVersion === 4 ? data['@odata.count'] : data['d']['__count'];
     }
 
     // once pagination totalItems is filled, we can update the dataset
@@ -189,7 +194,11 @@ const Example31: React.FC = () => {
     setMetrics({ ...metrics, totalItemCount });
 
     // Slickgrid-React requires the user to update pagination via this pubsub publish
-    reactGridRef.current?.eventPubSubService?.publish('onPaginationOptionsChanged', { ...gridOptionsRef.current!.pagination, totalItems: totalItemCount } as Pagination, 1);
+    reactGridRef.current?.eventPubSubService?.publish(
+      'onPaginationOptionsChanged',
+      { ...gridOptionsRef.current!.pagination, totalItems: totalItemCount } as Pagination,
+      1
+    );
   }
 
   function getCustomerApiCall(query: string) {
@@ -214,10 +223,10 @@ const Example31: React.FC = () => {
 
       for (const param of queryParams) {
         if (param.includes('$top=')) {
-          top = +(param.substring('$top='.length));
+          top = +param.substring('$top='.length);
         }
         if (param.includes('$skip=')) {
-          skip = +(param.substring('$skip='.length));
+          skip = +param.substring('$skip='.length);
         }
         if (param.includes('$orderby=')) {
           orderBy = param.substring('$orderby='.length);
@@ -255,7 +264,7 @@ const Example31: React.FC = () => {
       }
 
       // read the JSON and create a fresh copy of the data that we are free to modify
-      let data = Data as unknown as { name: string; gender: string; company: string; id: string, category: { id: string; name: string; }; }[];
+      let data = Data as unknown as { name: string; gender: string; company: string; id: string; category: { id: string; name: string } }[];
       data = JSON.parse(JSON.stringify(data));
 
       // Sort the data
@@ -291,7 +300,7 @@ const Example31: React.FC = () => {
       if (columnFilters) {
         for (const columnId in columnFilters) {
           if (columnFilters.hasOwnProperty(columnId)) {
-            filteredData = filteredData.filter(column => {
+            filteredData = filteredData.filter((column) => {
               const filterType = (columnFilters as any)[columnId].type;
               const searchTerm = (columnFilters as any)[columnId].term;
               let colId = columnId;
@@ -309,10 +318,14 @@ const Example31: React.FC = () => {
 
               if (filterTerm) {
                 switch (filterType) {
-                  case 'equal': return filterTerm.toLowerCase() === searchTerm;
-                  case 'ends': return filterTerm.toLowerCase().endsWith(searchTerm);
-                  case 'starts': return filterTerm.toLowerCase().startsWith(searchTerm);
-                  case 'substring': return filterTerm.toLowerCase().includes(searchTerm);
+                  case 'equal':
+                    return filterTerm.toLowerCase() === searchTerm;
+                  case 'ends':
+                    return filterTerm.toLowerCase().endsWith(searchTerm);
+                  case 'starts':
+                    return filterTerm.toLowerCase().startsWith(searchTerm);
+                  case 'substring':
+                    return filterTerm.toLowerCase().includes(searchTerm);
                 }
               }
             });
@@ -379,9 +392,7 @@ const Example31: React.FC = () => {
   }
 
   function setSortingDynamically() {
-    reactGridRef.current?.sortService.updateSorting([
-      { columnId: 'name', direction: 'DESC' },
-    ]);
+    reactGridRef.current?.sortService.updateSorting([{ columnId: 'name', direction: 'DESC' }]);
   }
 
   // YOU CAN CHOOSE TO PREVENT EVENT FROM BUBBLING IN THE FOLLOWING 3x EVENTS
@@ -452,18 +463,27 @@ const Example31: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptionsRef.current ? '' : (
+  return !gridOptionsRef.current ? (
+    ''
+  ) : (
     <div id="demo-container" className="container-fluid">
       <h2>
         Example 31: Grid with OData Backend Service using RxJS Observables
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example31.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example31.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
@@ -474,22 +494,37 @@ const Example31: React.FC = () => {
 
       <div className="row">
         <div className="col-md-12" aria-label="Basic Editing Commands">
-          <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-filters-sorting"
-            onClick={() => clearAllFiltersAndSorts()} title="Clear all Filters & Sorts">
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon"
+            data-test="clear-filters-sorting"
+            onClick={() => clearAllFiltersAndSorts()}
+            title="Clear all Filters & Sorts"
+          >
             <span className="mdi mdi-close"></span>
             <span>Clear all Filter & Sorts</span>
           </button>
 
-          <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="set-dynamic-filter"
-            onClick={() => setFiltersDynamically()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+            data-test="set-dynamic-filter"
+            onClick={() => setFiltersDynamically()}
+          >
             Set Filters Dynamically
           </button>
-          <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-sorting"
-            onClick={() => setSortingDynamically()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon"
+            data-test="set-dynamic-sorting"
+            onClick={() => setSortingDynamically()}
+          >
             Set Sorting Dynamically
           </button>
-          <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" style={{ marginLeft: '10px' }} data-test="add-gender-button"
-            onClick={() => addOtherGender()} disabled={isOtherGenderAdded}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+            style={{ marginLeft: '10px' }}
+            data-test="add-gender-button"
+            onClick={() => addOtherGender()}
+            disabled={isOtherGenderAdded}
+          >
             Add Other Gender via RxJS
           </button>
         </div>
@@ -514,27 +549,57 @@ const Example31: React.FC = () => {
           <label>OData Version:&nbsp;</label>
           <span data-test="radioVersion">
             <label className="radio-inline control-label" htmlFor="radio2">
-              <input type="radio" name="inlineRadioOptions" data-test="version2" id="radio2" defaultChecked={true} value="2"
-                onChange={() => changeOdataVersion(2)} /> 2&nbsp;
+              <input
+                type="radio"
+                name="inlineRadioOptions"
+                data-test="version2"
+                id="radio2"
+                defaultChecked={true}
+                value="2"
+                onChange={() => changeOdataVersion(2)}
+              />{' '}
+              2&nbsp;
             </label>
             <label className="radio-inline control-label" htmlFor="radio4">
-              <input type="radio" name="inlineRadioOptions" data-test="version4" id="radio4" value="4"
-                onChange={() => changeOdataVersion(4)} /> 4
+              <input
+                type="radio"
+                name="inlineRadioOptions"
+                data-test="version4"
+                id="radio4"
+                value="4"
+                onChange={() => changeOdataVersion(4)}
+              />{' '}
+              4
             </label>
           </span>
           <label className="checkbox-inline control-label" htmlFor="enableCount" style={{ marginLeft: '20px' }}>
-            <input type="checkbox" id="enableCount" data-test="enable-count" defaultChecked={isCountEnabled}
-              onChange={() => changeCountEnableFlag()} />
+            <input
+              type="checkbox"
+              id="enableCount"
+              data-test="enable-count"
+              defaultChecked={isCountEnabled}
+              onChange={() => changeCountEnableFlag()}
+            />
             <span style={{ fontWeight: 'bold' }}> Enable Count</span> (add to OData query)
           </label>
           <label className="checkbox-inline control-label" htmlFor="enableSelect" style={{ marginLeft: '20px' }}>
-            <input type="checkbox" id="enableSelect" data-test="enable-select" defaultChecked={isSelectEnabled}
-              onChange={() => changeEnableSelectFlag()} />
+            <input
+              type="checkbox"
+              id="enableSelect"
+              data-test="enable-select"
+              defaultChecked={isSelectEnabled}
+              onChange={() => changeEnableSelectFlag()}
+            />
             <span style={{ fontWeight: 'bold' }}> Enable Select</span> (add to OData query)
           </label>
           <label className="checkbox-inline control-label" htmlFor="enableExpand" style={{ marginLeft: '20px' }}>
-            <input type="checkbox" id="enableExpand" data-test="enable-expand" defaultChecked={isExpandEnabled}
-              onChange={() => changeEnableExpandFlag()} />
+            <input
+              type="checkbox"
+              id="enableExpand"
+              data-test="enable-expand"
+              defaultChecked={isExpandEnabled}
+              onChange={() => changeEnableExpandFlag()}
+            />
             <span style={{ fontWeight: 'bold' }}> Enable Expand</span> (add to OData query)
           </label>
         </span>
@@ -551,19 +616,20 @@ const Example31: React.FC = () => {
         </div>
       </div>
 
-      <SlickgridReact gridId="grid31"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptionsRef.current}
+      <SlickgridReact
+        gridId="grid31"
+        columns={columnDefinitions}
+        options={gridOptionsRef.current}
         dataset={dataset}
         paginationOptions={paginationOptions}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
-        onGridStateChanged={$event => gridStateChanged($event.detail)}
-        onBeforeSort={$event => handleOnBeforeSort($event.detail.eventData)}
-        onBeforeSearchChange={$event => handleOnBeforeSearchChange($event.detail.eventData)}
-        onBeforePaginationChange={$event => handleOnBeforePaginationChange($event.detail.eventData)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
+        onGridStateChanged={($event) => gridStateChanged($event.detail)}
+        onBeforeSort={($event) => handleOnBeforeSort($event.detail.eventData)}
+        onBeforeSearchChange={($event) => handleOnBeforeSearchChange($event.detail.eventData)}
+        onBeforePaginationChange={($event) => handleOnBeforePaginationChange($event.detail.eventData)}
       />
     </div>
   );
-}
+};
 
 export default Example31;

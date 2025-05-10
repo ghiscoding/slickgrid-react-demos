@@ -16,7 +16,7 @@ const Example41: React.FC = () => {
   const [gridOptions, setGridOptions] = useState<GridOption | undefined>(undefined);
   const [hideSubTitle, setHideSubTitle] = useState(false);
 
-  const dragHelperRef = useRef<HTMLElement>();
+  const dragHelperRef = useRef<HTMLElement>(null);
   const dragRowsRef = useRef<number[]>([]);
   const dragModeRef = useRef('');
   const reactGridRef = useRef<SlickgridReactInstance | null>(null);
@@ -45,7 +45,7 @@ const Example41: React.FC = () => {
         cssClass: 'cell-effort-driven',
         field: 'complete',
         formatter: Formatters.checkmarkMaterial,
-      }
+      },
     ];
 
     const gridOptions: GridOption = {
@@ -58,7 +58,7 @@ const Example41: React.FC = () => {
       enableRowMoveManager: true,
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
-        selectActiveRow: false
+        selectActiveRow: false,
       },
       rowMoveManager: {
         columnIndexPosition: 0,
@@ -82,11 +82,11 @@ const Example41: React.FC = () => {
       { id: 0, name: 'Make a list', complete: true },
       { id: 1, name: 'Check it twice', complete: false },
       { id: 2, name: `Find out who's naughty`, complete: false },
-      { id: 3, name: `Find out who's nice`, complete: false }
+      { id: 3, name: `Find out who's nice`, complete: false },
     ];
   }
 
-  function onBeforeMoveRows(e: MouseEvent | TouchEvent, data: { rows: number[]; insertBefore: number; }) {
+  function onBeforeMoveRows(e: MouseEvent | TouchEvent, data: { rows: number[]; insertBefore: number }) {
     for (const dataRow of data.rows) {
       // no point in moving before or after itself
       if (dataRow === data.insertBefore || dataRow === data.insertBefore - 1) {
@@ -97,7 +97,7 @@ const Example41: React.FC = () => {
     return true;
   }
 
-  function onMoveRows(_e: MouseEvent | TouchEvent, args: { rows: number[]; insertBefore: number; }) {
+  function onMoveRows(_e: MouseEvent | TouchEvent, args: { rows: number[]; insertBefore: number }) {
     const extractedRows: any[] = [];
     const rows = args.rows;
     const insertBefore = args.insertBefore;
@@ -159,7 +159,7 @@ const Example41: React.FC = () => {
 
     let selectedRows: number[] = reactGridRef.current?.slickGrid?.getSelectedRows() || [];
 
-    if (!selectedRows.length || selectedRows.findIndex(row => row === row) === -1) {
+    if (!selectedRows.length || selectedRows.findIndex((row) => row === row) === -1) {
       selectedRows = [row];
       reactGridRef.current?.slickGrid?.setSelectedRows(selectedRows);
     }
@@ -225,19 +225,28 @@ const Example41: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptions ? '' : (
+  return !gridOptions ? (
+    ''
+  ) : (
     <div className="demo41">
       <div id="demo-container" className="container-fluid">
         <h2>
           Example 41: Drag & Drop
           <span className="float-end font18">
             see&nbsp;
-            <a target="_blank"
-              href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example41.tsx">
+            <a
+              target="_blank"
+              href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example41.tsx"
+            >
               <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
-          <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+          <button
+            className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+            type="button"
+            data-test="toggle-subtitle"
+            onClick={() => toggleSubTitle()}
+          >
             <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
           </button>
         </h2>
@@ -252,15 +261,16 @@ const Example41: React.FC = () => {
 
         <div className="row">
           <div className="col">
-            <SlickgridReact gridId="grid41"
-              columnDefinitions={columnDefinitions}
-              gridOptions={gridOptions}
+            <SlickgridReact
+              gridId="grid41"
+              columns={columnDefinitions}
+              options={gridOptions}
               dataset={dataset}
-              onReactGridCreated={$event => reactGridReady($event.detail)}
-              onDragInit={$event => handleOnDragInit($event.detail.eventData)}
-              onDragStart={$event => handleOnDragStart($event.detail.eventData)}
-              onDrag={$event => handleOnDrag($event.detail.eventData, $event.detail.args)}
-              onDragEnd={$event => handleOnDragEnd($event.detail.eventData, $event.detail.args)}
+              onReactGridCreated={($event) => reactGridReady($event.detail)}
+              onDragInit={($event) => handleOnDragInit($event.detail.eventData)}
+              onDragStart={($event) => handleOnDragStart($event.detail.eventData)}
+              onDrag={($event) => handleOnDrag($event.detail.eventData, $event.detail.args)}
+              onDragEnd={($event) => handleOnDragEnd($event.detail.eventData, $event.detail.args)}
             />
           </div>
         </div>
@@ -272,6 +282,6 @@ const Example41: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Example41;

@@ -5,7 +5,6 @@ import { withTranslation } from 'react-i18next';
 
 import {
   type Column,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
@@ -57,7 +56,7 @@ const Example15: React.FC = () => {
     // reactGridRef.current?.slickGrid.autosizeColumns();
     reactGridRef.current?.gridService.resetGrid(getColumnDefinitions());
     reactGridRef.current?.paginationService!.changeItemPerPage(DEFAULT_PAGE_SIZE);
-    window.setTimeout(() => localStorage[LOCAL_STORAGE_KEY] = null);
+    window.setTimeout(() => (localStorage[LOCAL_STORAGE_KEY] = null));
   }
 
   /* Define grid Options and Columns */
@@ -65,14 +64,14 @@ const Example15: React.FC = () => {
     const gridOptions: GridOption = {
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableCheckboxSelector: true,
       enableFiltering: true,
       enableTranslate: true,
       i18n: i18next,
       columnPicker: {
-        hideForceFitButton: true
+        hideForceFitButton: true,
       },
       gridMenu: {
         hideForceFitButton: true,
@@ -84,7 +83,7 @@ const Example15: React.FC = () => {
       enablePagination: true,
       pagination: {
         pageSizes: [5, 10, 15, 20, 25, 30, 40, 50, 75, 100],
-        pageSize: DEFAULT_PAGE_SIZE
+        pageSize: DEFAULT_PAGE_SIZE,
       },
     };
 
@@ -114,63 +113,107 @@ const Example15: React.FC = () => {
         nameKey: 'TITLE',
         filterable: true,
         sortable: true,
-        type: FieldType.string,
-        minWidth: 45, width: 100,
+        minWidth: 45,
+        width: 100,
         filter: {
-          model: Filters.compoundInput
-        }
+          model: Filters.compoundInput,
+        },
       },
       {
-        id: 'description', name: 'Description', field: 'description', filterable: true, sortable: true, minWidth: 80, width: 100,
-        type: FieldType.string,
+        id: 'description',
+        name: 'Description',
+        field: 'description',
+        filterable: true,
+        sortable: true,
+        minWidth: 80,
+        width: 100,
         filter: {
           model: Filters.input,
           filterShortcuts: [
-            { titleKey: 'BLANK_VALUES', searchTerms: ['< A'], iconCssClass: 'mdi mdi-filter-minus-outline', },
-            { titleKey: 'NON_BLANK_VALUES', searchTerms: ['> A'], iconCssClass: 'mdi mdi-filter-plus-outline', },
-          ]
-        }
+            { titleKey: 'BLANK_VALUES', searchTerms: ['< A'], iconCssClass: 'mdi mdi-filter-minus-outline' },
+            { titleKey: 'NON_BLANK_VALUES', searchTerms: ['> A'], iconCssClass: 'mdi mdi-filter-plus-outline' },
+          ],
+        },
       },
       {
-        id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: FieldType.number, exportCsvForceToKeepAsString: true,
-        minWidth: 55, width: 100,
+        id: 'duration',
+        name: 'Duration (days)',
+        field: 'duration',
+        sortable: true,
+        type: 'number',
+        exportCsvForceToKeepAsString: true,
+        minWidth: 55,
+        width: 100,
         nameKey: 'DURATION',
         filterable: true,
         filter: {
           collection: multiSelectFilterArray,
           model: Filters.multipleSelect,
           // we could add certain option(s) to the "multiple-select" plugin
-          filterOptions: {
+          options: {
             maxHeight: 250,
-            width: 175
-          } as MultipleSelectOption
-        }
+            width: 175,
+          } as MultipleSelectOption,
+        },
       },
       {
-        id: 'complete', name: '% Complete', field: 'percentComplete', nameKey: 'PERCENT_COMPLETE', minWidth: 70, type: FieldType.number, sortable: true, width: 100,
-        formatter: Formatters.percentCompleteBar, filterable: true, filter: { model: Filters.slider, operator: '>' }
+        id: 'complete',
+        name: '% Complete',
+        field: 'percentComplete',
+        nameKey: 'PERCENT_COMPLETE',
+        minWidth: 70,
+        type: 'number',
+        sortable: true,
+        width: 100,
+        formatter: Formatters.percentCompleteBar,
+        filterable: true,
+        filter: { model: Filters.slider, operator: '>' },
       },
       {
-        id: 'start', name: 'Start', field: 'start', nameKey: 'START', formatter: Formatters.dateIso, sortable: true, minWidth: 75, exportWithFormatter: true, width: 100,
-        type: FieldType.date, filterable: true,
+        id: 'start',
+        name: 'Start',
+        field: 'start',
+        nameKey: 'START',
+        formatter: Formatters.dateIso,
+        sortable: true,
+        minWidth: 75,
+        exportWithFormatter: true,
+        width: 100,
+        type: 'date',
+        filterable: true,
         filter: {
           model: Filters.compoundDate,
           filterShortcuts: [
-            { titleKey: 'PAST', searchTerms: [tempoFormat(new Date(), 'YYYY-MM-DD')], operator: '<', iconCssClass: 'mdi mdi-calendar', },
-            { titleKey: 'FUTURE', searchTerms: [tempoFormat(new Date(), 'YYYY-MM-DD')], operator: '>', iconCssClass: 'mdi mdi-calendar-clock', },
-          ]
-        }
+            { titleKey: 'PAST', searchTerms: [tempoFormat(new Date(), 'YYYY-MM-DD')], operator: '<', iconCssClass: 'mdi mdi-calendar' },
+            {
+              titleKey: 'FUTURE',
+              searchTerms: [tempoFormat(new Date(), 'YYYY-MM-DD')],
+              operator: '>',
+              iconCssClass: 'mdi mdi-calendar-clock',
+            },
+          ],
+        },
       },
       {
-        id: 'completed', field: 'completed', nameKey: 'COMPLETED', minWidth: 85, maxWidth: 85, formatter: Formatters.checkmarkMaterial, width: 100,
-        type: FieldType.boolean,
+        id: 'completed',
+        field: 'completed',
+        nameKey: 'COMPLETED',
+        minWidth: 85,
+        maxWidth: 85,
+        formatter: Formatters.checkmarkMaterial,
+        width: 100,
+        type: 'boolean',
         sortable: true,
         filterable: true,
         filter: {
-          collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
-          model: Filters.singleSelect
-        }
-      }
+          collection: [
+            { value: '', label: '' },
+            { value: true, label: 'True' },
+            { value: false, label: 'False' },
+          ],
+          model: Filters.singleSelect,
+        },
+      },
     ];
   }
 
@@ -183,7 +226,7 @@ const Example15: React.FC = () => {
       const randomYear = randomBetween(currentYear - 15, currentYear + 8);
       const randomYearShort = randomBetween(10, 25);
       const randomMonth = randomBetween(1, 12);
-      const randomMonthStr = (randomMonth < 10) ? `0${randomMonth}` : randomMonth;
+      const randomMonthStr = randomMonth < 10 ? `0${randomMonth}` : randomMonth;
       const randomDay = randomBetween(10, 28);
       const randomPercent = randomBetween(0, 100);
       const randomHour = randomBetween(10, 23);
@@ -192,14 +235,14 @@ const Example15: React.FC = () => {
       tmpData[i] = {
         id: i,
         title: 'Task ' + i,
-        description: (i % 5) ? 'desc ' + i : null, // also add some random to test NULL field
+        description: i % 5 ? 'desc ' + i : null, // also add some random to test NULL field
         duration: randomDuration,
         percentComplete: randomPercent,
         percentCompleteNumber: randomPercent,
-        start: new Date(randomYear, randomMonth, randomDay),          // provide a Date format
+        start: new Date(randomYear, randomMonth, randomDay), // provide a Date format
         usDateShort: `${randomMonth}/${randomDay}/${randomYearShort}`, // provide a date US Short in the dataset
         utcDate: `${randomYear}-${randomMonthStr}-${randomDay}T${randomHour}:${randomTime}:${randomTime}Z`,
-        completed: (i % 3 === 0)
+        completed: i % 3 === 0,
       };
     }
     return tmpData;
@@ -219,7 +262,7 @@ const Example15: React.FC = () => {
   }
 
   async function switchLanguage() {
-    const nextLanguage = (selectedLanguage === 'en') ? 'fr' : 'en';
+    const nextLanguage = selectedLanguage === 'en' ? 'fr' : 'en';
     await i18next.changeLanguage(nextLanguage);
     setSelectedLanguage(nextLanguage);
   }
@@ -260,36 +303,57 @@ const Example15: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptions ? '' : (
+  return !gridOptions ? (
+    ''
+  ) : (
     <div id="demo-container" className="container-fluid">
       <h2>
         Example 15: Grid State & Presets using Local Storage
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example15.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example15.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
       <div className="subtitle">
-        Grid State & Preset (<a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/grid-state-preset" target="_blank">Docs</a>)
+        Grid State & Preset (
+        <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/grid-state-preset" target="_blank">
+          Docs
+        </a>
+        )
         <br />
         <ul className="small">
           <li>Uses Local Storage to persist the Grid State and uses Grid Options "presets" to put the grid back to it's previous state</li>
           <ul>
-            <li>to demo this, simply change any columns (position reorder, visibility, size, filter, sort), then refresh your browser with (F5)</li>
+            <li>
+              to demo this, simply change any columns (position reorder, visibility, size, filter, sort), then refresh your browser with
+              (F5)
+            </li>
           </ul>
-          <li>Local Storage is just one option, you can use whichever is more convenient for you (Local Storage, Session Storage, DB, ...)</li>
+          <li>
+            Local Storage is just one option, you can use whichever is more convenient for you (Local Storage, Session Storage, DB, ...)
+          </li>
         </ul>
       </div>
 
-      <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="reset-button"
-        onClick={() => clearGridStateFromLocalStorage()}>
+      <button
+        className="btn btn-outline-secondary btn-sm btn-icon"
+        data-test="reset-button"
+        onClick={() => clearGridStateFromLocalStorage()}
+      >
         <i className="mdi mdi-close me-1"></i>
         Clear Grid State from Local Storage &amp; Reset Grid
       </button>
@@ -303,15 +367,16 @@ const Example15: React.FC = () => {
         {selectedLanguage + '.json'}
       </span>
 
-      <SlickgridReact gridId="grid15"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid15"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
-        onGridStateChanged={$event => gridStateChanged($event.detail)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
+        onGridStateChanged={($event) => gridStateChanged($event.detail)}
       />
     </div>
   );
-}
+};
 
 export default withTranslation()(Example15);

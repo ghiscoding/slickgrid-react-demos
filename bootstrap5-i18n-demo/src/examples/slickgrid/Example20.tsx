@@ -2,7 +2,6 @@ import {
   type Column,
   type ColumnEditorDualInput,
   Editors,
-  FieldType,
   Filters,
   formatNumber,
   Formatters,
@@ -33,7 +32,7 @@ const Example20: React.FC = () => {
     // when unmounting
     return () => {
       slickEventHandler.unsubscribeAll();
-    }
+    };
   }, []);
 
   function reactGridReady(reactGrid: SlickgridReactInstance) {
@@ -57,44 +56,65 @@ const Example20: React.FC = () => {
   function defineGrid() {
     const columnDefinitions: Column[] = [
       {
-        id: 'sel', name: '#', field: 'id',
-        minWidth: 40, width: 40, maxWidth: 40,
+        id: 'sel',
+        name: '#',
+        field: 'id',
+        minWidth: 40,
+        width: 40,
+        maxWidth: 40,
         cannotTriggerInsert: true,
         resizable: false,
         unselectable: true,
       },
       {
-        id: 'title', name: 'Title', field: 'title',
-        minWidth: 100, width: 120,
+        id: 'title',
+        name: 'Title',
+        field: 'title',
+        minWidth: 100,
+        width: 120,
         filterable: true,
-        sortable: true
+        sortable: true,
       },
       {
-        id: 'percentComplete', name: '% Complete', field: 'percentComplete',
+        id: 'percentComplete',
+        name: '% Complete',
+        field: 'percentComplete',
         resizable: false,
-        minWidth: 130, width: 140,
+        minWidth: 130,
+        width: 140,
         formatter: Formatters.percentCompleteBar,
-        type: FieldType.number,
+        type: 'number',
         filterable: true,
         filter: { model: Filters.slider, operator: '>=' },
-        sortable: true
+        sortable: true,
       },
       {
-        id: 'start', name: 'Start', field: 'start',
-        minWidth: 100, width: 120,
-        filterable: true, sortable: true,
-        formatter: Formatters.dateIso
+        id: 'start',
+        name: 'Start',
+        field: 'start',
+        minWidth: 100,
+        width: 120,
+        filterable: true,
+        sortable: true,
+        formatter: Formatters.dateIso,
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish',
-        minWidth: 100, width: 120,
-        filterable: true, sortable: true,
-        formatter: Formatters.dateIso
+        id: 'finish',
+        name: 'Finish',
+        field: 'finish',
+        minWidth: 100,
+        width: 120,
+        filterable: true,
+        sortable: true,
+        formatter: Formatters.dateIso,
       },
       {
-        id: 'cost', name: 'Cost | Duration', field: 'cost',
+        id: 'cost',
+        name: 'Cost | Duration',
+        field: 'cost',
         formatter: costDurationFormatter,
-        minWidth: 150, width: 170,
+        minWidth: 150,
+        width: 170,
         sortable: true,
         // filterable: true,
         filter: {
@@ -161,49 +181,68 @@ const Example20: React.FC = () => {
             return { valid: isValid, msg: errorMsg };
           }
           */
-        }
+        },
       },
       {
-        id: 'effortDriven', name: 'Effort Driven', field: 'effortDriven',
-        minWidth: 100, width: 120,
+        id: 'effortDriven',
+        name: 'Effort Driven',
+        field: 'effortDriven',
+        minWidth: 100,
+        width: 120,
         formatter: Formatters.checkmarkMaterial,
         filterable: true,
         filter: {
-          collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
-          model: Filters.singleSelect
+          collection: [
+            { value: '', label: '' },
+            { value: true, label: 'True' },
+            { value: false, label: 'False' },
+          ],
+          model: Filters.singleSelect,
         },
-        sortable: true
+        sortable: true,
       },
       {
-        id: 'title1', name: 'Title 1', field: 'title1',
-        minWidth: 100, width: 120,
+        id: 'title1',
+        name: 'Title 1',
+        field: 'title1',
+        minWidth: 100,
+        width: 120,
         filterable: true,
-        sortable: true
+        sortable: true,
       },
       {
-        id: 'title2', name: 'Title 2', field: 'title2',
-        minWidth: 100, width: 120,
+        id: 'title2',
+        name: 'Title 2',
+        field: 'title2',
+        minWidth: 100,
+        width: 120,
         filterable: true,
-        sortable: true
+        sortable: true,
       },
       {
-        id: 'title3', name: 'Title 3', field: 'title3',
-        minWidth: 100, width: 120,
+        id: 'title3',
+        name: 'Title 3',
+        field: 'title3',
+        minWidth: 100,
+        width: 120,
         filterable: true,
-        sortable: true
+        sortable: true,
       },
       {
-        id: 'title4', name: 'Title 4', field: 'title4',
-        minWidth: 100, width: 120,
+        id: 'title4',
+        name: 'Title 4',
+        field: 'title4',
+        minWidth: 100,
+        width: 120,
         filterable: true,
-        sortable: true
-      }
+        sortable: true,
+      },
     ];
 
     const gridOptions: GridOption = {
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       gridWidth: 920,
       enableCellNavigation: true,
@@ -216,7 +255,7 @@ const Example20: React.FC = () => {
 
       // show both Frozen Columns in HeaderMenu & GridMenu, these are opt-in commands so they're disabled by default
       gridMenu: { hideClearFrozenColumnsCommand: false },
-      headerMenu: { hideFreezeColumnsCommand: false }
+      headerMenu: { hideFreezeColumnsCommand: false },
     };
 
     setColumnDefinitions(columnDefinitions);
@@ -230,12 +269,12 @@ const Example20: React.FC = () => {
       mockDataset[i] = {
         id: i,
         title: 'Task ' + i,
-        cost: (i % 33 === 0) ? null : Math.random() * 10000,
-        duration: i % 8 ? (Math.round(Math.random() * 100) + '') : null,
+        cost: i % 33 === 0 ? null : Math.random() * 10000,
+        duration: i % 8 ? Math.round(Math.random() * 100) + '' : null,
         percentComplete: Math.round(Math.random() * 100),
         start: new Date(2009, 0, 1),
         finish: new Date(2009, 4, 5),
-        effortDriven: (i % 5 === 0),
+        effortDriven: i % 5 === 0,
         title1: `Some Text ${Math.round(Math.random() * 25)}`,
         title2: `Some Text ${Math.round(Math.random() * 25)}`,
         title3: `Some Text ${Math.round(Math.random() * 25)}`,
@@ -253,7 +292,7 @@ const Example20: React.FC = () => {
 
   function updateFrozenColumnCount() {
     reactGridRef.current?.slickGrid?.setOptions({
-      frozenColumn: frozenColumnCount
+      frozenColumn: frozenColumnCount,
     });
   }
 
@@ -265,7 +304,7 @@ const Example20: React.FC = () => {
 
   function updateFrozenRowCount() {
     reactGridRef.current?.slickGrid?.setOptions({
-      frozenRow: frozenRowCount
+      frozenRow: frozenRowCount,
     });
   }
 
@@ -279,7 +318,7 @@ const Example20: React.FC = () => {
   }
 
   function isNullUndefinedOrEmpty(data: any) {
-    return (data === '' || data === null || data === undefined);
+    return data === '' || data === null || data === undefined;
   }
 
   function onCellValidationError(_e: Event, args: any) {
@@ -295,7 +334,7 @@ const Example20: React.FC = () => {
   /** toggle dynamically, through slickgrid "setOptions()" the top/bottom pinned location */
   function toggleFrozenBottomRows() {
     reactGridRef.current?.slickGrid.setOptions({
-      frozenBottom: !isFrozenBottom
+      frozenBottom: !isFrozenBottom,
     });
 
     const newIsFrozenBottom = !isFrozenBottom;
@@ -310,24 +349,37 @@ const Example20: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptions ? '' : (
+  return !gridOptions ? (
+    ''
+  ) : (
     <div id="demo-container" className="container-fluid">
       <h2>
         Example 20: Pinned (frozen) Columns/Rows
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example20.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example20.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
       <div className="subtitle">
-        This example demonstrates the use of Pinned (aka frozen) Columns and/or Rows (<a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/frozen-columns-rows" target="_blank">Docs</a>)
+        This example demonstrates the use of Pinned (aka frozen) Columns and/or Rows (
+        <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/frozen-columns-rows" target="_blank">
+          Docs
+        </a>
+        )
         <ul>
           <li>Option to pin any number of columns (left only) or rows</li>
           <li>Option to pin the rows at the bottom instead of the top (default)</li>
@@ -359,12 +411,14 @@ const Example20: React.FC = () => {
 
       <div className="row mt-2">
         <div className="col-sm-12">
-          <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" onClick={() => setFrozenColumns(-1)}
-            data-test="remove-frozen-column-button">
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+            onClick={() => setFrozenColumns(-1)}
+            data-test="remove-frozen-column-button"
+          >
             <i className="mdi mdi-close"></i> Remove Frozen Columns
           </button>
-          <button className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => setFrozenColumns(2)}
-            data-test="set-3frozen-columns">
+          <button className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => setFrozenColumns(2)} data-test="set-3frozen-columns">
             <i className="mdi mdi-pin-outline"></i> Set 3 Frozen Columns
           </button>
           <span style={{ marginLeft: '15px' }}>
@@ -380,15 +434,16 @@ const Example20: React.FC = () => {
         <hr />
       </div>
 
-      <SlickgridReact gridId="grid20"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid20"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
-        onValidationError={$event => onCellValidationError($event.detail.eventData, $event.detail.args)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
+        onValidationError={($event) => onCellValidationError($event.detail.eventData, $event.detail.args)}
       />
     </div>
   );
-}
+};
 
 export default Example20;

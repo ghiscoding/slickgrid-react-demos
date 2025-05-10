@@ -3,7 +3,6 @@ import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { useEffect, useState } from 'react';
 import {
   type Column,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
@@ -16,9 +15,9 @@ import {
   type VanillaCalendarOption,
 } from 'slickgrid-react';
 
-import { CustomInputFilter } from './custom-inputFilter';
+import { CustomInputFilter } from './custom-inputFilter.js';
 
-import URL_SAMPLE_COLLECTION_DATA from './data/collection_500_numbers.json';
+import SAMPLE_COLLECTION_DATA from './data/collection_500_numbers.json';
 
 const NB_ITEMS = 10500;
 
@@ -39,22 +38,30 @@ const Example4: React.FC = () => {
       field: 'title',
       filterable: true,
       sortable: true,
-      type: FieldType.string,
       minWidth: 45,
       filter: {
-        model: Filters.compoundInputText
-      }
+        model: Filters.compoundInputText,
+      },
     },
     {
-      id: 'description', name: 'Description', field: 'description', filterable: true, sortable: true, minWidth: 80,
-      type: FieldType.string,
+      id: 'description',
+      name: 'Description',
+      field: 'description',
+      filterable: true,
+      sortable: true,
+      minWidth: 80,
       filter: {
         model: CustomInputFilter, // create a new instance to make each Filter independent from each other customFilter
-        enableTrimWhiteSpace: true
-      }
+        enableTrimWhiteSpace: true,
+      },
     },
     {
-      id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: FieldType.number, exportCsvForceToKeepAsString: true,
+      id: 'duration',
+      name: 'Duration (days)',
+      field: 'duration',
+      sortable: true,
+      type: 'number',
+      exportCsvForceToKeepAsString: true,
       minWidth: 55,
       filterable: true,
       filter: {
@@ -63,28 +70,31 @@ const Example4: React.FC = () => {
         // 3 ways are supported (fetch, Promise or RxJS when available)
 
         // 1- use `fetch`
-        // collectionAsync: fetch(URL_SAMPLE_COLLECTION_DATA),
+        // collectionAsync: fetch(SAMPLE_COLLECTION_DATA_URL),
 
         // OR 2- use a Promise
-        collectionAsync: Promise.resolve(URL_SAMPLE_COLLECTION_DATA),
+        collectionAsync: Promise.resolve(SAMPLE_COLLECTION_DATA),
 
         // collectionFilterBy & collectionSortBy accept a single or multiple options
         // we can exclude certains values 365 & 360 from the dropdown filter
-        collectionFilterBy: [{
-          property: 'value',
-          operator: OperatorType.notEqual,
-          value: 360
-        }, {
-          property: 'value',
-          operator: OperatorType.notEqual,
-          value: 365
-        }],
+        collectionFilterBy: [
+          {
+            property: 'value',
+            operator: OperatorType.notEqual,
+            value: 360,
+          },
+          {
+            property: 'value',
+            operator: OperatorType.notEqual,
+            value: 365,
+          },
+        ],
 
         // sort the select dropdown in a descending order
         collectionSortBy: {
           property: 'value',
           sortDesc: true,
-          fieldType: FieldType.number
+          fieldType: 'number',
         },
         customStructure: {
           value: 'value',
@@ -94,44 +104,75 @@ const Example4: React.FC = () => {
         },
         collectionOptions: {
           separatorBetweenTextLabels: ' ',
-          filterResultAfterEachPass: 'chain' // options are "merge" or "chain" (defaults to "chain")
+          filterResultAfterEachPass: 'chain', // options are "merge" or "chain" (defaults to "chain")
         },
         // we could add certain option(s) to the "multiple-select" plugin
-        filterOptions: {
+        options: {
           maxHeight: 250,
           width: 175,
 
           // if we want to display shorter text as the selected text (on the select filter itself, parent element)
           // we can use "useSelectOptionLabel" or "useSelectOptionLabelToHtml" the latter will parse html
-          useSelectOptionLabelToHtml: true
-        } as MultipleSelectOption
-      }
+          useSelectOptionLabelToHtml: true,
+        } as MultipleSelectOption,
+      },
     },
     {
-      id: 'complete', name: '% Complete', field: 'percentComplete', formatter: Formatters.percentCompleteBar, minWidth: 70, type: FieldType.number, sortable: true,
-      filterable: true, filter: { model: Filters.compoundInputNumber }
+      id: 'complete',
+      name: '% Complete',
+      field: 'percentComplete',
+      formatter: Formatters.percentCompleteBar,
+      minWidth: 70,
+      type: 'number',
+      sortable: true,
+      filterable: true,
+      filter: { model: Filters.compoundInputNumber },
     },
     {
-      id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso, sortable: true, minWidth: 75,
-      type: FieldType.date, filterable: true, filter: { model: Filters.compoundDate }
+      id: 'start',
+      name: 'Start',
+      field: 'start',
+      formatter: Formatters.dateIso,
+      sortable: true,
+      minWidth: 75,
+      type: 'date',
+      filterable: true,
+      filter: { model: Filters.compoundDate },
     },
     {
-      id: 'usDateShort', name: 'US Date Short', field: 'usDateShort', sortable: true, minWidth: 70, width: 70,
-      type: FieldType.dateUsShort, filterable: true, filter: { model: Filters.compoundDate }
+      id: 'usDateShort',
+      name: 'US Date Short',
+      field: 'usDateShort',
+      sortable: true,
+      minWidth: 70,
+      width: 70,
+      type: 'dateUsShort',
+      filterable: true,
+      filter: { model: Filters.compoundDate },
     },
     {
-      id: 'utcDate', name: 'UTC Date', field: 'utcDate', formatter: Formatters.dateTimeIsoAmPm, sortable: true, minWidth: 115,
-      type: FieldType.dateUtc, outputType: FieldType.dateTimeIsoAmPm,
+      id: 'utcDate',
+      name: 'UTC Date',
+      field: 'utcDate',
+      formatter: Formatters.dateTimeIsoAmPm,
+      sortable: true,
+      minWidth: 115,
+      type: 'dateUtc',
+      outputType: 'dateTimeIsoAmPm',
       filterable: true,
       filter: {
         model: Filters.compoundDate,
-        // override any of the calendar options through "filterOptions"
-        filterOptions: { range: { min: 'today' } } as VanillaCalendarOption
-      }
+        // override any of the calendar options through "options"
+        options: { displayDateMin: 'today' } as VanillaCalendarOption,
+      },
     },
     {
-      id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven.isEffort', minWidth: 85, maxWidth: 95,
-      type: FieldType.boolean,
+      id: 'effort-driven',
+      name: 'Effort Driven',
+      field: 'effortDriven.isEffort',
+      minWidth: 85,
+      maxWidth: 95,
+      type: 'boolean',
       sortable: true,
 
       // to pass multiple formatters, use the params property
@@ -150,17 +191,15 @@ const Example4: React.FC = () => {
         model: Filters.singleSelect,
 
         // we could add certain option(s) to the "multiple-select" plugin
-        filterOptions: {
-          maxHeight: 250
-        } as MultipleSelectOption,
-      }
-    }
+        options: { maxHeight: 250 } as MultipleSelectOption,
+      },
+    },
   ];
 
   const gridOptions: GridOption = {
     autoResize: {
       container: '#demo-container',
-      rightPadding: 10
+      rightPadding: 10,
     },
     enableExcelExport: true,
     enableExcelCopyBuffer: true,
@@ -178,11 +217,11 @@ const Example4: React.FC = () => {
       ],
       sorters: [
         { columnId: 'duration', direction: 'DESC' },
-        { columnId: 'complete', direction: 'ASC' }
+        { columnId: 'complete', direction: 'ASC' },
       ],
     },
     externalResources: [new ExcelExportService()],
-    preParseDateColumns: '__' // or true
+    preParseDateColumns: '__', // or true
   };
 
   function logItems() {
@@ -193,33 +232,33 @@ const Example4: React.FC = () => {
     // mock a dataset
     const tempDataset: any[] = [];
 
-    for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
+    for (let i = startingIndex; i < startingIndex + itemCount; i++) {
       const randomDuration = Math.round(Math.random() * 100);
       const randomYear = randomBetween(2000, 2035);
       const randomYearShort = randomBetween(10, 35);
       const randomMonth = randomBetween(1, 12);
-      const randomMonthStr = (randomMonth < 10) ? `0${randomMonth}` : randomMonth;
+      const randomMonthStr = randomMonth < 10 ? `0${randomMonth}` : randomMonth;
       const randomDay = randomBetween(10, 28);
       const randomPercent = randomBetween(0, 100);
       const randomHour = randomBetween(10, 23);
       const randomTime = randomBetween(10, 59);
       const randomMilliseconds = `${randomBetween(1, 9)}${randomBetween(10, 99)}`;
-      const randomIsEffort = (i % 3 === 0);
+      const randomIsEffort = i % 3 === 0;
 
       tempDataset.push({
         id: i,
         title: 'Task ' + i,
-        description: (i % 5) ? 'desc ' + i : null, // also add some random to test NULL field
+        description: i % 5 ? 'desc ' + i : null, // also add some random to test NULL field
         duration: randomDuration,
         percentComplete: randomPercent,
         percentCompleteNumber: randomPercent,
-        start: (i % 4) ? null : new Date(randomYear, randomMonth, randomDay),          // provide a Date format
+        start: i % 4 ? null : new Date(randomYear, randomMonth, randomDay), // provide a Date format
         usDateShort: `${randomMonth}/${randomDay}/${randomYearShort}`, // provide a date US Short in the dataset
         utcDate: `${randomYear}-${randomMonthStr}-${randomDay}T${randomHour}:${randomTime}:${randomTime}.${randomMilliseconds}Z`,
         effortDriven: {
           isEffort: randomIsEffort,
           label: randomIsEffort ? 'Effort' : 'NoEffort',
-        }
+        },
       });
     }
 
@@ -251,7 +290,7 @@ const Example4: React.FC = () => {
           startTime: new Date(),
           endTime: new Date(),
           itemCount: args?.current || 0,
-          totalItemCount: dataset?.length ?? 0
+          totalItemCount: dataset?.length ?? 0,
         });
       });
     }
@@ -297,43 +336,71 @@ const Example4: React.FC = () => {
         Example 4: Client Side Sort/Filter
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example4.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example4.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
       <div className="subtitle">
-        Sort/Filter on client side only using SlickGrid DataView (<a href="https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/sorting" target="_blank">Docs</a>)
+        Sort/Filter on client side only using SlickGrid DataView (
+        <a href="https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/sorting" target="_blank">
+          Docs
+        </a>
+        )
         <br />
         <ul className="small">
           <li>Support multi-sort (by default), hold "Shift" key and click on the next column to sort.</li>
           <li>All column types support the following operators: (&gt;, &gt;=, &lt;, &lt;=, &lt;&gt;, !=, =, ==, *)</li>
           <ul>
             <li>Example: &gt;100 ... &gt;=2001-01-01 ... &gt;02/28/17</li>
-            <li><b>Note:</b> For filters to work properly (default is string), make sure to provide a FieldType (type is against the dataset, not the Formatter)</li>
+            <li>
+              <b>Note:</b> For filters to work properly (default is string), make sure to provide a FieldType (type is against the dataset,
+              not the Formatter)
+            </li>
           </ul>
           <li>Date Filters</li>
           <ul>
             <li>
-              FieldType of dateUtc/date (from dataset) can use an extra option of "filterSearchType" to let user filter more easily.
-              For example, in the "UTC Date" field below, you can type "&gt;02/28/2017", also when dealing with UTC you have to take the time difference in consideration.
+              FieldType of dateUtc/date (from dataset) can use an extra option of "filterSearchType" to let user filter more easily. For
+              example, in the "UTC Date" field below, you can type "&gt;02/28/2017", also when dealing with UTC you have to take the time
+              difference in consideration.
             </li>
           </ul>
-          <li>On String filters, (*) can be used as startsWith (Hello* =&gt; matches "Hello Word") ... endsWith (*Doe =&gt; matches: "John Doe")</li>
-          <li>Custom Filter are now possible, "Description" column below, is a customized InputFilter with different placeholder. See <a href="https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/filters/custom-filter" target="_blank">Wiki - Custom Filter</a></li>
+          <li>
+            On String filters, (*) can be used as startsWith (Hello* =&gt; matches "Hello Word") ... endsWith (*Doe =&gt; matches: "John
+            Doe")
+          </li>
+          <li>
+            Custom Filter are now possible, "Description" column below, is a customized InputFilter with different placeholder. See{' '}
+            <a href="https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/filters/custom-filter" target="_blank">
+              Wiki - Custom Filter
+            </a>
+          </li>
         </ul>
       </div>
 
       <br />
-      {metrics && <span><><b>Metrics:</b>
-        {metrics.endTime ? format(metrics.endTime, 'YYYY-MM-DD HH:mm:ss', 'en-US') : ''}
-        | {metrics.itemCount} of {metrics.totalItemCount} items </>
-      </span>}
+      {metrics && (
+        <span>
+          <>
+            <b>Metrics:</b>
+            {metrics.endTime ? format(metrics.endTime, 'YYYY-MM-DD HH:mm:ss', 'en-US') : ''}| {metrics.itemCount} of{' '}
+            {metrics.totalItemCount} items{' '}
+          </>
+        </span>
+      )}
 
       <div className="btn-group mx-1" role="group" aria-label="...">
         <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="scroll-top-btn" onClick={() => scrollGridTop()}>
@@ -344,36 +411,45 @@ const Example4: React.FC = () => {
         </button>
       </div>
 
-      <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-filters"
-        onClick={() => reactGrid?.filterService.clearFilters()}>
+      <button
+        className="btn btn-outline-secondary btn-sm btn-icon"
+        data-test="clear-filters"
+        onClick={() => reactGrid?.filterService.clearFilters()}
+      >
         Clear Filters
       </button>
-      <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="clear-sorting"
-        onClick={() => reactGrid?.sortService.clearSorting()}>
+      <button
+        className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+        data-test="clear-sorting"
+        onClick={() => reactGrid?.sortService.clearSorting()}
+      >
         Clear Sorting
       </button>
-      <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-filter"
-        onClick={() => setFiltersDynamically()}>
+      <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-filter" onClick={() => setFiltersDynamically()}>
         Set Filters Dynamically
       </button>
-      <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="set-dynamic-sorting"
-        onClick={() => setSortingDynamically()}>
+      <button
+        className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+        data-test="set-dynamic-sorting"
+        onClick={() => setSortingDynamically()}
+      >
         Set Sorting Dynamically
       </button>
       <button className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => logItems()}>
         <span title="console.log all dataset items">Log Items</span>
       </button>
 
-      <SlickgridReact gridId="grid4"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid4"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
-        onGridStateChanged={$event => gridStateChanged($event.detail)}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
-        onRowCountChanged={$event => refreshMetrics($event.detail.eventData, $event.detail.args)}
+        onGridStateChanged={($event) => gridStateChanged($event.detail)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
+        onRowCountChanged={($event) => refreshMetrics($event.detail.eventData, $event.detail.args)}
       />
     </div>
   );
-}
+};
 
 export default Example4;

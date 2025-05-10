@@ -1,7 +1,6 @@
 import {
   type Column,
   Editors,
-  FieldType,
   Formatters,
   type GridOption,
   type OnEventArgs,
@@ -38,7 +37,7 @@ const Example11: React.FC = () => {
 
   /* Define grid Options and Columns */
   function defineGrid() {
-    const columnDefinitions = [
+    const columnDefinitions: Column[] = [
       {
         id: 'delete',
         field: 'id',
@@ -53,41 +52,48 @@ const Example11: React.FC = () => {
           if (confirm('Are you sure?')) {
             reactGridRef.current?.gridService.deleteItemById(args.dataContext.id);
           }
-        }
+        },
       },
       {
-        id: 'title', name: 'Title', field: 'title',
+        id: 'title',
+        name: 'Title',
+        field: 'title',
         sortable: true,
-        type: FieldType.string,
         editor: {
-          model: Editors.longText
-        }
+          model: Editors.longText,
+        },
       },
       {
-        id: 'duration', name: 'Duration (days)', field: 'duration',
+        id: 'duration',
+        name: 'Duration (days)',
+        field: 'duration',
         sortable: true,
-        type: FieldType.number,
+        type: 'number',
         editor: {
-          model: Editors.text
+          model: Editors.text,
         },
         onCellChange: (_e: Event, args: OnEventArgs) => {
           alert('onCellChange directly attached to the column definition');
           console.log(args);
-        }
+        },
       },
       {
-        id: 'complete', name: '% Complete', field: 'percentComplete',
+        id: 'complete',
+        name: '% Complete',
+        field: 'percentComplete',
         formatter: Formatters.percentCompleteBar,
-        type: FieldType.number,
+        type: 'number',
         editor: {
-          model: Editors.integer
-        }
+          model: Editors.integer,
+        },
       },
       {
-        id: 'start', name: 'Start', field: 'start',
+        id: 'start',
+        name: 'Start',
+        field: 'start',
         formatter: Formatters.dateIso,
         sortable: true,
-        type: FieldType.date,
+        type: 'date',
         /*
         editor: {
           model: Editors.date
@@ -95,18 +101,23 @@ const Example11: React.FC = () => {
         */
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish',
-        formatter: Formatters.dateIso, sortable: true,
-        type: FieldType.date
+        id: 'finish',
+        name: 'Finish',
+        field: 'finish',
+        formatter: Formatters.dateIso,
+        sortable: true,
+        type: 'date',
       },
       {
-        id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven',
+        id: 'effort-driven',
+        name: 'Effort Driven',
+        field: 'effortDriven',
         formatter: Formatters.checkmarkMaterial,
-        type: FieldType.number,
+        type: 'number',
         editor: {
-          model: Editors.checkbox
-        }
-      }
+          model: Editors.checkbox,
+        },
+      },
     ];
 
     setColumnDefinitions(columnDefinitions);
@@ -114,12 +125,12 @@ const Example11: React.FC = () => {
       asyncEditorLoading: false,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       editable: true,
       enableColumnPicker: true,
       enableCellNavigation: true,
-      enableRowSelection: true
+      enableRowSelection: true,
     });
   }
 
@@ -129,7 +140,7 @@ const Example11: React.FC = () => {
     for (let i = 0; i < itemCount; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
+      const randomDay = Math.floor(Math.random() * 29);
       const randomPercent = Math.round(Math.random() * 100);
 
       mockedDataset[i] = {
@@ -139,8 +150,8 @@ const Example11: React.FC = () => {
         percentComplete: randomPercent,
         percentCompleteNumber: randomPercent,
         start: new Date(randomYear, randomMonth, randomDay),
-        finish: new Date(randomYear, (randomMonth + 1), randomDay),
-        effortDriven: (i % 5 === 0)
+        finish: new Date(randomYear, randomMonth + 1, randomDay),
+        effortDriven: i % 5 === 0,
       };
     }
     setDataset(mockedDataset);
@@ -160,7 +171,7 @@ const Example11: React.FC = () => {
   function createNewItem(incrementIdByHowMany = 1) {
     const dataset = reactGridRef.current!.dataView.getItems();
     let highestId = 0;
-    dataset.forEach(item => {
+    dataset.forEach((item) => {
       if (item.id > highestId) {
         highestId = item.id;
       }
@@ -168,7 +179,7 @@ const Example11: React.FC = () => {
     const newId = highestId + incrementIdByHowMany;
     const randomYear = 2000 + Math.floor(Math.random() * 10);
     const randomMonth = Math.floor(Math.random() * 11);
-    const randomDay = Math.floor((Math.random() * 29));
+    const randomDay = Math.floor(Math.random() * 29);
     const randomPercent = Math.round(Math.random() * 100);
 
     return {
@@ -178,8 +189,8 @@ const Example11: React.FC = () => {
       percentComplete: randomPercent,
       percentCompleteNumber: randomPercent,
       start: new Date(randomYear, randomMonth, randomDay),
-      finish: new Date(randomYear, (randomMonth + 2), randomDay),
-      effortDriven: true
+      finish: new Date(randomYear, randomMonth + 2, randomDay),
+      effortDriven: true,
     };
   }
 
@@ -208,7 +219,7 @@ const Example11: React.FC = () => {
     return (rowNumber: number) => {
       const item = reactGridRef.current!.dataView.getItem(rowNumber);
       let meta = {
-        cssClasses: ''
+        cssClasses: '',
       };
       if (typeof previousItemMetadata === 'object') {
         meta = previousItemMetadata(rowNumber);
@@ -264,31 +275,59 @@ const Example11: React.FC = () => {
         Example 11: Add / Update / Highlight a Datagrid Item
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example11.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example11.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
       <div className="subtitle">
-        Add / Update / Hightlight an Item from the Datagrid (<a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/add-update-highlight" target="_blank">Docs</a>).
+        Add / Update / Hightlight an Item from the Datagrid (
+        <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/add-update-highlight" target="_blank">
+          Docs
+        </a>
+        ).
         <ul>
-          <li><b>Note:</b> this demo is <b>only</b> on the datagrid (client) side, you still need to deal with the backend yourself</li>
+          <li>
+            <b>Note:</b> this demo is <b>only</b> on the datagrid (client) side, you still need to deal with the backend yourself
+          </li>
           <li>Adding an item, will always be showing as the 1st item in the grid because that is the best visual place to add it</li>
           <li>Add/Update an item requires a valid Slickgrid Selection Model, you have 2 choices to deal with this:</li>
-          <ul><li>You can enable "enableCheckboxSelector" or "enableRowSelection" to True</li></ul>
+          <ul>
+            <li>You can enable "enableCheckboxSelector" or "enableRowSelection" to True</li>
+          </ul>
           <li>Click on any of the buttons below to test this out</li>
-          <li>You can change the highlighted color &amp; animation by changing the <a href="https://github.com/ghiscoding/slickgrid-react/blob/master/slickgrid-react/src/slickgrid-react/styles/_variables.scss" target="_blank">SASS Variables</a></li>
+          <li>
+            You can change the highlighted color &amp; animation by changing the{' '}
+            <a
+              href="https://github.com/ghiscoding/slickgrid-react/blob/master/slickgrid-react/src/slickgrid-react/styles/_variables.scss"
+              target="_blank"
+            >
+              SASS Variables
+            </a>
+          </li>
           <ul>
             <li>"$row-highlight-background-color" or "$row-highlight-fade-animation"</li>
           </ul>
           <li>You can also add CSS class(es) on the fly (or on page load) on rows with certain criteria, (e.g. click on last button)</li>
           <ul>
-            <li>Example, click on button "Highlight Rows with Duration over 50" to see row styling changing. <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/dynamic-item-metadata" target="_blank">Wiki doc</a></li>
+            <li>
+              Example, click on button "Highlight Rows with Duration over 50" to see row styling changing.{' '}
+              <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/dynamic-item-metadata" target="_blank">
+                Wiki doc
+              </a>
+            </li>
           </ul>
         </ul>
       </div>
@@ -300,38 +339,50 @@ const Example11: React.FC = () => {
             <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="scroll-top-btn" onClick={() => scrollGridTop()}>
               <i className="mdi mdi-arrow-down mdi-rotate-180"></i>
             </button>
-            <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="scroll-bottom-btn"
-              onClick={() => scrollGridBottom()}>
+            <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="scroll-bottom-btn" onClick={() => scrollGridBottom()}>
               <i className="mdi mdi-arrow-down"></i>
             </button>
           </div>
-          <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="add-new-item-top-btn"
-            onClick={() => addNewItem('top')}>Add New Mocked Item (top)</button>
-          <button className="btn btn-sm btn-outline-secondary mx-1" data-test="add-new-item-bottom-btn"
-            onClick={() => addNewItem('bottom')}>Add New Mocked Item
-            (bottom)</button>
-          <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="update-second-item-btn"
-            onClick={() => updateSecondItem()}>
+          <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="add-new-item-top-btn" onClick={() => addNewItem('top')}>
+            Add New Mocked Item (top)
+          </button>
+          <button
+            className="btn btn-sm btn-outline-secondary mx-1"
+            data-test="add-new-item-bottom-btn"
+            onClick={() => addNewItem('bottom')}
+          >
+            Add New Mocked Item (bottom)
+          </button>
+          <button
+            className="btn btn-sm btn-outline-secondary btn-icon"
+            data-test="update-second-item-btn"
+            onClick={() => updateSecondItem()}
+          >
             Update 2nd Row Item with Random Duration
           </button>
-          <button className="btn btn-sm btn-outline-secondary mx-1" data-test="highlight-row5-btn"
-            onClick={() => highlighFifthRow()}>Highlight 5th Row</button>
-          <button className="btn btn-sm btn-outline-secondary btn-icon" data-test="highlight-duration40-btn"
-            onClick={() => changeDurationBackgroundColor()}>
+          <button className="btn btn-sm btn-outline-secondary mx-1" data-test="highlight-row5-btn" onClick={() => highlighFifthRow()}>
+            Highlight 5th Row
+          </button>
+          <button
+            className="btn btn-sm btn-outline-secondary btn-icon"
+            data-test="highlight-duration40-btn"
+            onClick={() => changeDurationBackgroundColor()}
+          >
             Highlight Rows with Duration over 50
           </button>
         </span>
         <hr />
       </div>
 
-      <SlickgridReact gridId="grid11"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid11"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
       />
     </div>
   );
-}
+};
 
 export default Example11;

@@ -5,7 +5,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import {
   type Column,
-  FieldType,
   Filters,
   type GridOption,
   type Metrics,
@@ -18,7 +17,10 @@ import SAMPLE_COLLECTION_DATA_URL from './data/customers_100.json?url';
 
 import './example39.scss';
 
-interface Status { text: string, class: string }
+interface Status {
+  text: string;
+  class: string;
+}
 
 const GRAPHQL_QUERY_DATASET_NAME = 'users';
 const FAKE_SERVER_DELAY = 250;
@@ -39,7 +41,7 @@ const Example39: React.FC = () => {
   const [tagDataClass, setTagDataClass] = useState('');
   const [hideSubTitle, setHideSubTitle] = useState(false);
 
-  const gridOptionsRef = useRef<GridOption>();
+  const gridOptionsRef = useRef<GridOption>(null);
   const metricsRef = useRef({} as Metrics);
   const reactGridRef = useRef<SlickgridReactInstance | null>(null);
   const serverWaitDelayRef = useRef(serverWaitDelay);
@@ -55,40 +57,54 @@ const Example39: React.FC = () => {
   function defineGrid() {
     const columnDefinitions: Column[] = [
       {
-        id: 'name', field: 'name', nameKey: 'NAME', width: 60,
-        type: FieldType.string,
+        id: 'name',
+        field: 'name',
+        nameKey: 'NAME',
+        width: 60,
         sortable: true,
         filterable: true,
         filter: {
           model: Filters.compoundInput,
-        }
+        },
       },
       {
-        id: 'gender', field: 'gender', nameKey: 'GENDER', filterable: true, sortable: true, width: 60,
+        id: 'gender',
+        field: 'gender',
+        nameKey: 'GENDER',
+        filterable: true,
+        sortable: true,
+        width: 60,
         filter: {
           model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: 'male', labelKey: 'MALE', }, { value: 'female', labelKey: 'FEMALE', }]
-        }
+          collection: [
+            { value: '', label: '' },
+            { value: 'male', labelKey: 'MALE' },
+            { value: 'female', labelKey: 'FEMALE' },
+          ],
+        },
       },
       {
-        id: 'company', field: 'company', nameKey: 'COMPANY', width: 60,
+        id: 'company',
+        field: 'company',
+        nameKey: 'COMPANY',
+        width: 60,
         sortable: true,
         filterable: true,
         filter: {
           model: Filters.multipleSelect,
           customStructure: {
             label: 'company',
-            value: 'company'
+            value: 'company',
           },
           collectionSortBy: {
             property: 'company',
-            sortDesc: false
+            sortDesc: false,
           },
-          collectionAsync: fetch(SAMPLE_COLLECTION_DATA_URL).then(e => e.json()),
-          filterOptions: {
-            filter: true // adds a filter on top of the multi-select dropdown
-          } as MultipleSelectOption
-        }
+          collectionAsync: fetch(SAMPLE_COLLECTION_DATA_URL).then((e) => e.json()),
+          options: {
+            filter: true, // adds a filter on top of the multi-select dropdown
+          } as MultipleSelectOption,
+        },
       },
     ];
 
@@ -96,7 +112,7 @@ const Example39: React.FC = () => {
       enableAutoResize: true,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableFiltering: true,
       enableCellNavigation: true,
@@ -114,11 +130,14 @@ const Example39: React.FC = () => {
         service: new GraphqlService(),
         options: {
           datasetName: GRAPHQL_QUERY_DATASET_NAME, // the only REQUIRED property
-          addLocaleIntoQuery: true,   // optionally add current locale into the query
-          extraQueryArguments: [{     // optionally add some extra query arguments as input query arguments
-            field: 'userId',
-            value: 123
-          }],
+          addLocaleIntoQuery: true, // optionally add current locale into the query
+          extraQueryArguments: [
+            {
+              // optionally add some extra query arguments as input query arguments
+              field: 'userId',
+              value: 123,
+            },
+          ],
           // enable infinite via Boolean OR via { fetchSize: number }
           infiniteScroll: { fetchSize: 30 }, // or use true, in that case it would use default size of 25
         },
@@ -130,8 +149,8 @@ const Example39: React.FC = () => {
           metricsRef.current = result.metrics as Metrics;
           displaySpinner(false);
           getCustomerCallback(result);
-        }
-      } as GraphqlServiceApi
+        },
+      } as GraphqlServiceApi,
     };
 
     setColumnDefinitions(columnDefinitions);
@@ -145,7 +164,7 @@ const Example39: React.FC = () => {
   }
 
   function displaySpinner(isProcessing: boolean) {
-    const newStatus = (isProcessing)
+    const newStatus = isProcessing
       ? { text: 'processing...', class: 'alert alert-danger' }
       : { text: 'finished', class: 'alert alert-success' };
 
@@ -192,16 +211,17 @@ const Example39: React.FC = () => {
   }
 
   function getCustomerDataApiMock(query: string): Promise<any> {
-    return new Promise<GraphqlPaginatedResult>(resolve => {
+    return new Promise<GraphqlPaginatedResult>((resolve) => {
       let firstCount = 0;
       let offset = 0;
       let orderByField = '';
       let orderByDir = '';
 
       fetch(SAMPLE_COLLECTION_DATA_URL)
-        .then(e => e.json())
+        .then((e) => e.json())
         .then((data: any) => {
-          let filteredData: Array<{ id: number; name: string; gender: string; company: string; category: { id: number; name: string; }; }> = data;
+          let filteredData: Array<{ id: number; name: string; gender: string; company: string; category: { id: number; name: string } }> =
+            data;
           if (query.includes('first:')) {
             const topMatch = query.match(/first:([0-9]+),/) || [];
             firstCount = +topMatch[1];
@@ -240,17 +260,28 @@ const Example39: React.FC = () => {
                   term2 = unescapeAndLowerCase(term2 || '');
 
                   switch (operator) {
-                    case 'EQ': return dcVal.toLowerCase() === term1;
-                    case 'NE': return dcVal.toLowerCase() !== term1;
-                    case 'LE': return dcVal.toLowerCase() <= term1;
-                    case 'LT': return dcVal.toLowerCase() < term1;
-                    case 'GT': return dcVal.toLowerCase() > term1;
-                    case 'GE': return dcVal.toLowerCase() >= term1;
-                    case 'EndsWith': return dcVal.toLowerCase().endsWith(term1);
-                    case 'StartsWith': return dcVal.toLowerCase().startsWith(term1);
-                    case 'Starts+Ends': return dcVal.toLowerCase().startsWith(term1) && dcVal.toLowerCase().endsWith(term2);
-                    case 'Contains': return dcVal.toLowerCase().includes(term1);
-                    case 'Not_Contains': return !dcVal.toLowerCase().includes(term1);
+                    case 'EQ':
+                      return dcVal.toLowerCase() === term1;
+                    case 'NE':
+                      return dcVal.toLowerCase() !== term1;
+                    case 'LE':
+                      return dcVal.toLowerCase() <= term1;
+                    case 'LT':
+                      return dcVal.toLowerCase() < term1;
+                    case 'GT':
+                      return dcVal.toLowerCase() > term1;
+                    case 'GE':
+                      return dcVal.toLowerCase() >= term1;
+                    case 'EndsWith':
+                      return dcVal.toLowerCase().endsWith(term1);
+                    case 'StartsWith':
+                      return dcVal.toLowerCase().startsWith(term1);
+                    case 'Starts+Ends':
+                      return dcVal.toLowerCase().startsWith(term1) && dcVal.toLowerCase().endsWith(term2);
+                    case 'Contains':
+                      return dcVal.toLowerCase().includes(term1);
+                    case 'Not_Contains':
+                      return !dcVal.toLowerCase().includes(term1);
                     case 'IN':
                       const terms = value.toLocaleLowerCase().split(',');
                       for (const term of terms) {
@@ -273,7 +304,7 @@ const Example39: React.FC = () => {
           }
 
           // sorting when defined
-          const selector = (obj: any) => orderByField ? obj[orderByField] : obj;
+          const selector = (obj: any) => (orderByField ? obj[orderByField] : obj);
           switch (orderByDir.toUpperCase()) {
             case 'ASC':
               filteredData = filteredData.sort((a, b) => selector(a).localeCompare(selector(b)));
@@ -311,10 +342,7 @@ const Example39: React.FC = () => {
     const itemCount = reactGridRef.current?.dataView?.getFilteredItemCount() || 0;
     if (args?.current >= 0) {
       metricsRef.current = { ...metricsRef.current, itemCount };
-      setTagDataClass(itemCount === metricsRef.current.totalItemCount
-        ? 'fully-loaded'
-        : 'partial-load'
-      );
+      setTagDataClass(itemCount === metricsRef.current.totalItemCount ? 'fully-loaded' : 'partial-load');
     }
   }
 
@@ -325,7 +353,7 @@ const Example39: React.FC = () => {
   }
 
   async function switchLanguage() {
-    const nextLanguage = (selectedLanguage === 'en') ? 'fr' : 'en';
+    const nextLanguage = selectedLanguage === 'en' ? 'fr' : 'en';
     await i18next.changeLanguage(nextLanguage);
     setSelectedLanguage(nextLanguage);
   }
@@ -338,19 +366,28 @@ const Example39: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptionsRef.current ? '' : (
+  return !gridOptionsRef.current ? (
+    ''
+  ) : (
     <div className="demo39">
       <div id="demo-container" className="container-fluid">
         <h2>
           Example 39: GraphQL Backend Service with Infinite Scroll
           <span className="float-end font18">
             see&nbsp;
-            <a target="_blank"
-              href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example39.tsx">
+            <a
+              target="_blank"
+              href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example39.tsx"
+            >
               <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
-          <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+          <button
+            className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+            type="button"
+            data-test="toggle-subtitle"
+            onClick={() => toggleSubTitle()}
+          >
             <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
           </button>
         </h2>
@@ -358,19 +395,20 @@ const Example39: React.FC = () => {
         <div className="subtitle">
           <ul>
             <li>
-              Infinite scrolling allows the grid to lazy-load rows from the server when reaching the scroll bottom (end) position.
-              In its simplest form, the more the user scrolls down, the more rows get loaded.
-              If we reached the end of the dataset and there is no more data to load, then we'll assume to have the entire dataset loaded in memory.
-              This contrast with the regular Pagination approach which will only hold a single page data at a time.
+              Infinite scrolling allows the grid to lazy-load rows from the server when reaching the scroll bottom (end) position. In its
+              simplest form, the more the user scrolls down, the more rows get loaded. If we reached the end of the dataset and there is no
+              more data to load, then we'll assume to have the entire dataset loaded in memory. This contrast with the regular Pagination
+              approach which will only hold a single page data at a time.
             </li>
             <li>NOTES</li>
             <ol>
               <li>
-                <code>presets.pagination</code> is not supported with Infinite Scroll and will revert to the first page,
-                simply because since we keep appending data, we always have to start from index zero (no offset).
+                <code>presets.pagination</code> is not supported with Infinite Scroll and will revert to the first page, simply because
+                since we keep appending data, we always have to start from index zero (no offset).
               </li>
               <li>
-                Pagination is not shown BUT in fact, that is what is being used behind the scene whenever reaching the scroll end (fetching next batch).
+                Pagination is not shown BUT in fact, that is what is being used behind the scene whenever reaching the scroll end (fetching
+                next batch).
               </li>
               <li>
                 Also note that whenever the user changes the Sort(s)/Filter(s) it will always reset and go back to zero index (first page).
@@ -383,31 +421,48 @@ const Example39: React.FC = () => {
           <div className="col-sm-5">
             <div className={status.class} role="alert" data-test="status">
               <strong>Status: </strong> {status.text}
-              {processing ? <span>
-                <i className="mdi mdi-sync mdi-spin"></i>
-              </span> : ''}
+              {processing ? (
+                <span>
+                  <i className="mdi mdi-sync mdi-spin"></i>
+                </span>
+              ) : (
+                ''
+              )}
             </div>
 
             <div className="row">
               <div className="col-md-12">
-                <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-filters-sorting"
-                  onClick={() => clearAllFiltersAndSorts()} title="Clear all Filters & Sorts">
+                <button
+                  className="btn btn-outline-secondary btn-sm btn-icon"
+                  data-test="clear-filters-sorting"
+                  onClick={() => clearAllFiltersAndSorts()}
+                  title="Clear all Filters & Sorts"
+                >
                   <i className="mdi mdi-filter-remove-outline"></i>
                   Clear all Filter & Sorts
                 </button>
-                <label htmlFor="serverdelay" className="mx-1">Server Delay: </label>
-                <input id="serverdelay" type="number"
+                <label htmlFor="serverdelay" className="mx-1">
+                  Server Delay:{' '}
+                </label>
+                <input
+                  id="serverdelay"
+                  type="number"
                   defaultValue={serverWaitDelay}
-                  data-test="server-delay" style={{ width: '55px' }}
+                  data-test="server-delay"
+                  style={{ width: '55px' }}
                   onInput={($event) => serverDelayChanged($event)}
-                  title="input a fake timer delay to simulate slow server response" />
+                  title="input a fake timer delay to simulate slow server response"
+                />
               </div>
             </div>
 
             <div className="row">
               <div className="col-md-12">
-                <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" onClick={() => switchLanguage()}
-                  data-test="language-button">
+                <button
+                  className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+                  onClick={() => switchLanguage()}
+                  data-test="language-button"
+                >
                   <i className="mdi mdi-translate me-1"></i>
                   Switch Language
                 </button>
@@ -418,16 +473,25 @@ const Example39: React.FC = () => {
               </div>
             </div>
             <br />
-            {metricsRef.current && <div><><b className="me-1">Metrics:</b>
-              {metricsRef.current?.endTime ? dateFormatter(metricsRef.current.endTime, 'DD MMM, h:mm:ss a') : ''} —
-              <span className="mx-1" data-test="itemCount">{metricsRef.current.itemCount}</span>
-              of
-              <span className="mx-1" data-test="totalItemCount">{metricsRef.current.totalItemCount}</span> items
-              <span className={'badge rounded-pill text-bg-primary mx-1 ' + tagDataClass} data-test="data-loaded-tag">
-                All Data Loaded!!!
-              </span>
-            </>
-            </div>}
+            {metricsRef.current && (
+              <div>
+                <>
+                  <b className="me-1">Metrics:</b>
+                  {metricsRef.current?.endTime ? dateFormatter(metricsRef.current.endTime, 'DD MMM, h:mm:ss a') : ''} —
+                  <span className="mx-1" data-test="itemCount">
+                    {metricsRef.current.itemCount}
+                  </span>
+                  of
+                  <span className="mx-1" data-test="totalItemCount">
+                    {metricsRef.current.totalItemCount}
+                  </span>{' '}
+                  items
+                  <span className={'badge rounded-pill text-bg-primary mx-1 ' + tagDataClass} data-test="data-loaded-tag">
+                    All Data Loaded!!!
+                  </span>
+                </>
+              </div>
+            )}
           </div>
           <div className="col-sm-7">
             <div className="alert alert-info" data-test="alert-graphql-query">
@@ -436,16 +500,17 @@ const Example39: React.FC = () => {
           </div>
         </div>
 
-        <SlickgridReact gridId="grid39"
-          columnDefinitions={columnDefinitions}
-          gridOptions={gridOptionsRef.current}
+        <SlickgridReact
+          gridId="grid39"
+          columns={columnDefinitions}
+          options={gridOptionsRef.current}
           dataset={dataset}
-          onReactGridCreated={$event => reactGridReady($event.detail)}
-          onRowCountChanged={$event => refreshMetrics($event.detail.args)}
+          onReactGridCreated={($event) => reactGridReady($event.detail)}
+          onRowCountChanged={($event) => refreshMetrics($event.detail.args)}
         />
       </div>
     </div>
   );
-}
+};
 
 export default withTranslation()(Example39);

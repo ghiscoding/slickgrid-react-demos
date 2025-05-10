@@ -97,29 +97,51 @@ const Example17: React.FC = () => {
         Example 17: Dynamically Create Grid from CSV / Excel import
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example17.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example17.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => setHideSubTitle(!hideSubTitle)}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => setHideSubTitle(!hideSubTitle)}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
-      {hideSubTitle ? null : <div className="subtitle">
-        Allow creating a grid dynamically by importing an external CSV or Excel file. This script demo will read the CSV file and will
-        consider the first row as the column header and create the column definitions accordingly, while the next few rows will be
-        considered the dataset. Note that this example is demoing a CSV file import but in your application you could easily implemnt
-        an Excel file uploading.
-      </div>}
+      {hideSubTitle ? null : (
+        <div className="subtitle">
+          Allow creating a grid dynamically by importing an external CSV or Excel file. This script demo will read the CSV file and will
+          consider the first row as the column header and create the column definitions accordingly, while the next few rows will be
+          considered the dataset. Note that this example is demoing a CSV file import but in your application you could easily implemnt an
+          Excel file uploading.
+        </div>
+      )}
 
-      <div className="my-3">A default CSV file can be download <a id="template-dl" href={templateUrl}>here</a></div>
+      <div className="my-3">
+        A default CSV file can be download{' '}
+        <a id="template-dl" href={templateUrl}>
+          here
+        </a>
+      </div>
 
       <div className="d-flex mt-4 align-items-end">
         <div className="file-upload" style={{ maxWidth: '300px' }}>
-          <label htmlFor="formFile" className="form-label">Choose a CSV file…</label>
-          <input className="form-control" type="file" data-test="file-upload-input" value={uploadFileRef} onChange={($event) => handleFileImport($event)} />
+          <label htmlFor="formFile" className="form-label">
+            Choose a CSV file…
+          </label>
+          <input
+            className="form-control"
+            type="file"
+            data-test="file-upload-input"
+            value={uploadFileRef}
+            onChange={($event) => handleFileImport($event)}
+          />
         </div>
         <span className="mx-3">or</span>
         <div>
@@ -127,23 +149,19 @@ const Example17: React.FC = () => {
             Use default CSV data
           </button>
           &nbsp;/
-          <button className="btn btn-outline-danger btn-sm ms-2" onClick={() => destroyGrid()}>Destroy Grid</button>
+          <button className="btn btn-outline-danger btn-sm ms-2" onClick={() => destroyGrid()}>
+            Destroy Grid
+          </button>
         </div>
       </div>
 
       <hr />
 
       <div className="grid-container-zone">
-        {gridCreated &&
-          <SlickgridReact
-            gridId="grid17"
-            columnDefinitions={columnDefinitions}
-            gridOptions={gridOptions}
-            dataset={dataset}
-          />}
+        {gridCreated && <SlickgridReact gridId="grid17" columns={columnDefinitions} options={gridOptions} dataset={dataset} />}
       </div>
-    </div >
-  )
-}
+    </div>
+  );
+};
 
 export default Example17;

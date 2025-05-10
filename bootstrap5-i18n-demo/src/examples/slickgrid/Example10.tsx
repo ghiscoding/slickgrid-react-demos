@@ -1,12 +1,11 @@
 import {
   type Column,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
   type GridStateChange,
   SlickgridReact,
-  type SlickgridReactInstance
+  type SlickgridReactInstance,
 } from 'slickgrid-react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -44,53 +43,109 @@ const Example10: React.FC = () => {
   /* Define grid Options and Columns */
   function defineGrids() {
     const columnDefinitions1: Column[] = [
-      { id: 'title', name: 'Title', field: 'title', sortable: true, type: FieldType.string, filterable: true },
-      { id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: FieldType.number, filterable: true },
-      { id: 'complete', name: '% Complete', field: 'percentComplete', formatter: Formatters.percentCompleteBar, type: FieldType.number, filterable: true, sortable: true },
+      { id: 'title', name: 'Title', field: 'title', sortable: true, filterable: true },
+      { id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: 'number', filterable: true },
       {
-        id: 'start', name: 'Start', field: 'start',
-        formatter: Formatters.dateIso, exportWithFormatter: true, type: FieldType.date,
-        filterable: true, sortable: true, filter: { model: Filters.compoundDate },
+        id: 'complete',
+        name: '% Complete',
+        field: 'percentComplete',
+        formatter: Formatters.percentCompleteBar,
+        type: 'number',
+        filterable: true,
+        sortable: true,
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish',
-        formatter: Formatters.dateIso, exportWithFormatter: true, type: FieldType.date,
-        filterable: true, sortable: true, filter: { model: Filters.compoundDate },
+        id: 'start',
+        name: 'Start',
+        field: 'start',
+        formatter: Formatters.dateIso,
+        exportWithFormatter: true,
+        type: 'date',
+        filterable: true,
+        sortable: true,
+        filter: { model: Filters.compoundDate },
       },
       {
-        id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven',
-        formatter: Formatters.checkmarkMaterial, type: FieldType.boolean,
-        sortable: true, filterable: true,
+        id: 'finish',
+        name: 'Finish',
+        field: 'finish',
+        formatter: Formatters.dateIso,
+        exportWithFormatter: true,
+        type: 'date',
+        filterable: true,
+        sortable: true,
+        filter: { model: Filters.compoundDate },
+      },
+      {
+        id: 'effort-driven',
+        name: 'Effort Driven',
+        field: 'effortDriven',
+        formatter: Formatters.checkmarkMaterial,
+        type: 'boolean',
+        sortable: true,
+        filterable: true,
         filter: {
-          collection: [{ value: '', label: '' }, { value: true, label: 'true' }, { value: false, label: 'false' }],
+          collection: [
+            { value: '', label: '' },
+            { value: true, label: 'true' },
+            { value: false, label: 'false' },
+          ],
           model: Filters.singleSelect,
-        }
-      }
+        },
+      },
     ];
 
     const columnDefinitions2: Column[] = [
-      { id: 'title', name: 'Title', field: 'title', sortable: true, type: FieldType.string, filterable: true },
-      { id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: FieldType.number, filterable: true },
-      { id: 'complete', name: '% Complete', field: 'percentComplete', formatter: Formatters.percentCompleteBar, type: FieldType.number, filterable: true, sortable: true },
+      { id: 'title', name: 'Title', field: 'title', sortable: true, filterable: true },
+      { id: 'duration', name: 'Duration (days)', field: 'duration', sortable: true, type: 'number', filterable: true },
       {
-        id: 'start', name: 'Start', field: 'start',
-        formatter: Formatters.dateIso, exportWithFormatter: true, type: FieldType.date,
-        filterable: true, sortable: true, filter: { model: Filters.compoundDate },
+        id: 'complete',
+        name: '% Complete',
+        field: 'percentComplete',
+        formatter: Formatters.percentCompleteBar,
+        type: 'number',
+        filterable: true,
+        sortable: true,
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish',
-        formatter: Formatters.dateIso, exportWithFormatter: true, type: FieldType.date,
-        filterable: true, sortable: true, filter: { model: Filters.compoundDate },
+        id: 'start',
+        name: 'Start',
+        field: 'start',
+        formatter: Formatters.dateIso,
+        exportWithFormatter: true,
+        type: 'date',
+        filterable: true,
+        sortable: true,
+        filter: { model: Filters.compoundDate },
       },
       {
-        id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven',
-        formatter: Formatters.checkmarkMaterial, type: FieldType.boolean,
-        sortable: true, filterable: true,
+        id: 'finish',
+        name: 'Finish',
+        field: 'finish',
+        formatter: Formatters.dateIso,
+        exportWithFormatter: true,
+        type: 'date',
+        filterable: true,
+        sortable: true,
+        filter: { model: Filters.compoundDate },
+      },
+      {
+        id: 'effort-driven',
+        name: 'Effort Driven',
+        field: 'effortDriven',
+        formatter: Formatters.checkmarkMaterial,
+        type: 'boolean',
+        sortable: true,
+        filterable: true,
         filter: {
-          collection: [{ value: '', label: '' }, { value: true, label: 'true' }, { value: false, label: 'false' }],
+          collection: [
+            { value: '', label: '' },
+            { value: true, label: 'true' },
+            { value: false, label: 'false' },
+          ],
           model: Filters.singleSelect,
-        }
-      }
+        },
+      },
     ];
 
     const gridOptions1: GridOption = {
@@ -113,17 +168,17 @@ const Example10: React.FC = () => {
         selectActiveRow: true,
       },
       columnPicker: {
-        hideForceFitButton: true
+        hideForceFitButton: true,
       },
       gridMenu: {
-        hideForceFitButton: true
+        hideForceFitButton: true,
       },
       gridHeight: 225,
       gridWidth: 800,
       enablePagination: true,
       pagination: {
         pageSizes: [5, 10, 15, 20, 25, 50, 75, 100],
-        pageSize: 5
+        pageSize: 5,
       },
       // we can use some Presets, for the example Pagination
       presets: {
@@ -146,7 +201,7 @@ const Example10: React.FC = () => {
       },
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
-        selectActiveRow: false
+        selectActiveRow: false,
       },
       enableCheckboxSelector: true,
       enableRowSelection: true,
@@ -155,7 +210,7 @@ const Example10: React.FC = () => {
       enablePagination: true,
       pagination: {
         pageSizes: [5, 10, 15, 20, 25, 50, 75, 100],
-        pageSize: 5
+        pageSize: 5,
       },
       // 1. pre-select some grid row indexes (less recommended, better use the Presets, see below)
       // preselectedRows: [0, 2],
@@ -167,8 +222,8 @@ const Example10: React.FC = () => {
         // the RECOMMENDED is to use "dataContextIds" since that will always work even with Pagination, while "gridRowIndexes" is only good for 1 page
         rowSelection: {
           // gridRowIndexes: [2],           // the row position of what you see on the screen (UI)
-          dataContextIds: [3, 12, 13, 522]  // (recommended) select by your data object IDs
-        }
+          dataContextIds: [3, 12, 13, 522], // (recommended) select by your data object IDs
+        },
       },
     };
 
@@ -184,7 +239,7 @@ const Example10: React.FC = () => {
     for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
+      const randomDay = Math.floor(Math.random() * 29);
       const randomPercent = Math.round(Math.random() * 100);
 
       mockDataset[i] = {
@@ -194,8 +249,8 @@ const Example10: React.FC = () => {
         percentComplete: randomPercent,
         percentCompleteNumber: randomPercent,
         start: new Date(randomYear, randomMonth, randomDay),
-        finish: new Date(randomYear, (randomMonth + 1), randomDay),
-        effortDriven: (i % 5 === 0)
+        finish: new Date(randomYear, randomMonth + 1, randomDay),
+        effortDriven: i % 5 === 0,
       };
     }
     return mockDataset;
@@ -232,7 +287,7 @@ const Example10: React.FC = () => {
       selectedGrid2IDs = (gridStateChanges.gridState!.rowSelection.filteredDataContextIds || []) as number[];
       selectedGrid2IDs = selectedGrid2IDs.sort((a, b) => a - b); // sort by ID
 
-      let selectedTitles = selectedGrid2IDs.map(dataContextId => `Task ${dataContextId}`).join(',');
+      let selectedTitles = selectedGrid2IDs.map((dataContextId) => `Task ${dataContextId}`).join(',');
       if (selectedTitles.length > 293) {
         selectedTitles = selectedTitles.substring(0, 293) + '...';
       }
@@ -253,9 +308,9 @@ const Example10: React.FC = () => {
     if (Array.isArray(args.rows)) {
       const selectedTitles = args.rows.map((idx: number) => {
         const item = grid.getDataItem(idx);
-        return item && item.title || '';
+        return (item && item.title) || '';
       });
-      setSelectedTitles(selectedTitles)
+      setSelectedTitles(selectedTitles);
     }
   }
 
@@ -271,30 +326,45 @@ const Example10: React.FC = () => {
         Example 10: Multiple Grids with Row Selection
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example10.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example10.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => setHideSubTitle(!hideSubTitle)}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => setHideSubTitle(!hideSubTitle)}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
-      {hideSubTitle ? null : <div className="subtitle">
-        Row selection, single or multi-select (<a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/row-selection" target="_blank">Docs</a>).
-        <ul>
-          <li>Single Select, you can click on any cell to make the row active</li>
-          <li>Multiple Selections, you need to specifically click on the checkbox to make 1 or more selections</li>
-          <li>NOTE: Any Row Selection(s) will be reset when using Pagination and changing Page (you will need to set it back manually if you want it back)</li>
-        </ul>
-      </div>}
+      {hideSubTitle ? null : (
+        <div className="subtitle">
+          Row selection, single or multi-select (
+          <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/row-selection" target="_blank">
+            Docs
+          </a>
+          ).
+          <ul>
+            <li>Single Select, you can click on any cell to make the row active</li>
+            <li>Multiple Selections, you need to specifically click on the checkbox to make 1 or more selections</li>
+            <li>
+              NOTE: Any Row Selection(s) will be reset when using Pagination and changing Page (you will need to set it back manually if you
+              want it back)
+            </li>
+          </ul>
+        </div>
+      )}
 
       <div className="row">
         <div className="col-sm-4" style={{ maxWidth: '205px' }}>
           Pagination
-          <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page"
-            onClick={() => goToGrid1FirstPage()}>
+          <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page" onClick={() => goToGrid1FirstPage()}>
             <i className="mdi mdi-page-first"></i>
           </button>
           <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-last-page" onClick={() => goToGrid1LastPage()}>
@@ -310,13 +380,14 @@ const Example10: React.FC = () => {
       </div>
 
       <div className="overflow-hidden">
-        <SlickgridReact gridId="grid1"
-          columnDefinitions={columnDefinitions1}
-          gridOptions={gridOptions1!}
+        <SlickgridReact
+          gridId="grid1"
+          columns={columnDefinitions1}
+          options={gridOptions1!}
           dataset={dataset1}
-          onReactGridCreated={$event => reactGrid1Ready($event.detail)}
-          onGridStateChanged={$event => grid1StateChanged($event.detail)}
-          onSelectedRowsChanged={$event => onGrid1SelectedRowsChanged($event.detail.eventData, $event.detail.args)}
+          onReactGridCreated={($event) => reactGrid1Ready($event.detail)}
+          onGridStateChanged={($event) => grid1StateChanged($event.detail)}
+          onSelectedRowsChanged={($event) => onGrid1SelectedRowsChanged($event.detail.eventData, $event.detail.args)}
         />
       </div>
 
@@ -326,23 +397,26 @@ const Example10: React.FC = () => {
         <div className="col-sm-4 col-md-3" style={{ maxWidth: '215px' }}>
           <label htmlFor="enableGrid2Pagination">
             Pagination:
-            <input type="checkbox" id="enableGrid2Pagination"
+            <input
+              type="checkbox"
+              id="enableGrid2Pagination"
               checked={isGrid2WithPagination}
               onChange={() => onGrid2PaginationCheckChanged()}
-              data-test="toggle-pagination-grid2" />
+              data-test="toggle-pagination-grid2"
+            />
           </label>
-          {isGrid2WithPagination && <span style={{ marginLeft: '5px' }}>
-            <div className="btn-group" role="group">
-              <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page"
-                onClick={() => goToGrid2FirstPage()}>
-                <i className="mdi mdi-page-first"></i>
-              </button>
-              <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-last-page"
-                onClick={() => goToGrid2LastPage()}>
-                <i className="mdi mdi-page-last"></i>
-              </button>
-            </div>
-          </span>}
+          {isGrid2WithPagination && (
+            <span style={{ marginLeft: '5px' }}>
+              <div className="btn-group" role="group">
+                <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-first-page" onClick={() => goToGrid2FirstPage()}>
+                  <i className="mdi mdi-page-first"></i>
+                </button>
+                <button className="btn btn-outline-secondary btn-xs px-2" data-test="goto-last-page" onClick={() => goToGrid2LastPage()}>
+                  <i className="mdi mdi-page-last"></i>
+                </button>
+              </div>
+            </span>
+          )}
         </div>
         <div className="col-sm-7">
           <div className="alert alert-success">
@@ -353,12 +427,14 @@ const Example10: React.FC = () => {
       </div>
 
       <div className="overflow-hidden">
-        <SlickgridReact gridId="grid2"
-          columnDefinitions={columnDefinitions2}
-          gridOptions={gridOptions2!}
+        <SlickgridReact
+          gridId="grid2"
+          columns={columnDefinitions2}
+          options={gridOptions2!}
           dataset={dataset2}
-          onReactGridCreated={$event => reactGrid2Ready($event.detail)}
-          onGridStateChanged={$event => grid2StateChanged($event.detail)} />
+          onReactGridCreated={($event) => reactGrid2Ready($event.detail)}
+          onGridStateChanged={($event) => grid2StateChanged($event.detail)}
+        />
       </div>
     </div>
   );

@@ -1,10 +1,14 @@
 import { addDay, format as tempoFormat } from '@formkit/tempo';
-import { GraphqlService, type GraphqlPaginatedResult, type GraphqlServiceApi, type GraphqlServiceOption } from '@slickgrid-universal/graphql';
+import {
+  GraphqlService,
+  type GraphqlPaginatedResult,
+  type GraphqlServiceApi,
+  type GraphqlServiceOption,
+} from '@slickgrid-universal/graphql';
 import i18next from 'i18next';
 import {
   type Column,
   type CursorPageInfo,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
@@ -19,7 +23,10 @@ import {
 import React, { useState, useEffect, useRef } from 'react';
 import { withTranslation } from 'react-i18next';
 
-interface Status { text: string, class: string }
+interface Status {
+  text: string;
+  class: string;
+}
 
 const defaultPageSize = 20;
 const GRAPHQL_QUERY_DATASET_NAME = 'users';
@@ -64,8 +71,11 @@ const Example6: React.FC = () => {
   function getColumnsDefinition(): Column[] {
     return [
       {
-        id: 'name', field: 'name', nameKey: 'NAME', width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
-        type: FieldType.string,
+        id: 'name',
+        field: 'name',
+        nameKey: 'NAME',
+        width: 60,
+        columnGroupKey: 'CUSTOMER_INFORMATION',
         sortable: true,
         filterable: true,
         filter: {
@@ -78,45 +88,80 @@ const Example6: React.FC = () => {
             { operator: 'a*', desc: 'Starts With' },
             { operator: 'Custom', desc: 'SQL Like' },
           ],
-        }
+        },
       },
       {
-        id: 'gender', field: 'gender', nameKey: 'GENDER', filterable: true, sortable: true, width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
+        id: 'gender',
+        field: 'gender',
+        nameKey: 'GENDER',
+        filterable: true,
+        sortable: true,
+        width: 60,
+        columnGroupKey: 'CUSTOMER_INFORMATION',
         filter: {
           model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: 'male', label: 'male', labelKey: 'MALE' }, { value: 'female', label: 'female', labelKey: 'FEMALE' }]
-        }
+          collection: [
+            { value: '', label: '' },
+            { value: 'male', label: 'male', labelKey: 'MALE' },
+            { value: 'female', label: 'female', labelKey: 'FEMALE' },
+          ],
+        },
       },
       {
-        id: 'company', field: 'company', nameKey: 'COMPANY', width: 60, columnGroupKey: 'CUSTOMER_INFORMATION',
+        id: 'company',
+        field: 'company',
+        nameKey: 'COMPANY',
+        width: 60,
+        columnGroupKey: 'CUSTOMER_INFORMATION',
         sortable: true,
         filterable: true,
         filter: {
           model: Filters.multipleSelect,
-          collection: [{ value: 'acme', label: 'Acme' }, { value: 'abc', label: 'Company ABC' }, { value: 'xyz', label: 'Company XYZ' }],
-          filterOptions: {
-            filter: true // adds a filter on top of the multi-select dropdown
-          } as MultipleSelectOption
-        }
-      },
-      {
-        id: 'billingAddressStreet', field: 'billing.address.street', nameKey: 'BILLING.ADDRESS.STREET',
-        width: 60, filterable: true, sortable: true, columnGroupKey: 'BILLING.INFORMATION',
-      },
-      {
-        id: 'billingAddressZip', field: 'billing.address.zip', nameKey: 'BILLING.ADDRESS.ZIP', width: 60,
-        type: FieldType.number,
-        columnGroupKey: 'BILLING.INFORMATION',
-        filterable: true, sortable: true,
-        filter: {
-          model: Filters.compoundInput
+          collection: [
+            { value: 'acme', label: 'Acme' },
+            { value: 'abc', label: 'Company ABC' },
+            { value: 'xyz', label: 'Company XYZ' },
+          ],
+          options: {
+            filter: true, // adds a filter on top of the multi-select dropdown
+          } as MultipleSelectOption,
         },
-        formatter: Formatters.multiple, params: { formatters: [Formatters.complexObject, Formatters.translate] }
       },
       {
-        id: 'finish', field: 'finish', name: 'Date', formatter: Formatters.dateIso, sortable: true, minWidth: 90, width: 120, exportWithFormatter: true,
+        id: 'billingAddressStreet',
+        field: 'billing.address.street',
+        nameKey: 'BILLING.ADDRESS.STREET',
+        width: 60,
+        filterable: true,
+        sortable: true,
         columnGroupKey: 'BILLING.INFORMATION',
-        type: FieldType.date,
+      },
+      {
+        id: 'billingAddressZip',
+        field: 'billing.address.zip',
+        nameKey: 'BILLING.ADDRESS.ZIP',
+        width: 60,
+        type: 'number',
+        columnGroupKey: 'BILLING.INFORMATION',
+        filterable: true,
+        sortable: true,
+        filter: {
+          model: Filters.compoundInput,
+        },
+        formatter: Formatters.multiple,
+        params: { formatters: [Formatters.complexObject, Formatters.translate] },
+      },
+      {
+        id: 'finish',
+        field: 'finish',
+        name: 'Date',
+        formatter: Formatters.dateIso,
+        sortable: true,
+        minWidth: 90,
+        width: 120,
+        exportWithFormatter: true,
+        columnGroupKey: 'BILLING.INFORMATION',
+        type: 'date',
         filterable: true,
         filter: {
           model: Filters.dateRange,
@@ -126,8 +171,8 @@ const Example6: React.FC = () => {
               iconCssClass: 'mdi mdi-calendar',
               searchTerms: [tempoFormat(new Date(), 'YYYY-MM-DD'), tempoFormat(addDay(new Date(), 20), 'YYYY-MM-DD')],
             },
-          ]
-        }
+          ],
+        },
       },
     ];
   }
@@ -156,7 +201,7 @@ const Example6: React.FC = () => {
       gridHeight: 200,
       gridWidth: 900,
       compoundOperatorAltTexts: {
-        text: { 'Custom': { operatorAlt: '%%', descAlt: 'SQL Like' } },
+        text: { Custom: { operatorAlt: '%%', descAlt: 'SQL Like' } },
       },
       gridMenu: {
         resizeOnShowHeaderRow: true,
@@ -165,7 +210,7 @@ const Example6: React.FC = () => {
       pagination: {
         pageSizes: [10, 15, 20, 25, 30, 40, 50, 75, 100],
         pageSize: defaultPageSize,
-        totalItems: 0
+        totalItems: 0,
       },
       presets: {
         columns: [
@@ -184,9 +229,9 @@ const Example6: React.FC = () => {
         ],
         sorters: [
           { columnId: 'name', direction: 'asc' },
-          { columnId: 'company', direction: SortDirection.DESC }
+          { columnId: 'company', direction: SortDirection.DESC },
         ],
-        pagination: { pageNumber: isWithCursorRef.current ? 1 : 2, pageSize: 20 }
+        pagination: { pageNumber: isWithCursorRef.current ? 1 : 2, pageSize: 20 },
       },
       backendServiceApi: {
         service: graphqlService,
@@ -201,7 +246,7 @@ const Example6: React.FC = () => {
             return;
           },
           useCursor: isWithCursorRef.current,
-          keepArgumentFieldDoubleQuotes: true
+          keepArgumentFieldDoubleQuotes: true,
         },
         preProcess: () => displaySpinner(true),
         process: (query) => getCustomerApiCall(query),
@@ -209,8 +254,8 @@ const Example6: React.FC = () => {
           const metrics = result.metrics as Metrics;
           setMetrics(metrics);
           displaySpinner(false);
-        }
-      } as GraphqlServiceApi
+        },
+      } as GraphqlServiceApi,
     };
   }
 
@@ -221,7 +266,7 @@ const Example6: React.FC = () => {
   }
 
   function displaySpinner(isProcessing: boolean) {
-    const newStatus = (isProcessing)
+    const newStatus = isProcessing
       ? { text: 'processing...', class: 'alert alert-danger' }
       : { text: 'finished', class: 'alert alert-success' };
 
@@ -240,14 +285,14 @@ const Example6: React.FC = () => {
         hasPreviousPage: paginationService.dataFrom === 0,
         hasNextPage: paginationService.dataTo === 100,
         startCursor,
-        endCursor
+        endCursor,
       };
     } else {
       pageInfo = {
         hasPreviousPage: false,
         hasNextPage: true,
         startCursor: 'A',
-        endCursor: 'B'
+        endCursor: 'B',
       };
     }
 
@@ -256,16 +301,16 @@ const Example6: React.FC = () => {
         [GRAPHQL_QUERY_DATASET_NAME]: {
           nodes: [],
           totalCount: 100,
-          pageInfo
-        }
-      }
+          pageInfo,
+        },
+      },
     };
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       window.setTimeout(() => {
         setGraphqlQuery(graphqlService.buildQuery());
         if (isWithCursorRef.current) {
-          reactGridRef.current?.paginationService?.setCursorPageInfo((mockedResult.data[GRAPHQL_QUERY_DATASET_NAME].pageInfo));
+          reactGridRef.current?.paginationService?.setCursorPageInfo(mockedResult.data[GRAPHQL_QUERY_DATASET_NAME].pageInfo);
         }
         resolve(mockedResult);
       }, serverWaitDelayRef.current);
@@ -322,7 +367,7 @@ const Example6: React.FC = () => {
     ]);
     reactGridRef.current?.sortService.updateSorting([
       { columnId: 'name', direction: 'asc' },
-      { columnId: 'company', direction: SortDirection.DESC }
+      { columnId: 'company', direction: SortDirection.DESC },
     ]);
     window.setTimeout(() => {
       reactGridRef.current?.paginationService?.changeItemPerPage(20);
@@ -351,7 +396,7 @@ const Example6: React.FC = () => {
   }
 
   async function switchLanguage() {
-    const nextLanguage = (selectedLanguage === 'en') ? 'fr' : 'en';
+    const nextLanguage = selectedLanguage === 'en' ? 'fr' : 'en';
     await i18next.changeLanguage(nextLanguage);
     setSelectedLanguage(nextLanguage);
   }
@@ -370,31 +415,59 @@ const Example6: React.FC = () => {
         Example 6: Grid with Backend GraphQL Service
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example6.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example6.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
       <div className="subtitle">
         Use it when you need to support Pagination with a GraphQL endpoint (for simple JSON, use a regular grid).
-        <br />Take a look at the (<a href="https://ghiscoding.gitbook.io/slickgrid-react/backend-services/graphql" target="_blank">Docs</a>)
+        <br />
+        Take a look at the (
+        <a href="https://ghiscoding.gitbook.io/slickgrid-react/backend-services/graphql" target="_blank">
+          Docs
+        </a>
+        )
         <ul className="small">
-          <li><span className="red bold">(*) NO DATA SHOWN</span> - just change filters &amp; page and look at the "GraphQL Query" changing</li>
+          <li>
+            <span className="red bold">(*) NO DATA SHOWN</span> - just change filters &amp; page and look at the "GraphQL Query" changing
+          </li>
           <li>Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported</li>
           <li>String column also support operator (&gt;, &gt;=, &lt;, &lt;=, &lt;&gt;, !=, =, ==, *)</li>
           <ul>
             <li>The (*) can be used as startsWith (ex.: "abc*" =&gt; startsWith "abc") / endsWith (ex.: "*xyz" =&gt; endsWith "xyz")</li>
             <li>The other operators can be used on column type number for example: "&gt;=100" (greater or equal than 100)</li>
           </ul>
-          <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/grid-state-preset" target="_blank">Wiki - Grid Preset</a></li>
-          <li>Also note that the column Name has a filter with a custom %% operator that behaves like an SQL LIKE operator supporting % wildcards.</li>
-          <li>Depending on your configuration, your GraphQL Server might already support regex querying (e.g. Hasura <a href="https://hasura.io/docs/latest/queries/postgres/filters/text-search-operators/#_regex" target="_blank">_regex</a>)
-            or you could add your own implementation (e.g. see this SO <a href="https://stackoverflow.com/a/37981802/1212166">Question</a>).</li>
+          <li>
+            You can also preload a grid with certain "presets" like Filters / Sorters / Pagination{' '}
+            <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/grid-state-preset" target="_blank">
+              Wiki - Grid Preset
+            </a>
+          </li>
+          <li>
+            Also note that the column Name has a filter with a custom %% operator that behaves like an SQL LIKE operator supporting %
+            wildcards.
+          </li>
+          <li>
+            Depending on your configuration, your GraphQL Server might already support regex querying (e.g. Hasura{' '}
+            <a href="https://hasura.io/docs/latest/queries/postgres/filters/text-search-operators/#_regex" target="_blank">
+              _regex
+            </a>
+            ) or you could add your own implementation (e.g. see this SO <a href="https://stackoverflow.com/a/37981802/1212166">Question</a>
+            ).
+          </li>
         </ul>
       </div>
 
@@ -402,36 +475,59 @@ const Example6: React.FC = () => {
         <div className="col-sm-5">
           <div className={status.class} role="alert" data-test="status">
             <strong>Status: </strong> {status.text}
-            {processing ? <span>
-              <i className="mdi mdi-sync mdi-spin"></i>
-            </span> : ''}
+            {processing ? (
+              <span>
+                <i className="mdi mdi-sync mdi-spin"></i>
+              </span>
+            ) : (
+              ''
+            )}
           </div>
 
           <div className="row">
             <div className="col-md-12">
-              <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-filters-sorting"
-                onClick={() => clearAllFiltersAndSorts()} title="Clear all Filters & Sorts">
+              <button
+                className="btn btn-outline-secondary btn-sm btn-icon"
+                data-test="clear-filters-sorting"
+                onClick={() => clearAllFiltersAndSorts()}
+                title="Clear all Filters & Sorts"
+              >
                 <i className="mdi mdi-filter-remove-outline"></i>
                 Clear all Filter & Sorts
               </button>
-              <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="set-dynamic-filter"
-                onClick={() => setFiltersDynamically()}>
+              <button
+                className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+                data-test="set-dynamic-filter"
+                onClick={() => setFiltersDynamically()}
+              >
                 Set Filters Dynamically
               </button>
-              <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="set-dynamic-sorting"
-                onClick={() => setSortingDynamically()}>
+              <button
+                className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+                data-test="set-dynamic-sorting"
+                onClick={() => setSortingDynamically()}
+              >
                 Set Sorting Dynamically
               </button>
-              <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="reset-presets"
-                onClick={() => resetToOriginalPresets()}>
+              <button
+                className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+                data-test="reset-presets"
+                onClick={() => resetToOriginalPresets()}
+              >
                 Reset Original Presets
               </button>
-              <label htmlFor="serverdelay" className="ml-4">Server Delay: </label>
-              <input id="serverdelay" type="number"
+              <label htmlFor="serverdelay" className="ml-4">
+                Server Delay:{' '}
+              </label>
+              <input
+                id="serverdelay"
+                type="number"
                 defaultValue={serverWaitDelay}
-                data-test="server-delay" style={{ width: '55px' }}
+                data-test="server-delay"
+                style={{ width: '55px' }}
                 onInput={($event) => serverDelayChanged($event)}
-                title="input a fake timer delay to simulate slow server response" />
+                title="input a fake timer delay to simulate slow server response"
+              />
             </div>
           </div>
 
@@ -439,8 +535,11 @@ const Example6: React.FC = () => {
 
           <div className="row">
             <div className="col-md-12">
-              <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" onClick={() => switchLanguage()}
-                data-test="language-button">
+              <button
+                className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+                onClick={() => switchLanguage()}
+                data-test="language-button"
+              >
                 <i className="mdi mdi-translate me-1"></i>
                 Switch Language
               </button>
@@ -454,31 +553,58 @@ const Example6: React.FC = () => {
               <label>Pagination strategy: </label>
               <span data-test="radioStrategy">
                 <label className="radio-inline control-label mx-1" htmlFor="offset">
-                  <input type="radio" name="inlineRadioOptions" data-test="offset" id="radioOffset" defaultChecked={true} value="false"
-                    onChange={() => changeIsWithCursor(false)} /> Offset
+                  <input
+                    type="radio"
+                    name="inlineRadioOptions"
+                    data-test="offset"
+                    id="radioOffset"
+                    defaultChecked={true}
+                    value="false"
+                    onChange={() => changeIsWithCursor(false)}
+                  />{' '}
+                  Offset
                 </label>
                 <label className="radio-inline control-label mx-1" htmlFor="radioCursor">
-                  <input type="radio" name="inlineRadioOptions" data-test="cursor" id="radioCursor" value="true"
-                    onChange={() => changeIsWithCursor(true)} /> Cursor
+                  <input
+                    type="radio"
+                    name="inlineRadioOptions"
+                    data-test="cursor"
+                    id="radioCursor"
+                    value="true"
+                    onChange={() => changeIsWithCursor(true)}
+                  />{' '}
+                  Cursor
                 </label>
               </span>
             </span>
           </div>
           <br />
-          {metrics && <span><><b>Metrics: </b>
-            {metrics.endTime ? tempoFormat(metrics.endTime, 'YYYY-MM-DD HH:mm:ss') : ''}
-            | {metrics.executionTime}ms
-            | {metrics.totalItemCount} items </>
-          </span>}
+          {metrics && (
+            <span>
+              <>
+                <b>Metrics: </b>
+                {metrics.endTime ? tempoFormat(metrics.endTime, 'YYYY-MM-DD HH:mm:ss') : ''}| {metrics.executionTime}ms |{' '}
+                {metrics.totalItemCount} items{' '}
+              </>
+            </span>
+          )}
 
           <div className="row" style={{ marginBottom: '5px' }}>
             <div className="col-md-12">
               <label>Programmatically go to first/last page:</label>
               <div className="btn-group" role="group">
-                <button className="btn btn-outline-secondary btn-xs btn-icon px-2" data-test="goto-first-page" onClick={() => goToFirstPage()}>
+                <button
+                  className="btn btn-outline-secondary btn-xs btn-icon px-2"
+                  data-test="goto-first-page"
+                  onClick={() => goToFirstPage()}
+                >
                   <i className="mdi mdi-page-first"></i>
                 </button>
-                <button className="btn btn-outline-secondary btn-xs btn-icon px-2" data-test="goto-last-page" onClick={() => goToLastPage()}>
+                <button
+                  className="btn btn-outline-secondary btn-xs btn-icon px-2"
+                  data-test="goto-last-page"
+                  onClick={() => goToLastPage()}
+                >
                   <i className="mdi mdi-page-last"></i>
                 </button>
               </div>
@@ -494,12 +620,13 @@ const Example6: React.FC = () => {
 
       <hr />
 
-      <SlickgridReact gridId="grid6"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid6"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
-        onGridStateChanged={$event => gridStateChanged($event.detail)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
+        onGridStateChanged={($event) => gridStateChanged($event.detail)}
       />
     </div>
   );

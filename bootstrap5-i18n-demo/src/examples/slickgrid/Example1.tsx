@@ -1,10 +1,4 @@
-import {
-  type Column,
-  Formatters,
-  type GridOption,
-  SlickgridReact,
-  type SlickgridReactInstance
-} from 'slickgrid-react';
+import { type Column, Formatters, type GridOption, SlickgridReact, type SlickgridReactInstance } from 'slickgrid-react';
 import { useState } from 'react';
 
 const NB_ITEMS = 995;
@@ -27,7 +21,7 @@ const Example1: React.FC = () => {
     { id: '%', name: '% Complete', field: 'percentComplete', sortable: true, minWidth: 100 },
     { id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso },
     { id: 'finish', name: 'Finish', field: 'finish', formatter: Formatters.dateIso },
-    { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', sortable: true, minWidth: 100 }
+    { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', sortable: true, minWidth: 100 },
   ];
   const columnDefinitions2: Column[] = [...columnDefinitions1];
 
@@ -36,7 +30,7 @@ const Example1: React.FC = () => {
     gridHeight: 225,
     gridWidth: 800,
     enableAutoResize: false,
-    enableSorting: true
+    enableSorting: true,
   };
 
   // copy the same Grid Options and Column Definitions to 2nd grid
@@ -50,7 +44,7 @@ const Example1: React.FC = () => {
     enablePagination: true,
     pagination: {
       pageSizes: [5, 10, 20, 25, 50],
-      pageSize: 5
+      pageSize: 5,
     },
   };
 
@@ -64,7 +58,7 @@ const Example1: React.FC = () => {
     for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
+      const randomDay = Math.floor(Math.random() * 29);
       const randomPercent = Math.round(Math.random() * 100);
 
       mockDataset[i] = {
@@ -74,7 +68,7 @@ const Example1: React.FC = () => {
         percentComplete: randomPercent,
         start: new Date(randomYear, randomMonth + 1, randomDay),
         finish: new Date(randomYear + 1, randomMonth + 1, randomDay),
-        effortDriven: (i % 5 === 0)
+        effortDriven: i % 5 === 0,
       };
     }
 
@@ -102,24 +96,33 @@ const Example1: React.FC = () => {
         Example 1: Basic Grids
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example1.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example1.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => setHideSubTitle(!hideSubTitle)}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => setHideSubTitle(!hideSubTitle)}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
-      {hideSubTitle ? null : <div className="subtitle">
-        Simple Grids with Fixed Sizes (800 x 225)
-      </div>}
+      {hideSubTitle ? null : <div className="subtitle">Simple Grids with Fixed Sizes (800 x 225)</div>}
 
       <h3>
         <div className="column">
           <span className="mr-3">Grid 1</span>
-          <button className="btn btn-outline-secondary btn-sm btn-icon ms-2" onClick={() => toggleDarkModeGrid1()} data-test="toggle-dark-mode">
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon ms-2"
+            onClick={() => toggleDarkModeGrid1()}
+            data-test="toggle-dark-mode"
+          >
             <i className="mdi mdi-theme-light-dark"></i>
             <span>Toggle Dark Mode</span>
           </button>
@@ -127,22 +130,23 @@ const Example1: React.FC = () => {
       </h3>
 
       <div className="grid-container1">
-        <SlickgridReact gridId="grid1"
-          columnDefinitions={columnDefinitions1}
-          gridOptions={gridOptions1!}
+        <SlickgridReact
+          gridId="grid1"
+          columns={columnDefinitions1}
+          options={gridOptions1!}
           dataset={dataset1}
-          onReactGridCreated={$event => reactGrid1Ready($event.detail)} />
+          onReactGridCreated={($event) => reactGrid1Ready($event.detail)}
+        />
       </div>
 
       <hr />
 
-      <h3>Grid 2 <small>(with local Pagination)</small></h3>
-      <SlickgridReact gridId="grid2"
-        columnDefinitions={columnDefinitions2}
-        gridOptions={gridOptions2!}
-        dataset={dataset2} />
-    </div >
+      <h3>
+        Grid 2 <small>(with local Pagination)</small>
+      </h3>
+      <SlickgridReact gridId="grid2" columns={columnDefinitions2} options={gridOptions2!} dataset={dataset2} />
+    </div>
   );
-}
+};
 
 export default Example1;

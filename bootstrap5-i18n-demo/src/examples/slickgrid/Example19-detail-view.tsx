@@ -38,28 +38,48 @@ const Example19DetailView: React.FC<RowDetailViewProps<Item, any>> = forwardRef(
       // then you can delete the item from the dataView
       props.dataView.deleteItem(model.rowId);
 
-      props.parent.showFlashMessage(`Deleted row with ${model.title}`, 'danger');
+      props.parentRef.showFlashMessage(`Deleted row with ${model.title}`, 'danger');
     }
   }
 
   function callParentMethod(model: any) {
-    props.parent.showFlashMessage(`We just called Parent Method from the Row Detail Child Component on ${model.title}`);
+    props.parentRef.showFlashMessage(`We just called Parent Method from the Row Detail Child Component on ${model.title}`);
   }
 
   return (
     <div className="container-fluid" style={{ marginTop: '10px' }}>
       <h3>{props.model.title}</h3>
       <div className="row">
-        <div className="col-3 detail-label"><label>Assignee:</label> <input className="form-control" value={assignee} onInput={function ($event) { assigneeChanged(($event.target as HTMLInputElement).value) }} /></div>
-        <div className="col-3 detail-label"><label>Reporter:</label> <span>{props.model.reporter}</span></div>
-        <div className="col-3 detail-label"><label>Duration:</label> <span>{props.model.duration?.toISOString?.()}</span></div>
-        <div className="col-3 detail-label"><label>% Complete:</label> <span>{props.model.percentComplete}</span></div>
+        <div className="col-3 detail-label">
+          <label>Assignee:</label>{' '}
+          <input
+            className="form-control"
+            value={assignee}
+            onInput={function ($event) {
+              assigneeChanged(($event.target as HTMLInputElement).value);
+            }}
+          />
+        </div>
+        <div className="col-3 detail-label">
+          <label>Reporter:</label> <span>{props.model.reporter}</span>
+        </div>
+        <div className="col-3 detail-label">
+          <label>Duration:</label> <span>{props.model.duration?.toISOString?.()}</span>
+        </div>
+        <div className="col-3 detail-label">
+          <label>% Complete:</label> <span>{props.model.percentComplete}</span>
+        </div>
       </div>
 
       <div className="row">
-        <div className="col-3 detail-label"><label>Start:</label> <span>{props.model.start?.toISOString()}</span></div>
-        <div className="col-3 detail-label"><label>Finish:</label> <span>{props.model.finish?.toISOString()}</span></div>
-        <div className="col-3 detail-label"><label>Effort Driven:</label> <i className={props.model.effortDriven ? 'mdi mdi-check' : ''}></i>
+        <div className="col-3 detail-label">
+          <label>Start:</label> <span>{props.model.start?.toISOString()}</span>
+        </div>
+        <div className="col-3 detail-label">
+          <label>Finish:</label> <span>{props.model.finish?.toISOString()}</span>
+        </div>
+        <div className="col-3 detail-label">
+          <label>Effort Driven:</label> <i className={props.model.effortDriven ? 'mdi mdi-check' : ''}></i>
         </div>
       </div>
 
@@ -69,7 +89,13 @@ const Example19DetailView: React.FC<RowDetailViewProps<Item, any>> = forwardRef(
         <h4>
           Find out who is the Assignee
           <small>
-            <button className="btn btn-primary btn-sm" onClick={function () { alertAssignee(props.model.assignee) }} data-test="assignee-btn">
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={function () {
+                alertAssignee(props.model.assignee);
+              }}
+              data-test="assignee-btn"
+            >
               Click Me
             </button>
           </small>
@@ -77,10 +103,22 @@ const Example19DetailView: React.FC<RowDetailViewProps<Item, any>> = forwardRef(
       </div>
 
       <div className="col-sm-4">
-        <button className="btn btn-primary btn-danger btn-sm" onClick={function () { deleteRow(props.model) }} data-test="delete-btn">
+        <button
+          className="btn btn-primary btn-danger btn-sm"
+          onClick={function () {
+            deleteRow(props.model);
+          }}
+          data-test="delete-btn"
+        >
           Delete Row
         </button>
-        <button className="btn btn-outline-secondary btn-sm" onClick={function () { callParentMethod(props.model) }} data-test="parent-btn">
+        <button
+          className="btn btn-outline-secondary btn-sm"
+          onClick={function () {
+            callParentMethod(props.model);
+          }}
+          data-test="parent-btn"
+        >
           Call Parent Method
         </button>
       </div>

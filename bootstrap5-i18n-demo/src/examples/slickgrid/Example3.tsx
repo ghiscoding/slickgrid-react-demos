@@ -6,7 +6,6 @@ import {
   type EditCommand,
   Editors,
   type EditorValidator,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
@@ -16,12 +15,13 @@ import {
   SlickGlobalEditorLock,
   SlickgridReact,
   type SlickgridReactInstance,
+  type SliderOption,
   type VanillaCalendarOption,
 } from 'slickgrid-react';
 import { useState } from 'react';
 
-import { CustomInputEditor } from './custom-inputEditor';
-import { CustomInputFilter } from './custom-inputFilter';
+import { CustomInputEditor } from './custom-inputEditor.js';
+import { CustomInputFilter } from './custom-inputFilter.js';
 
 import SAMPLE_COLLECTION_DATA from './data/collection_100_numbers.json';
 import SAMPLE_COLLECTION_DATA_URL from './data/collection_100_numbers.json?url';
@@ -114,7 +114,6 @@ const Example3: React.FC = () => {
       field: 'title',
       filterable: true,
       sortable: true,
-      type: FieldType.string,
       editor: {
         model: Editors.longText,
         placeholder: 'something',
@@ -123,7 +122,6 @@ const Example3: React.FC = () => {
       },
       minWidth: 100,
       onCellChange: (_e: Event, args: OnEventArgs) => {
-
         setAlertWarning(`Updated Title: ${args.dataContext.title}`);
       },
     },
@@ -133,7 +131,6 @@ const Example3: React.FC = () => {
       field: 'title',
       filterable: true,
       sortable: true,
-      type: FieldType.string,
       editor: {
         model: CustomInputEditor,
         placeholder: 'custom',
@@ -152,13 +149,16 @@ const Example3: React.FC = () => {
       filterable: true,
       minWidth: 100,
       sortable: true,
-      type: FieldType.number,
-      filter: { model: Filters.slider, filterOptions: { hideSliderNumber: false } },
+      type: 'number',
+      filter: {
+        model: Filters.slider,
+        options: { hideSliderNumber: false } as SliderOption,
+      },
       editor: {
         model: Editors.slider,
         minValue: 0,
         maxValue: 100,
-        // editorOptions: { hideSliderNumber: true },
+        // options: { hideSliderNumber: true },
       },
       /*
       editor: {
@@ -179,7 +179,7 @@ const Example3: React.FC = () => {
       field: 'percentComplete',
       filterable: true,
       formatter: Formatters.multiple,
-      type: FieldType.number,
+      type: 'number',
       editor: {
         // We can also add HTML text to be rendered (any bad script will be sanitized) but we have to opt-in, else it will be sanitized
         enableRenderHtml: true,
@@ -212,10 +212,7 @@ const Example3: React.FC = () => {
       },
       minWidth: 100,
       params: {
-        formatters: [
-          Formatters.collectionEditor,
-          Formatters.percentCompleteBar,
-        ],
+        formatters: [Formatters.collectionEditor, Formatters.percentCompleteBar],
       },
     },
     {
@@ -227,7 +224,7 @@ const Example3: React.FC = () => {
       formatter: Formatters.dateIso,
       sortable: true,
       minWidth: 100,
-      type: FieldType.date,
+      type: 'date',
       editor: {
         model: Editors.date,
       },
@@ -241,13 +238,13 @@ const Example3: React.FC = () => {
       formatter: Formatters.dateIso,
       sortable: true,
       minWidth: 100,
-      type: FieldType.date, // dataset cell input format
-      // outputType: FieldType.dateUs,   // date picker format
-      saveOutputType: FieldType.dateUtc, // save output date format
+      type: 'date', // dataset cell input format
+      // outputType: 'dateUs',   // date picker format
+      saveOutputType: 'dateUtc', // save output date format
       editor: {
         model: Editors.date,
-        // override any of the calendar options through 'filterOptions'
-        editorOptions: { range: { min: 'today' } } as VanillaCalendarOption,
+        // override any of the calendar options through 'options'
+        options: { displayDateMin: 'today' } as VanillaCalendarOption,
       },
     },
     {
@@ -264,7 +261,7 @@ const Example3: React.FC = () => {
         // We can use the autocomplete through 3 ways 'collection', 'collectionAsync' or with your own autocomplete options
         // use your own autocomplete options, instead of fetch-jsonp, use React HttpClient or FetchClient
         // here we use fetch-jsonp just because I'm not sure how to configure React HttpClient with JSONP and CORS
-        editorOptions: {
+        options: {
           minLength: 3,
           forceUserInput: true,
           fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
@@ -284,11 +281,11 @@ const Example3: React.FC = () => {
         // placeholder: '🔎︎ search city',
 
         // We can use the autocomplete through 3 ways 'collection', 'collectionAsync' or with your own autocomplete options
-        // collectionAsync: httpFetch.fetch(URL_COUNTRIES_COLLECTION),
+        // collectionAsync: httpFetch.fetch(COUNTRIES_COLLECTION_URL),
 
         // OR use your own autocomplete options, instead of fetch-jsonp, use React HttpClient or FetchClient
         // here we use fetch-jsonp just because I'm not sure how to configure React HttpClient with JSONP and CORS
-        filterOptions: {
+        options: {
           minLength: 3,
           fetch: (searchText: string, updateCallback: (items: false | any[]) => void) => {
             /** with React Http, note this demo won't work because of CORS */
@@ -310,7 +307,7 @@ const Example3: React.FC = () => {
       formatter: Formatters.complexObject,
       dataKey: 'code',
       labelKey: 'name',
-      type: FieldType.object,
+      type: 'object',
       sortComparer: SortComparers.objectString,
       filterable: true,
       sortable: true,
@@ -347,7 +344,7 @@ const Example3: React.FC = () => {
       name: 'Effort Driven',
       field: 'effortDriven',
       filterable: true,
-      type: FieldType.boolean,
+      type: 'boolean',
       filter: {
         model: Filters.singleSelect,
         collection: [
@@ -372,13 +369,12 @@ const Example3: React.FC = () => {
       sanitizeDataExport: true,
       minWidth: 100,
       sortable: true,
-      type: FieldType.string,
       editor: {
         // We can load the 'collection' asynchronously (on first load only, after that we will simply use 'collection')
         // 3 ways are supported (fetch, Promise or RxJS when available)
 
         // 1- use `fetch`
-        // collectionAsync: fetch(URL_SAMPLE_COLLECTION_DATA),
+        // collectionAsync: fetch(SAMPLE_COLLECTION_DATA_URL),
 
         // OR 2- use a Promise
         collectionAsync: Promise.resolve(SAMPLE_COLLECTION_DATA),
@@ -388,7 +384,7 @@ const Example3: React.FC = () => {
         collectionSortBy: {
           property: 'value',
           sortDesc: true,
-          fieldType: FieldType.number,
+          fieldType: 'number',
         },
         customStructure: {
           label: 'label',
@@ -414,7 +410,7 @@ const Example3: React.FC = () => {
         collectionSortBy: {
           property: 'value',
           sortDesc: true,
-          fieldType: FieldType.number,
+          fieldType: 'number',
         },
         customStructure: {
           label: 'label',
@@ -456,9 +452,7 @@ const Example3: React.FC = () => {
     // wrap into a timer to simulate a backend async call
     window.setTimeout(() => {
       // at any time, we can poke the 'collection' property and modify it
-      const requisiteColumnDef = columnDefinitions?.find(
-        (column: Column) => column.id === 'prerequisites'
-      );
+      const requisiteColumnDef = columnDefinitions?.find((column: Column) => column.id === 'prerequisites');
       if (requisiteColumnDef) {
         const collectionEditor = requisiteColumnDef.editor!.collection;
         const collectionFilter = requisiteColumnDef.filter!.collection;
@@ -495,17 +489,14 @@ const Example3: React.FC = () => {
 
   /** Delete last inserted row */
   function deleteItem() {
-    const requisiteColumnDef = columnDefinitions?.find(
-      (column: Column) => column.id === 'prerequisites'
-    );
+    const requisiteColumnDef = columnDefinitions?.find((column: Column) => column.id === 'prerequisites');
     if (requisiteColumnDef) {
       const collectionEditor = requisiteColumnDef.editor!.collection;
       const collectionFilter = requisiteColumnDef.filter!.collection;
 
       if (Array.isArray(collectionEditor) && Array.isArray(collectionFilter)) {
         // sort collection in descending order and take out last option from the collection
-        const selectCollectionObj =
-          sortCollectionDescending(collectionEditor).pop();
+        const selectCollectionObj = sortCollectionDescending(collectionEditor).pop();
         sortCollectionDescending(collectionFilter).pop();
         reactGrid?.gridService.deleteItemById(selectCollectionObj.value);
       }
@@ -521,16 +512,11 @@ const Example3: React.FC = () => {
     const tempDataset: any[] = [];
     for (let i = startingIndex; i < startingIndex + itemCount; i++) {
       const randomYear = 2000 + randomBetween(4, 15);
-      const randomFinishYear =
-        new Date().getFullYear() - 3 + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
+      const randomFinishYear = new Date().getFullYear() - 3 + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
       const randomMonth = Math.floor(Math.random() * 11);
       const randomDay = Math.floor(Math.random() * 29);
       const randomPercent = Math.round(Math.random() * 100);
-      const randomFinish = new Date(
-        randomFinishYear,
-        randomMonth + 1,
-        randomDay
-      );
+      const randomFinish = new Date(randomFinishYear, randomMonth + 1, randomDay);
 
       tempDataset.push({
         id: i,
@@ -542,13 +528,9 @@ const Example3: React.FC = () => {
         finish: randomFinish < new Date() ? '' : randomFinish, // make sure the random date is earlier than today
         effortDriven: i % 5 === 0,
         prerequisites: i % 2 === 0 && i !== 0 && i < 12 ? [i, i - 1] : [],
-        countryOfOrigin:
-          i % 2
-            ? { code: 'CA', name: 'Canada' }
-            : { code: 'US', name: 'United States' },
+        countryOfOrigin: i % 2 ? { code: 'CA', name: 'Canada' } : { code: 'US', name: 'United States' },
         countryOfOriginName: i % 2 ? 'Canada' : 'United States',
-        cityOfOrigin:
-          i % 2 ? 'Vancouver, BC, Canada' : 'Boston, MA, United States',
+        cityOfOrigin: i % 2 ? 'Vancouver, BC, Canada' : 'Boston, MA, United States',
       });
     }
     return tempDataset;
@@ -666,33 +648,52 @@ const Example3: React.FC = () => {
   }
 
   return (
-    <div id='demo-container' className='container-fluid'>
+    <div id="demo-container" className="container-fluid">
       <h2>
         Example 3: Editors / Delete
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example3.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example3.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
       <div className="subtitle">
-        Grid with Inline Editors and onCellClick actions (<a href='https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/editors' target='_blank'>Docs</a>).
+        Grid with Inline Editors and onCellClick actions (
+        <a href="https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/editors" target="_blank">
+          Docs
+        </a>
+        ).
         <ul>
-          <li>Multiple Editors & Filters are available: AutoComplete, Checkbox, Date, Slider, SingleSelect, MultipleSelect, Float, Text, LongText... even Custom Editor</li>
+          <li>
+            Multiple Editors & Filters are available: AutoComplete, Checkbox, Date, Slider, SingleSelect, MultipleSelect, Float, Text,
+            LongText... even Custom Editor
+          </li>
           <li>When using 'enableCellNavigation: true', clicking on a cell will automatically make it active &amp; selected.</li>
-          <ul><li>If you don't want this behavior, then you should disable 'enableCellNavigation'</li></ul>
+          <ul>
+            <li>If you don't want this behavior, then you should disable 'enableCellNavigation'</li>
+          </ul>
           <li>Inline Editors requires 'enableCellNavigation: true' (not sure why though)</li>
           <li>
-            Support Excel Copy Buffer (SlickGrid Copy Manager Plugin), you can use it by simply enabling 'enableExcelCopyBuffer' flag.
-            Note that it will only evaluate Formatter when the 'exportWithFormatter' flag is enabled (through 'ExportOptions' or the column definition)
+            Support Excel Copy Buffer (SlickGrid Copy Manager Plugin), you can use it by simply enabling 'enableExcelCopyBuffer' flag. Note
+            that it will only evaluate Formatter when the 'exportWithFormatter' flag is enabled (through 'ExportOptions' or the column
+            definition)
           </li>
-          <li>MultipleSelect & SingeSelect Editors & Filters can use a regular 'collection' or 'collectionAsync' to load it asynchronously</li>
+          <li>
+            MultipleSelect & SingeSelect Editors & Filters can use a regular 'collection' or 'collectionAsync' to load it asynchronously
+          </li>
           <ul>
             <li>Click on 'Add Item' and see the Editor/Filter or the 'Prerequesites' column change</li>
             <li>Any Editor/Filter with a 'collection' can be changed dynamically later in the future</li>
@@ -701,122 +702,112 @@ const Example3: React.FC = () => {
       </div>
 
       <div className="row">
-        <div className='col-sm-6'>
+        <div className="col-sm-6">
           <label className="me-1">autoEdit setting:</label>
-          <span id='radioAutoEdit'>
-            <label className='radio-inline control-label me-1' htmlFor='radioTrue'>
-              <input
-                type='radio'
-                name='inlineRadioOptions'
-                id='radioTrue'
-                defaultChecked={isAutoEdit}
-                onInput={() => setAutoEdit(true)}
-              />{' '}
+          <span id="radioAutoEdit">
+            <label className="radio-inline control-label me-1" htmlFor="radioTrue">
+              <input type="radio" name="inlineRadioOptions" id="radioTrue" defaultChecked={isAutoEdit} onInput={() => setAutoEdit(true)} />{' '}
               ON (single-click)
             </label>
-            <label className='radio-inline control-label' htmlFor='radioFalse'>
-              <input
-                type='radio'
-                name='inlineRadioOptions'
-                id='radioFalse'
-                onInput={() => setAutoEdit(false)}
-              />{' '}
-              OFF (double-click)
+            <label className="radio-inline control-label" htmlFor="radioFalse">
+              <input type="radio" name="inlineRadioOptions" id="radioFalse" onInput={() => setAutoEdit(false)} /> OFF (double-click)
             </label>
           </span>
-          <div className='row col-sm-12'>
+          <div className="row col-sm-12">
             <span>
-              <button className='btn btn-outline-secondary btn-sm btn-icon me-1' data-test='undo-btn' onClick={() => undo()}>
-                <i className='mdi mdi-undo me-1'></i>
+              <button className="btn btn-outline-secondary btn-sm btn-icon me-1" data-test="undo-btn" onClick={() => undo()}>
+                <i className="mdi mdi-undo me-1"></i>
                 Undo last edit(s)
               </button>
-              <label className='checkbox-inline control-label me-1' htmlFor='autoCommitEdit'>
-                <input
-                  type='checkbox'
-                  id='autoCommitEdit'
-                  data-test='auto-commit'
-                  onChange={() => changeAutoCommit()}
-                />
+              <label className="checkbox-inline control-label me-1" htmlFor="autoCommitEdit">
+                <input type="checkbox" id="autoCommitEdit" data-test="auto-commit" onChange={() => changeAutoCommit()} />
                 &nbsp;Auto Commit Edit
               </label>
             </span>
           </div>
-          <div className='row' style={{ marginTop: '5px' }}>
-            <div className='col-sm-12'>
-              <button className='btn btn-outline-secondary btn-sm btn-icon' onClick={() => reactGrid?.filterService.clearFilters()}>
+          <div className="row" style={{ marginTop: '5px' }}>
+            <div className="col-sm-12">
+              <button className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => reactGrid?.filterService.clearFilters()}>
                 Clear Filters
               </button>
-              <button
-                className='btn btn-outline-secondary btn-sm btn-icon mx-1' onClick={() => reactGrid?.sortService.clearSorting()}>
+              <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" onClick={() => reactGrid?.sortService.clearSorting()}>
                 Clear Sorting
               </button>
               <button
-                className='btn btn-sm btn-outline-primary'
+                className="btn btn-sm btn-outline-primary"
                 data-test="add-item-btn"
                 onClick={() => addItem()}
-                title='Clear Filters &amp; Sorting to see it better'
+                title="Clear Filters &amp; Sorting to see it better"
               >
                 Add item
               </button>
-              <button
-                className='btn btn-sm btn-outline-danger mx-1'
-                data-test="delete-item-btn"
-                onClick={() => deleteItem()}
-              >
+              <button className="btn btn-sm btn-outline-danger mx-1" data-test="delete-item-btn" onClick={() => deleteItem()}>
                 Delete item
               </button>
             </div>
           </div>
-          <div className='row' style={{ marginTop: '5px' }}>
-            <div className='col-sm-12'>
+          <div className="row" style={{ marginTop: '5px' }}>
+            <div className="col-sm-12">
               <button
-                className='btn btn-outline-secondary btn-sm btn-icon'
-                data-test='add-title-column'
+                className="btn btn-outline-secondary btn-sm btn-icon"
+                data-test="add-title-column"
                 onClick={() => dynamicallyAddTitleHeader()}
               >
-                <i className='mdi mdi-shape-square-plus me-1'></i>
+                <i className="mdi mdi-shape-square-plus me-1"></i>
                 Dynamically Duplicate Title Column
               </button>
               <button
-                className='btn btn-outline-secondary btn-sm btn-icon mx-1'
-                data-test='remove-title-column'
+                className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+                data-test="remove-title-column"
                 onClick={() => dynamicallyRemoveLastColumn()}
               >
-                <i className='mdi mdi-minus me-1'></i>
+                <i className="mdi mdi-minus me-1"></i>
                 Dynamically Remove Last Column
               </button>
             </div>
           </div>
         </div>
 
-        <div className='col-sm-6'>
+        <div className="col-sm-6">
           {alertWarning ? (
-            <div className='alert alert-warning'>
+            <div className="alert alert-warning">
               <strong>Updated Item:</strong> {alertWarning}
-            </div>) : ''}
-          {updatedObject ? (
-            <div className='alert alert-info'>
-              <strong>Updated Item: </strong>{' '}
-              {JSON.stringify(updatedObject, null, 2)}
             </div>
-          ) : ''}
+          ) : (
+            ''
+          )}
+          {updatedObject ? (
+            <div className="alert alert-info">
+              <strong>Updated Item: </strong> {JSON.stringify(updatedObject, null, 2)}
+            </div>
+          ) : (
+            ''
+          )}
         </div>
       </div>
 
-      <div className='col-sm-12'>
+      <div className="col-sm-12">
         <SlickgridReact
-          gridId='grid3'
-          columnDefinitions={columnDefinitions}
-          gridOptions={gridOptions}
+          gridId="grid3"
+          columns={columnDefinitions}
+          options={gridOptions}
           dataset={dataset}
-          onReactGridCreated={e => { reactGridReady(e.detail); }}
-          onCellChange={e => { onCellChanged(e.detail.eventData, e.detail.args); }}
-          onClick={e => { onCellClicked(e.detail.eventData, e.detail.args); }}
-          onValidationError={e => { onCellValidationError(e.detail.eventData, e.detail.args); }}
+          onReactGridCreated={(e) => {
+            reactGridReady(e.detail);
+          }}
+          onCellChange={(e) => {
+            onCellChanged(e.detail.eventData, e.detail.args);
+          }}
+          onClick={(e) => {
+            onCellClicked(e.detail.eventData, e.detail.args);
+          }}
+          onValidationError={(e) => {
+            onCellValidationError(e.detail.eventData, e.detail.args);
+          }}
         />
       </div>
     </div>
   );
-}
+};
 
 export default Example3;

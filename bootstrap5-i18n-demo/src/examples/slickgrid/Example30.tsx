@@ -8,7 +8,6 @@ import {
   type CompositeEditorModalType,
   type EditCommand,
   Editors,
-  FieldType,
   Filters,
   formatNumber,
   type Formatter,
@@ -24,7 +23,7 @@ import {
   SortComparers,
   type VanillaCalendarOption,
 } from 'slickgrid-react';
-import URL_COUNTRIES_COLLECTION from './data/countries.json';
+import COUNTRIES_COLLECTION from './data/countries.json';
 
 import './example30.scss'; // provide custom CSS/SASS styling
 
@@ -64,13 +63,17 @@ function checkItemIsEditable(dataContext: any, columnDef: Column, grid: SlickGri
 const customEditableInputFormatter: Formatter = (_row, _cell, value, columnDef, _dataContext, grid) => {
   const gridOptions = grid.getOptions() as GridOption;
   const isEditableLine = gridOptions.editable && columnDef.editor;
-  value = (value === null || value === undefined) ? '' : value;
+  value = value === null || value === undefined ? '' : value;
   return isEditableLine ? { text: value, addClasses: 'editable-field', toolTip: 'Click to Edit' } : value;
 };
 
 // you can create custom validator to pass to an inline editor
 const myCustomTitleValidator = (value: any, args: any) => {
-  if ((value === null || value === undefined || !value.length) && (args.compositeEditorOptions && args.compositeEditorOptions.modalType === 'create' || args.compositeEditorOptions.modalType === 'edit')) {
+  if (
+    (value === null || value === undefined || !value.length) &&
+    ((args.compositeEditorOptions && args.compositeEditorOptions.modalType === 'create') ||
+      args.compositeEditorOptions.modalType === 'edit')
+  ) {
     // we will only check if the field is supplied when it's an inline editing OR a composite editor of type create/edit
     return { valid: false, msg: 'This is a required field.' };
   } else if (!/^(task\s\d+)*$/i.test(value)) {
@@ -88,7 +91,7 @@ const Example30: React.FC = () => {
   const [isMassSelectionDisabled, setIsMassSelectionDisabled] = useState(true);
   const [isGridEditable, setIsGridEditable] = useState(true);
   const [editedItems, setEditedItems] = useState<any>({});
-  const [editQueue, setEditQueue] = useState<{ item: any, columns: Column[], editCommand: EditCommand }[]>([]);
+  const [editQueue, setEditQueue] = useState<{ item: any; columns: Column[]; editCommand: EditCommand }[]>([]);
   const [hideSubTitle, setHideSubTitle] = useState(false);
 
   const reactGridRef = useRef<SlickgridReactInstance | null>(null);
@@ -120,55 +123,92 @@ const Example30: React.FC = () => {
   function defineGrid() {
     const columnDefinitions: Column[] = [
       {
-        id: 'title', name: '<span title="Task must always be followed by a number" class="text-warning mdi mdi-alert-outline"></span> Title <span title="Title is always rendered as UPPERCASE" class="mdi mdi-information-outline"></span>',
-        field: 'title', sortable: true, type: FieldType.string, minWidth: 75,
-        cssClass: 'text-uppercase fw-bold', columnGroup: 'Common Factor',
-        filterable: true, filter: { model: Filters.compoundInputText },
+        id: 'title',
+        name: '<span title="Task must always be followed by a number" class="text-warning mdi mdi-alert-outline"></span> Title <span title="Title is always rendered as UPPERCASE" class="mdi mdi-information-outline"></span>',
+        field: 'title',
+        sortable: true,
+        minWidth: 75,
+        cssClass: 'text-uppercase fw-bold',
+        columnGroup: 'Common Factor',
+        filterable: true,
+        filter: { model: Filters.compoundInputText },
         editor: {
-          model: Editors.longText, massUpdate: false, required: true, alwaysSaveOnEnterKey: true,
+          model: Editors.longText,
+          massUpdate: false,
+          required: true,
+          alwaysSaveOnEnterKey: true,
           maxLength: 12,
-          editorOptions: {
+          options: {
             cols: 45,
             rows: 6,
             buttonTexts: {
               cancel: 'Close',
-              save: 'Done'
-            }
+              save: 'Done',
+            },
           } as LongTextEditorOption,
           validator: myCustomTitleValidator,
         },
       },
       {
-        id: 'duration', name: 'Duration', field: 'duration', sortable: true, filterable: true, minWidth: 75,
-        type: FieldType.number, columnGroup: 'Common Factor',
+        id: 'duration',
+        name: 'Duration',
+        field: 'duration',
+        sortable: true,
+        filterable: true,
+        minWidth: 75,
+        type: 'number',
+        columnGroup: 'Common Factor',
         formatter: (_row, _cell, value) => {
           if (value === null || value === undefined || value === '') {
             return '';
           }
           return value > 1 ? `${value} days` : `${value} day`;
         },
-        editor: { model: Editors.float, massUpdate: true, decimal: 2, valueStep: 1, minValue: 0, maxValue: 10000, alwaysSaveOnEnterKey: true, required: true },
+        editor: {
+          model: Editors.float,
+          massUpdate: true,
+          decimal: 2,
+          valueStep: 1,
+          minValue: 0,
+          maxValue: 10000,
+          alwaysSaveOnEnterKey: true,
+          required: true,
+        },
       },
       {
-        id: 'cost', name: 'Cost', field: 'cost', width: 90, minWidth: 70,
-        sortable: true, filterable: true, type: FieldType.number, columnGroup: 'Analysis',
+        id: 'cost',
+        name: 'Cost',
+        field: 'cost',
+        width: 90,
+        minWidth: 70,
+        sortable: true,
+        filterable: true,
+        type: 'number',
+        columnGroup: 'Analysis',
         filter: { model: Filters.compoundInputNumber },
         formatter: Formatters.dollar,
       },
       {
-        id: 'percentComplete', name: '% Complete', field: 'percentComplete', minWidth: 100,
-        type: FieldType.number,
-        sortable: true, filterable: true, columnGroup: 'Analysis',
+        id: 'percentComplete',
+        name: '% Complete',
+        field: 'percentComplete',
+        minWidth: 100,
+        type: 'number',
+        sortable: true,
+        filterable: true,
+        columnGroup: 'Analysis',
         filter: { model: Filters.compoundSlider, operator: '>=' },
         editor: {
           model: Editors.slider,
-          massUpdate: true, minValue: 0, maxValue: 100,
+          massUpdate: true,
+          minValue: 0,
+          maxValue: 100,
         },
-        customTooltip: { position: 'center' }
+        customTooltip: { position: 'center' },
       },
       // {
       //   id: 'percentComplete2', name: '% Complete', field: 'analysis.percentComplete', minWidth: 100,
-      //   type: FieldType.number,
+      //   type: 'number',
       //   sortable: true, filterable: true, columnGroup: 'Analysis',
       //   // filter: { model: Filters.compoundSlider, operator: '>=' },
       //   formatter: Formatters.complex,
@@ -192,82 +232,115 @@ const Example30: React.FC = () => {
       //   },
       // },
       {
-        id: 'complexity', name: 'Complexity', field: 'complexity', minWidth: 100,
-        type: FieldType.number,
-        sortable: true, filterable: true, columnGroup: 'Analysis',
+        id: 'complexity',
+        name: 'Complexity',
+        field: 'complexity',
+        minWidth: 100,
+        type: 'number',
+        sortable: true,
+        filterable: true,
+        columnGroup: 'Analysis',
         formatter: (_row, _cell, value) => complexityLevelList[value]?.label,
         exportCustomFormatter: (_row, _cell, value) => complexityLevelList[value]?.label,
         filter: {
           model: Filters.multipleSelect,
-          collection: complexityLevelList
+          collection: complexityLevelList,
         },
         editor: {
           model: Editors.singleSelect,
           collection: complexityLevelList,
-          massUpdate: true
+          massUpdate: true,
         },
       },
       {
-        id: 'start', name: 'Start', field: 'start', sortable: true, minWidth: 100,
-        formatter: Formatters.dateUs, columnGroup: 'Period',
+        id: 'start',
+        name: 'Start',
+        field: 'start',
+        sortable: true,
+        minWidth: 100,
+        formatter: Formatters.dateUs,
+        columnGroup: 'Period',
         exportCustomFormatter: Formatters.dateUs,
-        type: FieldType.date, outputType: FieldType.dateUs, saveOutputType: FieldType.dateUtc,
-        filterable: true, filter: { model: Filters.compoundDate },
-        editor: { model: Editors.date, massUpdate: true, editorOptions: { hideClearButton: false } },
+        type: 'date',
+        outputType: 'dateUs',
+        saveOutputType: 'dateUtc',
+        filterable: true,
+        filter: { model: Filters.compoundDate },
+        editor: { model: Editors.date, massUpdate: true, options: { hideClearButton: false } },
       },
       {
-        id: 'completed', name: 'Completed', field: 'completed', width: 80, minWidth: 75, maxWidth: 100,
-        cssClass: 'text-center', columnGroup: 'Period',
-        sortable: true, filterable: true,
+        id: 'completed',
+        name: 'Completed',
+        field: 'completed',
+        width: 80,
+        minWidth: 75,
+        maxWidth: 100,
+        cssClass: 'text-center',
+        columnGroup: 'Period',
+        sortable: true,
+        filterable: true,
         formatter: Formatters.checkmarkMaterial,
         exportWithFormatter: false,
         filter: {
-          collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
-          model: Filters.singleSelect
+          collection: [
+            { value: '', label: '' },
+            { value: true, label: 'True' },
+            { value: false, label: 'False' },
+          ],
+          model: Filters.singleSelect,
         },
-        editor: { model: Editors.checkbox, massUpdate: true, },
+        editor: { model: Editors.checkbox, massUpdate: true },
         // editor: { model: Editors.singleSelect, collection: [{ value: true, label: 'Yes' }, { value: false, label: 'No' }], },
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish', sortable: true, minWidth: 100,
-        formatter: Formatters.dateUs, columnGroup: 'Period',
-        type: FieldType.date, outputType: FieldType.dateUs, saveOutputType: FieldType.dateUtc,
-        filterable: true, filter: { model: Filters.compoundDate },
+        id: 'finish',
+        name: 'Finish',
+        field: 'finish',
+        sortable: true,
+        minWidth: 100,
+        formatter: Formatters.dateUs,
+        columnGroup: 'Period',
+        type: 'date',
+        outputType: 'dateUs',
+        saveOutputType: 'dateUtc',
+        filterable: true,
+        filter: { model: Filters.compoundDate },
         exportCustomFormatter: Formatters.dateUs,
         editor: {
           model: Editors.date,
-          editorOptions: {
-            range: { min: 'today' },
+          options: {
+            displayDateMin: 'today',
 
             // if we want to preload the date picker with a different date,
             // we could do it by assigning settings.seleted.dates
             // NOTE: vanilla-calendar doesn't automatically focus the picker to the year/month and you need to do it yourself
-            // selected: {
-            //   dates: ['2021-06-04'],
-            //   month: 6 - 1, // Note: JS Date month (only) is zero index based, so June is 6-1 => 5
-            //   year: 2021
-            // }
+            // selectedDates: ['2021-06-04'],
+            // selectedMonth: 6 - 1, // Note: JS Date month (only) is zero index based, so June is 6-1 => 5
+            // selectedYear: 2021
           } as VanillaCalendarOption,
           massUpdate: true,
           validator: (value, args) => {
             const dataContext = args?.item;
-            if (dataContext && (dataContext.completed && !value)) {
+            if (dataContext && dataContext.completed && !value) {
               return { valid: false, msg: 'You must provide a "Finish" date when "Completed" is checked.' };
             }
             return { valid: true, msg: '' };
-          }
+          },
         },
       },
       {
-        id: 'product', name: 'Product', field: 'product',
-        filterable: true, columnGroup: 'Item',
+        id: 'product',
+        name: 'Product',
+        field: 'product',
+        filterable: true,
+        columnGroup: 'Item',
         minWidth: 100,
         exportWithFormatter: true,
         dataKey: 'id',
         labelKey: 'itemName',
         formatter: Formatters.complexObject,
         exportCustomFormatter: Formatters.complex, // without the Editing cell Formatter
-        type: FieldType.object,
+        type: 'object',
         sortComparer: SortComparers.objectString,
         editor: {
           model: Editors.autocompleter,
@@ -275,12 +348,12 @@ const Example30: React.FC = () => {
           massUpdate: true,
 
           // example with a Remote API call
-          editorOptions: {
+          options: {
             minLength: 1,
             fetch: (searchTerm: string, callback: (items: false | any[]) => void) => {
               // const items = require('c://TEMP/items.json');
               const products = mockProducts();
-              callback(products.filter(product => product.itemName.toLowerCase().includes(searchTerm.toLowerCase())));
+              callback(products.filter((product) => product.itemName.toLowerCase().includes(searchTerm.toLowerCase())));
             },
             renderItem: {
               // layout: 'twoRows',
@@ -294,17 +367,19 @@ const Example30: React.FC = () => {
         filter: {
           model: Filters.inputText,
           // placeholder: '🔎︎ search product',
-          type: FieldType.string,
           queryField: 'product.itemName',
-        }
+        },
       },
       {
-        id: 'origin', name: 'Country of Origin', field: 'origin',
-        formatter: Formatters.complexObject, columnGroup: 'Item',
+        id: 'origin',
+        name: 'Country of Origin',
+        field: 'origin',
+        formatter: Formatters.complexObject,
+        columnGroup: 'Item',
         exportCustomFormatter: Formatters.complex, // without the Editing cell Formatter
         dataKey: 'code',
         labelKey: 'name',
-        type: FieldType.object,
+        type: 'object',
         sortComparer: SortComparers.objectString,
         filterable: true,
         sortable: true,
@@ -313,19 +388,24 @@ const Example30: React.FC = () => {
           model: Editors.autocompleter,
           massUpdate: true,
           customStructure: { label: 'name', value: 'code' },
-          collectionAsync: Promise.resolve(URL_COUNTRIES_COLLECTION),
-          editorOptions: { minLength: 0 }
+          collectionAsync: Promise.resolve(COUNTRIES_COLLECTION),
+          options: { minLength: 0 } as AutocompleterOption,
         },
         filter: {
           model: Filters.inputText,
-          type: 'string',
           queryField: 'origin.name',
-        }
+        },
       },
       {
-        id: 'action', name: 'Action', field: 'action', width: 70, minWidth: 70, maxWidth: 70,
+        id: 'action',
+        name: 'Action',
+        field: 'action',
+        width: 70,
+        minWidth: 70,
+        maxWidth: 70,
         excludeFromExport: true,
-        formatter: () => `<div class="button-style margin-auto" style="width: 35px;"><span class="mdi mdi-chevron-down text-primary"></span></div>`,
+        formatter: () =>
+          `<div class="button-style margin-auto" style="width: 35px;"><span class="mdi mdi-chevron-down text-primary"></span></div>`,
         cellMenu: {
           hideCloseButton: false,
           width: 175,
@@ -347,8 +427,12 @@ const Example30: React.FC = () => {
             },
             'divider',
             {
-              command: 'delete-row', title: 'Delete Row', positionOrder: 64,
-              iconCssClass: 'mdi mdi-close color-danger', cssClass: 'red', textCssClass: 'text-italic color-danger-light',
+              command: 'delete-row',
+              title: 'Delete Row',
+              positionOrder: 64,
+              iconCssClass: 'mdi mdi-close color-danger',
+              cssClass: 'red',
+              textCssClass: 'text-italic color-danger-light',
               // only show command to 'Delete Row' when the task is not completed
               itemVisibilityOverride: (args) => {
                 return !args.dataContext?.completed;
@@ -359,10 +443,10 @@ const Example30: React.FC = () => {
                 if (confirm(`Do you really want to delete row (${row + 1}) with "${dataContext.title}"`)) {
                   reactGridRef.current?.gridService.deleteItemById(dataContext.id);
                 }
-              }
+              },
             },
           ],
-        }
+        },
       },
     ];
 
@@ -376,7 +460,7 @@ const Example30: React.FC = () => {
       autoAddCustomEditorFormatter: customEditableInputFormatter,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableAutoSizeColumns: true,
       enableAutoResize: true,
@@ -384,17 +468,17 @@ const Example30: React.FC = () => {
       enablePagination: true,
       pagination: {
         pageSize: 10,
-        pageSizes: [10, 200, 250, 500, 5000]
+        pageSizes: [10, 200, 250, 500, 5000],
       },
       enableExcelExport: true,
       excelExportOptions: {
-        exportWithFormatter: false
+        exportWithFormatter: false,
       },
       externalResources: [new ExcelExportService(), new SlickCustomTooltip(), compositeEditorInstanceRef.current!],
       enableFiltering: true,
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
-        selectActiveRow: false
+        selectActiveRow: false,
       },
       createPreHeaderPanel: true,
       showPreHeaderPanel: true,
@@ -409,7 +493,9 @@ const Example30: React.FC = () => {
       enableCompositeEditor: true,
       editCommandHandler: (item, column, editCommand) => {
         // composite editors values are saved as array, so let's convert to array in any case and we'll loop through these values
-        const prevSerializedValues = Array.isArray(editCommand.prevSerializedValue) ? editCommand.prevSerializedValue : [editCommand.prevSerializedValue];
+        const prevSerializedValues = Array.isArray(editCommand.prevSerializedValue)
+          ? editCommand.prevSerializedValue
+          : [editCommand.prevSerializedValue];
         const serializedValues = Array.isArray(editCommand.serializedValue) ? editCommand.serializedValue : [editCommand.serializedValue];
         const editorColumns = columnDefinitions?.filter((col) => col.editor !== undefined);
 
@@ -447,8 +533,8 @@ const Example30: React.FC = () => {
             setDarkMode(newDarkMode); // keep local toggle var in sync
             toggleBodyBackground(newDarkMode);
           }
-        }
-      }
+        },
+      },
     };
     setColumnDefinitions(columnDefinitions);
     setGridOptions(gridOptions);
@@ -460,11 +546,11 @@ const Example30: React.FC = () => {
     for (let i = 0; i < count; i++) {
       const randomItemId = Math.floor(Math.random() * mockProducts().length);
       const randomYear = 2000 + Math.floor(Math.random() * 10);
-      const randomFinishYear = (new Date().getFullYear()) + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
+      const randomFinishYear = new Date().getFullYear() + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
-      const randomTime = Math.floor((Math.random() * 59));
-      const randomFinish = new Date(randomFinishYear, (randomMonth + 1), randomDay, randomTime, randomTime, randomTime);
+      const randomDay = Math.floor(Math.random() * 29);
+      const randomTime = Math.floor(Math.random() * 59);
+      const randomFinish = new Date(randomFinishYear, randomMonth + 1, randomDay, randomTime, randomTime, randomTime);
       const randomPercentComplete = Math.floor(Math.random() * 100) + 15; // make it over 15 for E2E testing purposes
       const percentCompletion = randomPercentComplete > 100 ? (i > 5 ? 100 : 88) : randomPercentComplete; // don't use 100 unless it's over index 5, for E2E testing purposes
       const isCompleted = percentCompletion === 100;
@@ -479,11 +565,11 @@ const Example30: React.FC = () => {
         },
         complexity: i % 3 ? 0 : 2,
         start: new Date(randomYear, randomMonth, randomDay, randomDay, randomTime, randomTime, randomTime),
-        finish: (isCompleted || (i % 3 === 0 && (randomFinish > new Date() && i > 3)) ? (isCompleted ? new Date() : randomFinish) : ''), // make sure the random date is earlier than today and it's index is bigger than 3
-        cost: (i % 33 === 0) ? null : Math.round(Math.random() * 10000) / 100,
+        finish: isCompleted || (i % 3 === 0 && randomFinish > new Date() && i > 3) ? (isCompleted ? new Date() : randomFinish) : '', // make sure the random date is earlier than today and it's index is bigger than 3
+        cost: i % 33 === 0 ? null : Math.round(Math.random() * 10000) / 100,
         completed: (isCompleted && i > 5) || (i % 3 === 0 && randomFinish > new Date() && i > 3),
-        product: { id: mockProducts()[randomItemId]?.id, itemName: mockProducts()[randomItemId]?.itemName, },
-        origin: (i % 2) ? { code: 'CA', name: 'Canada' } : { code: 'US', name: 'United States' },
+        product: { id: mockProducts()[randomItemId]?.id, itemName: mockProducts()[randomItemId]?.itemName },
+        origin: i % 2 ? { code: 'CA', name: 'Canada' } : { code: 'US', name: 'United States' },
       };
 
       if (!(i % 8)) {
@@ -517,7 +603,7 @@ const Example30: React.FC = () => {
     return false;
   }
 
-  function handleItemDeleted(itemId: string) {
+  function handleItemsDeleted(itemId: string) {
     console.log('item deleted with id:', itemId);
   }
 
@@ -579,7 +665,7 @@ const Example30: React.FC = () => {
     if (columnDef.id === 'completed') {
       compositeEditorInstanceRef.current!.changeFormEditorOption('complexity', 'filter', true); // multiple-select dropdown editor
       compositeEditorInstanceRef.current!.changeFormEditorOption('percentComplete', 'hideSliderNumber', formValues['completed']); // slider editor
-      compositeEditorInstanceRef.current!.changeFormEditorOption('finish', 'range', { min: 'today' }); // calendar picker, change minDate to today
+      compositeEditorInstanceRef.current!.changeFormEditorOption('finish', 'displayDateMin', 'today'); // calendar picker, change minDate to today
     }
     */
   }
@@ -655,9 +741,9 @@ const Example30: React.FC = () => {
           // we'll just apply the change without any rejection from the server and
           // note that we also have access to the "dataContext" which is only available for these modal
           console.log(`${modalType} item data context`, dataContext);
-          return new Promise(resolve => window.setTimeout(() => resolve(true), serverResponseDelay));
+          return new Promise((resolve) => window.setTimeout(() => resolve(true), serverResponseDelay));
         }
-      }
+      },
     });
   }
 
@@ -696,7 +782,7 @@ const Example30: React.FC = () => {
     // remove unsaved css class from that cell
     const cssStyleKey = `unsaved_highlight_${[column.id]}${row}`;
     reactGridRef.current?.slickGrid.removeCellCssStyles(cssStyleKey);
-    const foundIdx = cellCssStyleQueueRef.current.findIndex(styleKey => styleKey === cssStyleKey);
+    const foundIdx = cellCssStyleQueueRef.current.findIndex((styleKey) => styleKey === cssStyleKey);
     if (foundIdx >= 0) {
       cellCssStyleQueueRef.current.splice(foundIdx, 1);
     }
@@ -763,7 +849,6 @@ const Example30: React.FC = () => {
       }
       reactGridRef.current?.slickGrid.invalidate();
 
-
       // optionally open the last cell editor associated
       if (showLastEditor) {
         reactGridRef.current?.slickGrid.gotoCell(lastEditCommand.row, lastEditCommand.cell, false);
@@ -811,7 +896,7 @@ const Example30: React.FC = () => {
         id: 2,
         itemName: 'Awesome Wooden Mouse',
         itemNameTranslated: 'super old mouse',
-        listPrice: 15.00,
+        listPrice: 15.0,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/RaVJuLr.jpg',
         icon: getRandomIcon(2),
@@ -928,7 +1013,7 @@ const Example30: React.FC = () => {
       'mdi-table-refresh',
       'mdi-undo',
     ];
-    const randomNumber = Math.floor((Math.random() * icons.length - 1));
+    const randomNumber = Math.floor(Math.random() * icons.length - 1);
     return icons[iconIndex ?? randomNumber];
   }
 
@@ -980,18 +1065,27 @@ const Example30: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptions ? '' : (
+  return !gridOptions ? (
+    ''
+  ) : (
     <div id="demo-container" className="container-fluid">
       <h2>
         Example 30: Composite Editor Modal
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example30.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example30.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
         <button className="btn btn-outline-secondary btn-sm btn-icon ms-2" onClick={() => toggleDarkMode()} data-test="toggle-dark-mode">
@@ -1001,31 +1095,51 @@ const Example30: React.FC = () => {
       </h2>
 
       <div className="subtitle">
-        Composite Editor allows you to Create, Clone, Edit, Mass Update & Mass Selection Changes inside a nice Modal Window.<br />
+        Composite Editor allows you to Create, Clone, Edit, Mass Update & Mass Selection Changes inside a nice Modal Window.
+        <br />
         The modal is simply populated by looping through your column definition list and also uses a lot of the same logic as inline editing
-        (see <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/composite-editor-modal" target="_blank">Composite Editor - Wiki</a>.)
+        (see{' '}
+        <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/composite-editor-modal" target="_blank">
+          Composite Editor - Wiki
+        </a>
+        .)
       </div>
 
       <div className="mb-2">
         <div className="btn-group btn-group-sm" role="group" aria-label="Basic Editing Commands">
-          <button type="button" className="btn btn-outline-secondary btn-icon" data-test="toggle-readonly-btn"
-            onClick={() => toggleGridEditReadonly()}>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-icon"
+            data-test="toggle-readonly-btn"
+            onClick={() => toggleGridEditReadonly()}
+          >
             <i className="mdi mdi-table-edit"></i> Toggle Edit/Readonly Grid
           </button>
-          <button type="button" className="btn btn-outline-secondary btn-icon" data-test="undo-last-edit-btn"
-            onClick={() => undoLastEdit()}>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-icon"
+            data-test="undo-last-edit-btn"
+            onClick={() => undoLastEdit()}
+          >
             <i className="mdi mdi-undo"></i> Undo Last Edit
           </button>
-          <button type="button" className="btn btn-outline-secondary btn-icon" data-test="undo-open-editor-btn"
-            onClick={() => undoLastEdit(true)}>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-icon"
+            data-test="undo-open-editor-btn"
+            onClick={() => undoLastEdit(true)}
+          >
             <i className="mdi mdi-undo"></i> Undo Last Edit &amp; Open Editor
           </button>
-          <button type="button" className="btn btn-outline-secondary btn-icon" data-test="undo-all-edits-btn"
-            onClick={() => undoAllEdits()}>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-icon"
+            data-test="undo-all-edits-btn"
+            onClick={() => undoAllEdits()}
+          >
             <i className="mdi mdi-history"></i> Undo All Edits
           </button>
-          <button type="button" className="btn btn-outline-secondary btn-icon" data-test="save-all-btn"
-            onClick={() => saveAll()}>
+          <button type="button" className="btn btn-outline-secondary btn-icon" data-test="save-all-btn" onClick={() => saveAll()}>
             Save All
           </button>
         </div>
@@ -1033,45 +1147,71 @@ const Example30: React.FC = () => {
 
       <div className="mb-3">
         <div className="btn-group btn-group-sm" role="group" aria-label="Basic example">
-          <button type="button" className="btn btn-outline-secondary btn-icon" data-test="open-modal-create-btn"
-            onClick={() => openCompositeModal('create')} disabled={isCompositeDisabled}>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-icon"
+            data-test="open-modal-create-btn"
+            onClick={() => openCompositeModal('create')}
+            disabled={isCompositeDisabled}
+          >
             <i className="mdi mdi-shape-square-plus"></i> Item Create
           </button>
-          <button type="button" className="btn btn-outline-secondary btn-icon" data-test="open-modal-clone-btn"
-            onClick={() => openCompositeModal('clone')} disabled={isCompositeDisabled}>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-icon"
+            data-test="open-modal-clone-btn"
+            onClick={() => openCompositeModal('clone')}
+            disabled={isCompositeDisabled}
+          >
             <i className="mdi mdi-content-copy"></i> Item Clone
           </button>
-          <button type="button" className="btn btn-outline-secondary btn-icon" data-test="open-modal-edit-btn"
-            onClick={() => openCompositeModal('edit')} disabled={isCompositeDisabled}>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-icon"
+            data-test="open-modal-edit-btn"
+            onClick={() => openCompositeModal('edit')}
+            disabled={isCompositeDisabled}
+          >
             <i className="mdi mdi-pencil"></i> Item Edit
           </button>
-          <button type="button" className="btn btn-outline-secondary btn-icon" data-test="open-modal-mass-update-btn"
-            onClick={() => openCompositeModal('mass-update')} disabled={isCompositeDisabled}>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-icon"
+            data-test="open-modal-mass-update-btn"
+            onClick={() => openCompositeModal('mass-update')}
+            disabled={isCompositeDisabled}
+          >
             <i className="mdi mdi-pencil-box-multiple-outline"></i> Mass Update
           </button>
-          <button type="button" className="btn btn-outline-secondary btn-icon" data-test="open-modal-mass-selection-btn"
-            onClick={() => openCompositeModal('mass-selection')} disabled={isMassSelectionDisabled}>
+          <button
+            type="button"
+            className="btn btn-outline-secondary btn-icon"
+            data-test="open-modal-mass-selection-btn"
+            onClick={() => openCompositeModal('mass-selection')}
+            disabled={isMassSelectionDisabled}
+          >
             <i className="mdi mdi-check-box-outline"></i> Update Selected
           </button>
         </div>
       </div>
 
-      <SlickgridReact gridId="grid30"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid30"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
-        onBeforeEditCell={$event => handleOnBeforeEditCell($event.detail.eventData, $event.detail.args)}
-        onCellChange={$event => handleOnCellChange($event.detail.eventData, $event.detail.args)}
-        onClick={$event => handleOnCellClicked($event.detail.eventData, $event.detail.args)}
-        onCompositeEditorChange={$event => handleOnCompositeEditorChange($event.detail.eventData, $event.detail.args)}
-        onItemDeleted={$event => handleItemDeleted($event.detail)}
-        onGridStateChanged={$event => handleOnGridStateChanged($event.detail)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
+        onBeforeEditCell={($event) => handleOnBeforeEditCell($event.detail.eventData, $event.detail.args)}
+        onCellChange={($event) => handleOnCellChange($event.detail.eventData, $event.detail.args)}
+        onClick={($event) => handleOnCellClicked($event.detail.eventData, $event.detail.args)}
+        onCompositeEditorChange={($event) => handleOnCompositeEditorChange($event.detail.eventData, $event.detail.args)}
+        onItemsDeleted={($event) => handleItemsDeleted($event.detail)}
+        onGridStateChanged={($event) => handleOnGridStateChanged($event.detail)}
         onRowsOrCountChanged={() => handleReRenderUnsavedStyling()}
-        onValidationError={$event => handleValidationError($event.detail.eventData, $event.detail.args)}
+        onValidationError={($event) => handleValidationError($event.detail.eventData, $event.detail.args)}
       />
     </div>
   );
-}
+};
 
 export default Example30;

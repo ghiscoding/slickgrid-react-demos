@@ -1,12 +1,5 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import {
-  type Column,
-  FieldType,
-  type GridOption,
-  type ItemMetadata,
-  SlickgridReact,
-  type SlickgridReactInstance,
-} from 'slickgrid-react';
+import { type Column, type GridOption, type ItemMetadata, SlickgridReact, type SlickgridReactInstance } from 'slickgrid-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import './example14.scss'; // provide custom CSS/SASS styling
@@ -38,13 +31,13 @@ const Example14: React.FC = () => {
   }
 
   function defineGrid1() {
-    const columnDefinitions1 = [
+    const columnDefinitions1: Column[] = [
       { id: 'title', name: 'Title', field: 'title', sortable: true, columnGroup: 'Common Factor' },
       { id: 'duration', name: 'Duration', field: 'duration', columnGroup: 'Common Factor' },
       { id: 'start', name: 'Start', field: 'start', columnGroup: 'Period' },
       { id: 'finish', name: 'Finish', field: 'finish', columnGroup: 'Period' },
       { id: '%', name: '% Complete', field: 'percentComplete', selectable: false, columnGroup: 'Analysis' },
-      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', type: FieldType.boolean, columnGroup: 'Analysis' }
+      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', type: 'boolean', columnGroup: 'Analysis' },
     ];
 
     const gridOptions1: GridOption = {
@@ -59,7 +52,7 @@ const Example14: React.FC = () => {
       gridWidth: 800,
       enableExcelExport: true,
       excelExportOptions: {
-        exportWithFormatter: false
+        exportWithFormatter: false,
       },
       externalResources: [new ExcelExportService()],
       explicitInitialization: true,
@@ -69,7 +62,7 @@ const Example14: React.FC = () => {
         },
       },
       gridMenu: {
-        iconButtonContainer: 'preheader' // we can display the grid menu icon in either the preheader or in the column header (default)
+        iconButtonContainer: 'preheader', // we can display the grid menu icon in either the preheader or in the column header (default)
       },
     };
 
@@ -78,14 +71,23 @@ const Example14: React.FC = () => {
   }
 
   function defineGrid2() {
-    const columnDefinitions2 = [
-      { id: 'sel', name: '#', field: 'num', behavior: 'select', cssClass: 'cell-selection', width: 40, resizable: false, selectable: false },
+    const columnDefinitions2: Column[] = [
+      {
+        id: 'sel',
+        name: '#',
+        field: 'num',
+        behavior: 'select',
+        cssClass: 'cell-selection',
+        width: 40,
+        resizable: false,
+        selectable: false,
+      },
       { id: 'title', name: 'Title', field: 'title', sortable: true, columnGroup: 'Common Factor' },
       { id: 'duration', name: 'Duration', field: 'duration', columnGroup: 'Common Factor' },
       { id: 'start', name: 'Start', field: 'start', columnGroup: 'Period' },
       { id: 'finish', name: 'Finish', field: 'finish', columnGroup: 'Period' },
       { id: '%', name: '% Complete', field: 'percentComplete', selectable: false, columnGroup: 'Analysis' },
-      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', type: FieldType.boolean, columnGroup: 'Analysis' }
+      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', type: 'boolean', columnGroup: 'Analysis' },
     ];
 
     const gridOptions2 = {
@@ -100,11 +102,11 @@ const Example14: React.FC = () => {
       frozenColumn: 2,
       enableExcelExport: true,
       excelExportOptions: {
-        exportWithFormatter: false
+        exportWithFormatter: false,
       },
       externalResources: [new ExcelExportService()],
       gridMenu: { hideClearFrozenColumnsCommand: false },
-      headerMenu: { hideFreezeColumnsCommand: false }
+      headerMenu: { hideFreezeColumnsCommand: false },
     };
 
     setColumnDefinitions2(columnDefinitions2);
@@ -123,7 +125,7 @@ const Example14: React.FC = () => {
         percentComplete: Math.round(Math.random() * 100),
         start: '01/01/2009',
         finish: '01/05/2009',
-        effortDriven: (i % 5 === 0)
+        effortDriven: i % 5 === 0,
       };
     }
     return mockDataset;
@@ -145,71 +147,93 @@ const Example14: React.FC = () => {
       return {
         columns: {
           duration: {
-            colspan: 3 // "duration" will span over 3 columns
-          }
-        }
+            colspan: 3, // "duration" will span over 3 columns
+          },
+        },
       };
     }
     return {
       columns: {
         0: {
-          colspan: '*' // starting at column index 0, we will span accross all column (*)
-        }
-      }
+          colspan: '*', // starting at column index 0, we will span accross all column (*)
+        },
+      },
     };
   }
 
-  return !gridOptions1 ? '' : (
+  return !gridOptions1 ? (
+    ''
+  ) : (
     <div id="demo-container" className="container-fluid">
       <h2>
         Example 14: Column Span & Header Grouping
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example14.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example14.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => setHideSubTitle(!hideSubTitle)}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => setHideSubTitle(!hideSubTitle)}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
-      {hideSubTitle ? null : <div className="subtitle">
-        This example demonstrates how to easily span a row over multiple columns & how to group header titles.
-        <ul>
-          <li>Note that you can add Sort but remember that it will sort by the data which the row contains, even if the data is visually hidden by colspan it will still sort it</li>
-        </ul>
-      </div>}
+      {hideSubTitle ? null : (
+        <div className="subtitle">
+          This example demonstrates how to easily span a row over multiple columns & how to group header titles.
+          <ul>
+            <li>
+              Note that you can add Sort but remember that it will sort by the data which the row contains, even if the data is visually
+              hidden by colspan it will still sort it
+            </li>
+          </ul>
+        </div>
+      )}
 
-      <h3>Grid 1 <small>(with Header Grouping &amp; Colspan)</small></h3>
-      <SlickgridReact gridId="grid1"
-        columnDefinitions={columnDefinitions1}
-        gridOptions={gridOptions1}
-        dataset={dataset1} />
+      <h3>
+        Grid 1 <small>(with Header Grouping &amp; Colspan)</small>
+      </h3>
+      <SlickgridReact gridId="grid1" columns={columnDefinitions1} options={gridOptions1} dataset={dataset1} />
 
       <hr />
 
-      <h3>Grid 2 <small>(with Header Grouping &amp; Frozen/Pinned Columns)</small></h3>
+      <h3>
+        Grid 2 <small>(with Header Grouping &amp; Frozen/Pinned Columns)</small>
+      </h3>
 
       <div className="col-sm 12">
-        <button className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => setFrozenColumns2(-1)}
-          data-test="remove-frozen-column-button">
+        <button
+          className="btn btn-outline-secondary btn-sm btn-icon"
+          onClick={() => setFrozenColumns2(-1)}
+          data-test="remove-frozen-column-button"
+        >
           <i className="mdi mdi-close"></i> Remove Frozen Columns
         </button>
-        <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" onClick={() => setFrozenColumns2(2)}
-          data-test="set-3frozen-columns">
+        <button
+          className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+          onClick={() => setFrozenColumns2(2)}
+          data-test="set-3frozen-columns"
+        >
           <i className="mdi mdi-pin-outline"></i> Set 3 Frozen Columns
         </button>
       </div>
 
-      <SlickgridReact gridId="grid2"
-        columnDefinitions={columnDefinitions2}
-        gridOptions={gridOptions2}
+      <SlickgridReact
+        gridId="grid2"
+        columns={columnDefinitions2}
+        options={gridOptions2}
         dataset={dataset2}
-        onReactGridCreated={$event => reactGrid2Ready($event.detail)}
+        onReactGridCreated={($event) => reactGrid2Ready($event.detail)}
       />
     </div>
   );
-}
+};
 
 export default Example14;

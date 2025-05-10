@@ -3,7 +3,6 @@ import {
   type Column,
   type EditCommand,
   Editors,
-  FieldType,
   Filters,
   formatNumber,
   type Formatter,
@@ -21,14 +20,14 @@ import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import React, { useEffect, useRef, useState } from 'react';
 
 import './example32.scss'; // provide custom CSS/SASS styling
-import URL_COUNTRIES_COLLECTION_URL from './data/countries.json?url';
+import COUNTRIES_COLLECTION_URL from './data/countries.json?url';
 
 const NB_ITEMS = 400;
 
 const customEditableInputFormatter: Formatter = (_row, _cell, value, columnDef, _dataContext, grid) => {
   const gridOptions = grid.getOptions() as GridOption;
   const isEditableLine = gridOptions.editable && columnDef.editor;
-  value = (value === null || value === undefined) ? '' : value;
+  value = value === null || value === undefined ? '' : value;
   return isEditableLine ? { text: value, addClasses: 'editable-field', toolTip: 'Click to Edit' } : value;
 };
 
@@ -74,7 +73,11 @@ const Example32: React.FC = () => {
   function defineGrid() {
     const columnDefinitions: Column[] = [
       {
-        id: 'title', name: 'Title', field: 'title', sortable: true, type: FieldType.string, minWidth: 65,
+        id: 'title',
+        name: 'Title',
+        field: 'title',
+        sortable: true,
+        minWidth: 65,
         // you can adjust the resize calculation via multiple options
         resizeExtraWidthPadding: 4,
         resizeCharWidthInPx: 7.6,
@@ -126,55 +129,87 @@ const Example32: React.FC = () => {
           },
         },
         editor: {
-          model: Editors.longText, required: true, alwaysSaveOnEnterKey: true,
+          model: Editors.longText,
+          required: true,
+          alwaysSaveOnEnterKey: true,
           maxLength: 12,
-          editorOptions: {
+          options: {
             cols: 45,
             rows: 6,
             buttonTexts: {
               cancel: 'Close',
-              save: 'Done'
-            }
+              save: 'Done',
+            },
           } as LongTextEditorOption,
           validator: myCustomTitleValidator,
         },
       },
       {
-        id: 'duration', name: 'Duration', field: 'duration', sortable: true, filterable: true, minWidth: 65,
-        type: FieldType.number, columnGroup: 'Common Factor',
+        id: 'duration',
+        name: 'Duration',
+        field: 'duration',
+        sortable: true,
+        filterable: true,
+        minWidth: 65,
+        type: 'number',
+        columnGroup: 'Common Factor',
         formatter: (_row, _cell, value) => {
           if (value === null || value === undefined || value === '') {
             return '';
           }
           return value > 1 ? `${value} days` : `${value} day`;
         },
-        editor: { model: Editors.float, decimal: 2, valueStep: 1, minValue: 0, maxValue: 10000, alwaysSaveOnEnterKey: true, required: true },
+        editor: {
+          model: Editors.float,
+          decimal: 2,
+          valueStep: 1,
+          minValue: 0,
+          maxValue: 10000,
+          alwaysSaveOnEnterKey: true,
+          required: true,
+        },
       },
       {
-        id: 'cost', name: 'Cost', field: 'cost', minWidth: 65,
-        sortable: true, filterable: true, type: FieldType.number, columnGroup: 'Analysis',
+        id: 'cost',
+        name: 'Cost',
+        field: 'cost',
+        minWidth: 65,
+        sortable: true,
+        filterable: true,
+        type: 'number',
+        columnGroup: 'Analysis',
         filter: { model: Filters.compoundInputNumber },
         formatter: Formatters.dollar,
       },
       {
-        id: 'percentComplete', name: '% Complete', field: 'percentComplete', minWidth: 100,
-        type: FieldType.number,
-        sortable: true, filterable: true, columnGroup: 'Analysis',
+        id: 'percentComplete',
+        name: '% Complete',
+        field: 'percentComplete',
+        minWidth: 100,
+        type: 'number',
+        sortable: true,
+        filterable: true,
+        columnGroup: 'Analysis',
         filter: { model: Filters.compoundSlider, operator: '>=' },
         editor: {
           model: Editors.slider,
-          minValue: 0, maxValue: 100,
+          minValue: 0,
+          maxValue: 100,
         },
       },
       {
-        id: 'complexity', name: 'Complexity', field: 'complexity',
+        id: 'complexity',
+        name: 'Complexity',
+        field: 'complexity',
         resizeCalcWidthRatio: 0.9, // default calc ratio is 1 or ~0.9 for field type of string
-        sortable: true, filterable: true, columnGroup: 'Analysis',
+        sortable: true,
+        filterable: true,
+        columnGroup: 'Analysis',
         formatter: (_row, _cell, value) => complexityLevelList[value]?.label,
         exportCustomFormatter: (_row, _cell, value) => complexityLevelList[value]?.label,
         filter: {
           model: Filters.multipleSelect,
-          collection: complexityLevelList
+          collection: complexityLevelList,
         },
         editor: {
           model: Editors.singleSelect,
@@ -182,47 +217,75 @@ const Example32: React.FC = () => {
         },
       },
       {
-        id: 'start', name: 'Start', field: 'start', sortable: true,
-        formatter: Formatters.dateUs, columnGroup: 'Period',
+        id: 'start',
+        name: 'Start',
+        field: 'start',
+        sortable: true,
+        formatter: Formatters.dateUs,
+        columnGroup: 'Period',
         exportCustomFormatter: Formatters.dateUs,
-        type: FieldType.date, outputType: FieldType.dateUs, saveOutputType: FieldType.dateUtc,
-        filterable: true, filter: { model: Filters.compoundDate },
+        type: 'date',
+        outputType: 'dateUs',
+        saveOutputType: 'dateUtc',
+        filterable: true,
+        filter: { model: Filters.compoundDate },
         editor: { model: Editors.date, params: { hideClearButton: false } },
       },
       {
-        id: 'completed', name: 'Completed', field: 'completed', width: 80, minWidth: 75, maxWidth: 100,
-        cssClass: 'text-center', columnGroup: 'Period',
-        sortable: true, filterable: true,
+        id: 'completed',
+        name: 'Completed',
+        field: 'completed',
+        width: 80,
+        minWidth: 75,
+        maxWidth: 100,
+        cssClass: 'text-center',
+        columnGroup: 'Period',
+        sortable: true,
+        filterable: true,
         formatter: Formatters.checkmarkMaterial,
         exportWithFormatter: false,
         filter: {
-          collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
-          model: Filters.singleSelect
+          collection: [
+            { value: '', label: '' },
+            { value: true, label: 'True' },
+            { value: false, label: 'False' },
+          ],
+          model: Filters.singleSelect,
         },
-        editor: { model: Editors.checkbox, },
+        editor: { model: Editors.checkbox },
         // editor: { model: Editors.singleSelect, collection: [{ value: true, label: 'Yes' }, { value: false, label: 'No' }], },
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish', sortable: true,
-        formatter: Formatters.dateUs, columnGroup: 'Period',
-        type: FieldType.date, outputType: FieldType.dateUs, saveOutputType: FieldType.dateUtc,
-        filterable: true, filter: { model: Filters.compoundDate },
+        id: 'finish',
+        name: 'Finish',
+        field: 'finish',
+        sortable: true,
+        formatter: Formatters.dateUs,
+        columnGroup: 'Period',
+        type: 'date',
+        outputType: 'dateUs',
+        saveOutputType: 'dateUtc',
+        filterable: true,
+        filter: { model: Filters.compoundDate },
         exportCustomFormatter: Formatters.dateUs,
         editor: {
           model: Editors.date,
-          editorOptions: { range: { min: 'today' } } as VanillaCalendarOption,
+          options: { displayDateMin: 'today' } as VanillaCalendarOption,
           validator: (value, args) => {
             const dataContext = args && args.item;
-            if (dataContext && (dataContext.completed && !value)) {
+            if (dataContext && dataContext.completed && !value) {
               return { valid: false, msg: 'You must provide a "Finish" date when "Completed" is checked.' };
             }
             return { valid: true, msg: '' };
-          }
+          },
         },
       },
       {
-        id: 'product', name: 'Product', field: 'product',
-        filterable: true, columnGroup: 'Item',
+        id: 'product',
+        name: 'Product',
+        field: 'product',
+        filterable: true,
+        columnGroup: 'Item',
         minWidth: 100,
         resizeCharWidthInPx: 8,
         exportWithFormatter: true,
@@ -230,7 +293,7 @@ const Example32: React.FC = () => {
         labelKey: 'itemName',
         formatter: Formatters.complexObject,
         exportCustomFormatter: Formatters.complex, // without the Editing cell Formatter
-        type: FieldType.object,
+        type: 'object',
         sortComparer: SortComparers.objectString,
         editor: {
           model: Editors.autocompleter,
@@ -238,12 +301,12 @@ const Example32: React.FC = () => {
           massUpdate: true,
 
           // example with a Remote API call
-          editorOptions: {
+          options: {
             minLength: 1,
             fetch: (searchTerm: string, callback: (items: false | any[]) => void) => {
               // const items = require('c://TEMP/items.json');
               const products = mockProducts();
-              callback(products.filter(product => product.itemName.toLowerCase().includes(searchTerm.toLowerCase())));
+              callback(products.filter((product) => product.itemName.toLowerCase().includes(searchTerm.toLowerCase())));
             },
             renderItem: {
               // layout: 'twoRows',
@@ -257,17 +320,19 @@ const Example32: React.FC = () => {
         filter: {
           model: Filters.inputText,
           // placeholder: '🔎︎ search city',
-          type: FieldType.string,
           queryField: 'product.itemName',
-        }
+        },
       },
       {
-        id: 'origin', name: 'Country of Origin', field: 'origin',
-        formatter: Formatters.complexObject, columnGroup: 'Item',
+        id: 'origin',
+        name: 'Country of Origin',
+        field: 'origin',
+        formatter: Formatters.complexObject,
+        columnGroup: 'Item',
         exportCustomFormatter: Formatters.complex, // without the Editing cell Formatter
         dataKey: 'code',
         labelKey: 'name',
-        type: FieldType.object,
+        type: 'object',
         sortComparer: SortComparers.objectString,
         filterable: true,
         sortable: true,
@@ -276,18 +341,23 @@ const Example32: React.FC = () => {
           model: Editors.autocompleter,
           massUpdate: true,
           customStructure: { label: 'name', value: 'code' },
-          collectionAsync: fetch(URL_COUNTRIES_COLLECTION_URL),
+          collectionAsync: fetch(COUNTRIES_COLLECTION_URL),
         },
         filter: {
           model: Filters.inputText,
-          type: 'string',
           queryField: 'origin.name',
-        }
+        },
       },
       {
-        id: 'action', name: 'Action', field: 'action', width: 70, minWidth: 70, maxWidth: 70,
+        id: 'action',
+        name: 'Action',
+        field: 'action',
+        width: 70,
+        minWidth: 70,
+        maxWidth: 70,
         excludeFromExport: true,
-        formatter: () => `<div class="button-style margin-auto" style="width: 35px;"><span class="mdi mdi-chevron-down text-primary"></span></div>`,
+        formatter: () =>
+          `<div class="button-style margin-auto" style="width: 35px;"><span class="mdi mdi-chevron-down text-primary"></span></div>`,
         cellMenu: {
           hideCloseButton: false,
           width: 175,
@@ -302,8 +372,12 @@ const Example32: React.FC = () => {
             },
             'divider',
             {
-              command: 'delete-row', title: 'Delete Row', positionOrder: 64,
-              iconCssClass: 'mdi mdi-close color-danger', cssClass: 'red', textCssClass: 'text-italic color-danger-light',
+              command: 'delete-row',
+              title: 'Delete Row',
+              positionOrder: 64,
+              iconCssClass: 'mdi mdi-close color-danger',
+              cssClass: 'red',
+              textCssClass: 'text-italic color-danger-light',
               // only show command to 'Delete Row' when the task is not completed
               itemVisibilityOverride: (args) => {
                 return !args.dataContext?.completed;
@@ -314,10 +388,10 @@ const Example32: React.FC = () => {
                 if (confirm(`Do you really want to delete row (${row + 1}) with "${dataContext.title}"`)) {
                   reactGridRef.current?.gridService.deleteItemById(dataContext.id);
                 }
-              }
+              },
             },
           ],
-        }
+        },
       },
     ];
 
@@ -329,14 +403,14 @@ const Example32: React.FC = () => {
       autoCommitEdit: true,
       autoResize: {
         container: '#smaller-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       gridWidth: '100%',
       enableAutoResize: true,
       enablePagination: true,
       pagination: {
         pageSize: 10,
-        pageSizes: [10, 200, 500, 5000]
+        pageSizes: [10, 200, 500, 5000],
       },
 
       // resizing by cell content is opt-in
@@ -355,7 +429,7 @@ const Example32: React.FC = () => {
 
       enableExcelExport: true,
       excelExportOptions: {
-        exportWithFormatter: false
+        exportWithFormatter: false,
       },
       externalResources: [new ExcelExportService()],
       enableFiltering: true,
@@ -367,7 +441,7 @@ const Example32: React.FC = () => {
       },
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
-        selectActiveRow: false
+        selectActiveRow: false,
       },
       createPreHeaderPanel: true,
       showPreHeaderPanel: true,
@@ -375,7 +449,9 @@ const Example32: React.FC = () => {
       rowHeight: 33,
       headerRowHeight: 35,
       editCommandHandler: (item, column, editCommand) => {
-        const prevSerializedValues = Array.isArray(editCommand.prevSerializedValue) ? editCommand.prevSerializedValue : [editCommand.prevSerializedValue];
+        const prevSerializedValues = Array.isArray(editCommand.prevSerializedValue)
+          ? editCommand.prevSerializedValue
+          : [editCommand.prevSerializedValue];
         const serializedValues = Array.isArray(editCommand.serializedValue) ? editCommand.serializedValue : [editCommand.serializedValue];
         const editorColumns = columnDefinitions.filter((col) => col.editor !== undefined);
 
@@ -413,11 +489,11 @@ const Example32: React.FC = () => {
     for (let i = 0; i < count; i++) {
       const randomItemId = Math.floor(Math.random() * mockProducts().length);
       const randomYear = 2000 + Math.floor(Math.random() * 10);
-      const randomFinishYear = (new Date().getFullYear()) + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
+      const randomFinishYear = new Date().getFullYear() + Math.floor(Math.random() * 10); // use only years not lower than 3 years ago
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
-      const randomTime = Math.floor((Math.random() * 59));
-      const randomFinish = new Date(randomFinishYear, (randomMonth + 1), randomDay, randomTime, randomTime, randomTime);
+      const randomDay = Math.floor(Math.random() * 29);
+      const randomTime = Math.floor(Math.random() * 59);
+      const randomFinish = new Date(randomFinishYear, randomMonth + 1, randomDay, randomTime, randomTime, randomTime);
       const randomPercentComplete = Math.floor(Math.random() * 100) + 15; // make it over 15 for E2E testing purposes
       const percentCompletion = randomPercentComplete > 100 ? (i > 5 ? 100 : 88) : randomPercentComplete; // don't use 100 unless it's over index 5, for E2E testing purposes
       const isCompleted = percentCompletion === 100;
@@ -432,11 +508,11 @@ const Example32: React.FC = () => {
         },
         complexity: i % 3 ? 0 : 2,
         start: new Date(randomYear, randomMonth, randomDay, randomDay, randomTime, randomTime, randomTime),
-        finish: (isCompleted || (i % 3 === 0 && (randomFinish > new Date() && i > 3)) ? (isCompleted ? new Date() : randomFinish) : ''), // make sure the random date is earlier than today and it's index is bigger than 3
-        cost: (i % 33 === 0) ? null : Math.round(Math.random() * 10000) / 100,
-        completed: (isCompleted || (i % 3 === 0 && (randomFinish > new Date() && i > 3))),
-        product: { id: mockProducts()[randomItemId]?.id, itemName: mockProducts()[randomItemId]?.itemName, },
-        origin: (i % 2) ? { code: 'CA', name: 'Canada' } : { code: 'US', name: 'United States' },
+        finish: isCompleted || (i % 3 === 0 && randomFinish > new Date() && i > 3) ? (isCompleted ? new Date() : randomFinish) : '', // make sure the random date is earlier than today and it's index is bigger than 3
+        cost: i % 33 === 0 ? null : Math.round(Math.random() * 10000) / 100,
+        completed: isCompleted || (i % 3 === 0 && randomFinish > new Date() && i > 3),
+        product: { id: mockProducts()[randomItemId]?.id, itemName: mockProducts()[randomItemId]?.itemName },
+        origin: i % 2 ? { code: 'CA', name: 'Canada' } : { code: 'US', name: 'United States' },
       };
 
       if (!(i % 8)) {
@@ -450,7 +526,7 @@ const Example32: React.FC = () => {
   function handleDefaultResizeColumns() {
     // just for demo purposes, set it back to its original width
     const columns = reactGridRef.current?.slickGrid.getColumns() as Column[];
-    columns.forEach(col => col.width = col.originalWidth);
+    columns.forEach((col) => (col.width = col.originalWidth));
     reactGridRef.current?.slickGrid.setColumns(columns);
     reactGridRef.current?.slickGrid.autosizeColumns();
     setIsUsingDefaultResize(true);
@@ -546,7 +622,6 @@ const Example32: React.FC = () => {
       }
       reactGridRef.current?.slickGrid.invalidate();
 
-
       // optionally open the last cell editor associated
       if (showLastEditor) {
         reactGridRef.current?.slickGrid.gotoCell(lastEditCommand.row, lastEditCommand.cell, false);
@@ -594,7 +669,7 @@ const Example32: React.FC = () => {
         id: 2,
         itemName: 'Awesome Wooden Mouse',
         itemNameTranslated: 'super old mouse',
-        listPrice: 15.00,
+        listPrice: 15.0,
         itemTypeName: 'I',
         image: 'https://i.imgur.com/RaVJuLr.jpg',
         icon: `mdi ${getRandomIcon(2)}`,
@@ -711,7 +786,7 @@ const Example32: React.FC = () => {
       'mdi-table-refresh',
       'mdi-undo',
     ];
-    const randomNumber = Math.floor((Math.random() * icons.length - 1));
+    const randomNumber = Math.floor(Math.random() * icons.length - 1);
     return icons[iconIndex ?? randomNumber];
   }
 
@@ -763,26 +838,35 @@ const Example32: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptions ? '' : (
+  return !gridOptions ? (
+    ''
+  ) : (
     <div id="demo-container" className="container-fluid">
       <h2>
         Example 32: Columns Resize by Content
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example32.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example32.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
       <div className="subtitle">
-        The grid below uses the optional resize by cell content (with a fixed 950px for demo purposes), you can click on the 2 buttons to see the difference.
-        The "autosizeColumns" is really the default option used by SlickGrid-Universal, the resize by cell content is optional
-        because it requires to read the first thousand rows and do extra width calculation.
+        The grid below uses the optional resize by cell content (with a fixed 950px for demo purposes), you can click on the 2 buttons to
+        see the difference. The "autosizeColumns" is really the default option used by SlickGrid-Universal, the resize by cell content is
+        optional because it requires to read the first thousand rows and do extra width calculation.
       </div>
 
       <h4 className="ml-3">Container Width (950px)</h4>
@@ -790,18 +874,30 @@ const Example32: React.FC = () => {
       <div className="row">
         <div className="ml-2 mb-2 mr-2">
           <div className="btn-group btn-group-toggle" data-bs-toggle="buttons">
-            <label className={'btn btn-sm btn-outline-secondary btn-icon ' + (isUsingDefaultResize ? 'active' : '')} data-test="autosize-columns-btn">
-              <input type="radio" className="btn-check" name="options"
+            <label
+              className={'btn btn-sm btn-outline-secondary btn-icon ' + (isUsingDefaultResize ? 'active' : '')}
+              data-test="autosize-columns-btn"
+            >
+              <input
+                type="radio"
+                className="btn-check"
+                name="options"
                 defaultChecked={isUsingDefaultResize}
                 onClick={() => handleDefaultResizeColumns()}
               />
               <i className="mdi mdi-arrow-expand"></i> (default resize) by "autosizeColumns"
             </label>
-            <label className={'btn btn-sm btn-outline-secondary btn-icon ' + (isUsingDefaultResize ? '' : 'active')}
-              data-test="resize-by-content-btn">
-              <input type="radio" className="btn-check" name="options"
+            <label
+              className={'btn btn-sm btn-outline-secondary btn-icon ' + (isUsingDefaultResize ? '' : 'active')}
+              data-test="resize-by-content-btn"
+            >
+              <input
+                type="radio"
+                className="btn-check"
+                name="options"
                 defaultChecked={!isUsingDefaultResize}
-                onClick={() => handleNewResizeColumns()} />
+                onClick={() => handleNewResizeColumns()}
+              />
               <i className="mdi mdi-arrow-expand"></i> Resize by Cell Content
             </label>
           </div>
@@ -809,21 +905,32 @@ const Example32: React.FC = () => {
 
         <div className="mb-2">
           <div className="btn-group btn-group-sm" role="group" aria-label="Basic Editing Commands">
-            <button type="button" className="btn btn-outline-secondary btn-icon" onClick={() => setSelectedRowIds()}
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-icon"
+              onClick={() => setSelectedRowIds()}
               data-test="set-dynamic-rows-btn"
-              title="Change Row Selection across multiple pages">
+              title="Change Row Selection across multiple pages"
+            >
               <span>Change Row Selection</span>
             </button>
-            <button type="button" className="btn btn-outline-secondary btn-icon" data-test="toggle-readonly-btn"
-              onClick={() => toggleGridEditReadonly()}>
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-icon"
+              data-test="toggle-readonly-btn"
+              onClick={() => toggleGridEditReadonly()}
+            >
               <i className="mdi mdi-table-edit"></i> Toggle Readonly
             </button>
-            <button type="button" className="btn btn-outline-secondary btn-icon" data-test="undo-last-edit-btn"
-              onClick={() => undoLastEdit()}>
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-icon"
+              data-test="undo-last-edit-btn"
+              onClick={() => undoLastEdit()}
+            >
               <i className="mdi mdi-undo"></i> Undo Last Edit
             </button>
-            <button type="button" className="btn btn-outline-secondary btn-icon" data-test="save-all-btn"
-              onClick={() => saveAll()}>
+            <button type="button" className="btn btn-outline-secondary btn-icon" data-test="save-all-btn" onClick={() => saveAll()}>
               Save All
             </button>
           </div>
@@ -831,17 +938,17 @@ const Example32: React.FC = () => {
       </div>
 
       <div id="smaller-container" style={{ width: '950px' }}>
-        <SlickgridReact gridId="grid32"
-          columnDefinitions={columnDefinitions}
-          gridOptions={gridOptions}
+        <SlickgridReact
+          gridId="grid32"
+          columns={columnDefinitions}
+          options={gridOptions}
           dataset={dataset}
-          onReactGridCreated={$event => reactGridReady($event.detail)}
-          onSelectedRowIdsChanged={$event => handleOnSelectedRowIdsChanged($event.detail.args)}
+          onReactGridCreated={($event) => reactGridReady($event.detail)}
+          onSelectedRowIdsChanged={($event) => handleOnSelectedRowIdsChanged($event.detail.args)}
         />
       </div>
     </div>
   );
-}
+};
 
 export default Example32;
-

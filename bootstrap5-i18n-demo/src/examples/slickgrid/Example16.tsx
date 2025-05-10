@@ -29,34 +29,48 @@ const Example16: React.FC = () => {
   /* Define grid Options and Columns */
   function defineGrid() {
     const columnDefinitions: Column[] = [
-      { id: 'title', name: 'Title', field: 'title', filterable: true, },
+      { id: 'title', name: 'Title', field: 'title', filterable: true },
       { id: 'duration', name: 'Duration', field: 'duration', filterable: true, sortable: true },
       { id: '%', name: '% Complete', field: 'percentComplete', filterable: true, sortable: true },
       {
-        id: 'start', name: 'Start', field: 'start', filterable: true, sortable: true,
+        id: 'start',
+        name: 'Start',
+        field: 'start',
+        filterable: true,
+        sortable: true,
         filter: { model: Filters.compoundDate },
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish',
-        filterable: true, sortable: true,
+        id: 'finish',
+        name: 'Finish',
+        field: 'finish',
+        filterable: true,
+        sortable: true,
         filter: { model: Filters.compoundDate },
       },
       {
-        id: 'effort-driven', name: 'Completed', field: 'effortDriven',
+        id: 'effort-driven',
+        name: 'Completed',
+        field: 'effortDriven',
         formatter: Formatters.checkmarkMaterial,
-        filterable: true, sortable: true,
+        filterable: true,
+        sortable: true,
         filter: {
-          collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
-          model: Filters.singleSelect
+          collection: [
+            { value: '', label: '' },
+            { value: true, label: 'True' },
+            { value: false, label: 'False' },
+          ],
+          model: Filters.singleSelect,
         },
-      }
+      },
     ];
 
     const gridOptions: GridOption = {
       enableAutoResize: true,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableFiltering: true,
       enableCheckboxSelector: true,
@@ -65,12 +79,12 @@ const Example16: React.FC = () => {
         columnIndexPosition: 1,
         // you can toggle these 2 properties to show the "select all" checkbox in different location
         hideInFilterHeaderRow: false,
-        hideInColumnTitleRow: true
+        hideInColumnTitleRow: true,
       },
       enableRowSelection: true,
       rowSelectionOptions: {
         // True (Single Selection), False (Multiple Selections)
-        selectActiveRow: false
+        selectActiveRow: false,
       },
       dataView: {
         syncGridSelection: true, // enable this flag so that the row selection follows the row even if we move it to another position
@@ -101,8 +115,8 @@ const Example16: React.FC = () => {
         // the RECOMMENDED is to use "dataContextIds" since that will always work even with Pagination, while "gridRowIndexes" is only good for 1 page
         rowSelection: {
           // gridRowIndexes: [2],       // the row position of what you see on the screen (UI)
-          dataContextIds: [1, 2, 6, 7]  // (recommended) select by your data object IDs
-        }
+          dataContextIds: [1, 2, 6, 7], // (recommended) select by your data object IDs
+        },
       },
     };
 
@@ -121,16 +135,19 @@ const Example16: React.FC = () => {
         percentComplete: Math.round(Math.random() * 100),
         start: '01/01/2009',
         finish: '01/05/2009',
-        effortDriven: (i % 5 === 0)
+        effortDriven: i % 5 === 0,
       };
     }
     return mockDataset;
   }
 
-  function onBeforeMoveRows(e: MouseEvent | TouchEvent, data: { rows: number[]; insertBefore: number; }) {
+  function onBeforeMoveRows(e: MouseEvent | TouchEvent, data: { rows: number[]; insertBefore: number }) {
     for (const rowIdx of data.rows) {
       // no point in moving before or after itself
-      if (rowIdx === data.insertBefore || (rowIdx === data.insertBefore - 1 && ((data.insertBefore - 1) !== reactGridRef.current?.dataView.getItemCount()))) {
+      if (
+        rowIdx === data.insertBefore ||
+        (rowIdx === data.insertBefore - 1 && data.insertBefore - 1 !== reactGridRef.current?.dataView.getItemCount())
+      ) {
         e.stopPropagation();
         return false;
       }
@@ -157,11 +174,13 @@ const Example16: React.FC = () => {
     const filteredItems = reactGridRef.current?.dataView.getFilteredItems() || [];
 
     const itemOnRight = reactGridRef.current?.dataView.getItem(insertBefore);
-    const insertBeforeFilteredIdx = itemOnRight ? reactGridRef.current?.dataView.getIdxById(itemOnRight.id) : reactGridRef.current?.dataView.getItemCount();
+    const insertBeforeFilteredIdx = itemOnRight
+      ? reactGridRef.current?.dataView.getIdxById(itemOnRight.id)
+      : reactGridRef.current?.dataView.getItemCount();
 
     const filteredRowItems: any[] = [];
-    rows.forEach(row => filteredRowItems.push(filteredItems[row]));
-    const filteredRows = filteredRowItems.map(item => reactGridRef.current?.dataView.getIdxById(item.id));
+    rows.forEach((row) => filteredRowItems.push(filteredItems[row]));
+    const filteredRows = filteredRowItems.map((item) => reactGridRef.current?.dataView.getIdxById(item.id));
 
     const left = tmpDataset.slice(0, insertBeforeFilteredIdx);
     const right = tmpDataset.slice(insertBeforeFilteredIdx, tmpDataset.length);
@@ -228,8 +247,9 @@ const Example16: React.FC = () => {
           maxWidth: 30,
           onCellClick: (clickEvent: Event, args: OnEventArgs) => {
             alert(`Technically we should Edit "Task ${args.dataContext.id}"`);
-          }
-        }, {
+          },
+        },
+        {
           id: 'delete-symbol',
           field: 'id',
           excludeFromColumnPicker: true,
@@ -243,8 +263,8 @@ const Example16: React.FC = () => {
             if (confirm('Are you sure?')) {
               reactGridRef.current?.gridService.deleteItemById(args.dataContext.id);
             }
-          }
-        }
+          },
+        },
       ];
 
       // NOTE if you use an Extensions (Checkbox Selector, Row Detail, ...) that modifies the column definitions in any way
@@ -275,24 +295,34 @@ const Example16: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptions ? '' : (
+  return !gridOptions ? (
+    ''
+  ) : (
     <div id="demo-container" className="container-fluid">
       <h2>
         Example 16: Row Move & Checkbox Selector
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example16.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example16.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
       <div className="subtitle">
-        This example demonstrates using the <b>SlickRowMoveManager</b> plugin to easily move a row in the grid.<br />
+        This example demonstrates using the <b>SlickRowMoveManager</b> plugin to easily move a row in the grid.
+        <br />
         <ul>
           <li>Click to select, Ctrl+Click to toggle selection, Shift+Click to select a range.</li>
           <li>Drag one or more rows by the handle (icon) to reorder</li>
@@ -301,31 +331,46 @@ const Example16: React.FC = () => {
           <ul>
             <li>You will also want to enable the DataView "syncGridSelection: true" to keep row selection even after a row move</li>
           </ul>
-          <li>If you plan to use only Row Move, then you could keep default values (or omit them completely) of "singleRowMove: false" and "disableRowSelection: false"</li>
+          <li>
+            If you plan to use only Row Move, then you could keep default values (or omit them completely) of "singleRowMove: false" and
+            "disableRowSelection: false"
+          </li>
           <ul>
-            <li>SingleRowMove has the name suggest will only move 1 row at a time, by default it will move any row(s) that are selected unless you disable the flag</li>
+            <li>
+              SingleRowMove has the name suggest will only move 1 row at a time, by default it will move any row(s) that are selected unless
+              you disable the flag
+            </li>
           </ul>
         </ul>
       </div>
 
       <div className="row">
         <div className="col-sm-12">
-          <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="hide-duration-btn"
-            onClick={() => hideDurationColumnDynamically()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon"
+            data-test="hide-duration-btn"
+            onClick={() => hideDurationColumnDynamically()}
+          >
             <i className="mdi mdi-eye-off-outline me-1"></i>
             Dynamically Hide "Duration"
           </button>
-          <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="disable-filters-btn"
-            onClick={() => disableFilters()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+            data-test="disable-filters-btn"
+            onClick={() => disableFilters()}
+          >
             <i className="mdi mdi-close me-1"></i>
             Disable Filters
           </button>
-          <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="disable-sorting-btn"
-            onClick={() => disableSorting()}>
+          <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="disable-sorting-btn" onClick={() => disableSorting()}>
             <i className="mdi mdi-close me-1"></i>
             Disable Sorting
           </button>
-          <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="toggle-filtering-btn" onClick={() => toggleFilter()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+            data-test="toggle-filtering-btn"
+            onClick={() => toggleFilter()}
+          >
             <i className="mdi mdi-swap-vertical me-1"></i>
             Toggle Filtering
           </button>
@@ -333,7 +378,11 @@ const Example16: React.FC = () => {
             <i className="mdi mdi-swap-vertical me-1"></i>
             Toggle Sorting
           </button>
-          <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="add-crud-columns-btn" onClick={() => addEditDeleteColumns()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon"
+            data-test="add-crud-columns-btn"
+            onClick={() => addEditDeleteColumns()}
+          >
             <i className="mdi mdi-shape-square-plus me-1"></i>
             Add Edit/Delete Columns
           </button>
@@ -342,14 +391,15 @@ const Example16: React.FC = () => {
 
       <br />
 
-      <SlickgridReact gridId="grid16"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions!}
+      <SlickgridReact
+        gridId="grid16"
+        columns={columnDefinitions}
+        options={gridOptions!}
         dataset={dataset}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
       />
     </div>
   );
-}
+};
 
 export default Example16;

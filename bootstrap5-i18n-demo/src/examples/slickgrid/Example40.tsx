@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Aggregators,
   type Column,
-  FieldType,
   Filters,
   Formatters,
   type GridOption,
@@ -18,7 +17,7 @@ import {
 } from 'slickgrid-react';
 
 import './example39.scss';
-import { randomNumber } from './utilities';
+import { randomNumber } from './utilities.js';
 
 const FETCH_SIZE = 50;
 
@@ -28,7 +27,7 @@ const Example40: React.FC = () => {
   const [hideSubTitle, setHideSubTitle] = useState(false);
 
   const shouldResetOnSortRef = useRef(false);
-  const gridOptionsRef = useRef<GridOption>();
+  const gridOptionsRef = useRef<GridOption>(null);
   const [metrics, setMetrics] = useState({
     itemCount: FETCH_SIZE,
     totalItemCount: FETCH_SIZE,
@@ -53,7 +52,7 @@ const Example40: React.FC = () => {
         sortable: true,
         minWidth: 100,
         filterable: true,
-        type: FieldType.number,
+        type: 'number',
       },
       {
         id: 'percentComplete',
@@ -62,14 +61,14 @@ const Example40: React.FC = () => {
         sortable: true,
         minWidth: 100,
         filterable: true,
-        type: FieldType.number,
+        type: 'number',
       },
       {
         id: 'start',
         name: 'Start',
         field: 'start',
-        type: FieldType.date,
-        outputType: FieldType.dateIso, // for date picker format
+        type: 'date',
+        outputType: 'dateIso', // for date picker format
         formatter: Formatters.date,
         exportWithFormatter: true,
         params: { dateFormat: 'MMM DD, YYYY' },
@@ -83,8 +82,8 @@ const Example40: React.FC = () => {
         id: 'finish',
         name: 'Finish',
         field: 'finish',
-        type: FieldType.date,
-        outputType: FieldType.dateIso, // for date picker format
+        type: 'date',
+        outputType: 'dateIso', // for date picker format
         formatter: Formatters.date,
         exportWithFormatter: true,
         params: { dateFormat: 'MMM DD, YYYY' },
@@ -107,7 +106,7 @@ const Example40: React.FC = () => {
     const gridOptions: GridOption = {
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableAutoResize: true,
       enableFiltering: true,
@@ -133,9 +132,9 @@ const Example40: React.FC = () => {
   function handleOnScroll(args: any) {
     const viewportElm = args.grid.getViewportNode();
     if (
-      ['mousewheel', 'scroll'].includes(args.triggeredBy || '')
-      && viewportElm.scrollTop > 0
-      && Math.ceil(viewportElm.offsetHeight + args.scrollTop) >= args.scrollHeight
+      ['mousewheel', 'scroll'].includes(args.triggeredBy || '') &&
+      viewportElm.scrollTop > 0 &&
+      Math.ceil(viewportElm.offsetHeight + args.scrollTop) >= args.scrollHeight
     ) {
       console.log('onScroll end reached, add more items');
       const startIdx = reactGridRef.current?.dataView?.getItemCount() || 0;
@@ -160,12 +159,9 @@ const Example40: React.FC = () => {
       getter: 'duration',
       formatter: (g) => `Duration: ${g.value} <span class="text-green">(${g.count} items)</span>`,
       comparer: (a, b) => SortComparers.numeric(a.value, b.value, SortDirectionNumber.asc),
-      aggregators: [
-        new Aggregators.Avg('percentComplete'),
-        new Aggregators.Sum('cost')
-      ],
+      aggregators: [new Aggregators.Avg('percentComplete'), new Aggregators.Sum('cost')],
       aggregateCollapsed: false,
-      lazyTotalsCalculation: true
+      lazyTotalsCalculation: true,
     } as Grouping);
 
     // you need to manually add the sort icon(s) in UI
@@ -215,9 +211,7 @@ const Example40: React.FC = () => {
   }
 
   function setSortingDynamically() {
-    reactGridRef.current?.sortService.updateSorting([
-      { columnId: 'title', direction: 'DESC' },
-    ]);
+    reactGridRef.current?.sortService.updateSorting([{ columnId: 'title', direction: 'DESC' }]);
   }
 
   function toggleSubTitle() {
@@ -228,19 +222,25 @@ const Example40: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptionsRef.current ? '' : (
+  return !gridOptionsRef.current ? (
+    ''
+  ) : (
     <div className="demo40">
       <div id="demo-container" className="container-fluid">
         <h2>
           Example 40: Infinite Scroll from JSON data
           <span className="float-end font18">
             see&nbsp;
-            <a target="_blank"
-              href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example40.tsx">
+            <a target="_blank" href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example40.tsx">
               <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
-          <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+          <button
+            className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+            type="button"
+            data-test="toggle-subtitle"
+            onClick={() => toggleSubTitle()}
+          >
             <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
           </button>
         </h2>
@@ -248,23 +248,32 @@ const Example40: React.FC = () => {
         <div className="subtitle">
           <ul>
             <li>
-              Infinite scrolling allows the grid to lazy-load rows from the server when reaching the scroll bottom (end) position.
-              In its simplest form, the more the user scrolls down, the more rows get loaded.
+              Infinite scrolling allows the grid to lazy-load rows from the server when reaching the scroll bottom (end) position. In its
+              simplest form, the more the user scrolls down, the more rows get loaded.
             </li>
-            <li>NOTES: <code>presets.pagination</code> is not supported with Infinite Scroll and will revert to the first page,
-              simply because since we keep appending data, we always have to start from index zero (no offset).
+            <li>
+              NOTES: <code>presets.pagination</code> is not supported with Infinite Scroll and will revert to the first page, simply because
+              since we keep appending data, we always have to start from index zero (no offset).
             </li>
           </ul>
         </div>
 
         <div className="row">
           <div className="col-sm-12">
-            <button className="btn btn-outline-secondary btn-sm btn-icon me-1" data-test="clear-filters-sorting"
-              onClick={() => clearAllFiltersAndSorts()} title="Clear all Filters & Sorts">
+            <button
+              className="btn btn-outline-secondary btn-sm btn-icon me-1"
+              data-test="clear-filters-sorting"
+              onClick={() => clearAllFiltersAndSorts()}
+              title="Clear all Filters & Sorts"
+            >
               <i className="mdi mdi-filter-remove-outline"></i>
               Clear all Filter & Sorts
             </button>
-            <button className="btn btn-outline-secondary btn-sm mx-1" data-test="set-dynamic-filter" onClick={() => setFiltersDynamically()}>
+            <button
+              className="btn btn-outline-secondary btn-sm mx-1"
+              data-test="set-dynamic-filter"
+              onClick={() => setFiltersDynamically()}
+            >
               Set Filters Dynamically
             </button>
             <button className="btn btn-outline-secondary btn-sm" data-test="set-dynamic-sorting" onClick={() => setSortingDynamically()}>
@@ -274,7 +283,9 @@ const Example40: React.FC = () => {
               Group by Duration
             </button>
 
-            <label className="ml-4">Reset Dataset <code>onSort</code>:</label>
+            <label className="ml-4">
+              Reset Dataset <code>onSort</code>:
+            </label>
             <button className="btn btn-outline-secondary btn-sm mx-1" data-test="onsort-on" onClick={() => onSortReset(true)}>
               ON
             </button>
@@ -284,25 +295,33 @@ const Example40: React.FC = () => {
           </div>
 
           <br />
-          {metrics && <div><><b className="me-1">Metrics:</b>
-            {metrics?.endTime ? dateFormatter(metrics.endTime, 'DD MMM, h:mm:ss a') : ''} —
-            <span className="mx-1" data-test="totalItemCount">{metrics.totalItemCount}</span> items
-          </>
-          </div>}
+          {metrics && (
+            <div>
+              <>
+                <b className="me-1">Metrics:</b>
+                {metrics?.endTime ? dateFormatter(metrics.endTime, 'DD MMM, h:mm:ss a') : ''} —
+                <span className="mx-1" data-test="totalItemCount">
+                  {metrics.totalItemCount}
+                </span>{' '}
+                items
+              </>
+            </div>
+          )}
         </div>
 
-        <SlickgridReact gridId="grid40"
-          columnDefinitions={columnDefinitions}
-          gridOptions={gridOptionsRef.current}
+        <SlickgridReact
+          gridId="grid40"
+          columns={columnDefinitions}
+          options={gridOptionsRef.current}
           dataset={dataset}
-          onReactGridCreated={$event => reactGridReady($event.detail)}
-          onRowCountChanged={$event => handleOnRowCountChanged($event.detail.args)}
-          onSort={_ => handleOnSort()}
-          onScroll={$event => handleOnScroll($event.detail.args)}
+          onReactGridCreated={($event) => reactGridReady($event.detail)}
+          onRowCountChanged={($event) => handleOnRowCountChanged($event.detail.args)}
+          onSort={(_) => handleOnSort()}
+          onScroll={($event) => handleOnScroll($event.detail.args)}
         />
       </div>
     </div>
   );
-}
+};
 
 export default Example40;

@@ -1,14 +1,6 @@
 import i18next from 'i18next';
 import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
-import {
-  type Column,
-  Editors,
-  FieldType,
-  Formatters,
-  type GridOption,
-  SlickgridReact,
-  type SlickgridReactInstance,
-} from 'slickgrid-react';
+import { type Column, Editors, Formatters, type GridOption, SlickgridReact, type SlickgridReactInstance } from 'slickgrid-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 
@@ -18,10 +10,13 @@ const NB_ITEMS = 20;
 
 function fakeFetch(_input: string | URL | Request, _init?: RequestInit | undefined): Promise<Response> {
   return new Promise((resolve) => {
-    window.setTimeout(() => {
-      resolve(new Response(JSON.stringify({ status: 200, message: 'success' })));
-      // reduces the delay for automated Cypress tests
-    }, (window as any).Cypress ? 10 : 500);
+    window.setTimeout(
+      () => {
+        resolve(new Response(JSON.stringify({ status: 200, message: 'success' })));
+        // reduces the delay for automated Cypress tests
+      },
+      (window as any).Cypress ? 10 : 500
+    );
   });
 }
 
@@ -34,7 +29,7 @@ const Example35: React.FC = () => {
   const [fetchResult, setFetchResult] = useState('');
   const [hideSubTitle, setHideSubTitle] = useState(false);
 
-  const gridOptionsRef = useRef<GridOption>();
+  const gridOptionsRef = useRef<GridOption>(null);
   const reactGridRef = useRef<SlickgridReactInstance | null>(null);
 
   useEffect(() => {
@@ -65,7 +60,7 @@ const Example35: React.FC = () => {
         sortable: true,
         minWidth: 100,
         filterable: true,
-        type: FieldType.number,
+        type: 'number',
         editor: { model: Editors.text },
       },
       {
@@ -75,7 +70,7 @@ const Example35: React.FC = () => {
         sortable: true,
         minWidth: 100,
         filterable: true,
-        type: FieldType.number,
+        type: 'number',
         editor: { model: Editors.text },
       },
       {
@@ -103,7 +98,7 @@ const Example35: React.FC = () => {
         sortable: true,
         minWidth: 100,
         filterable: true,
-        type: FieldType.boolean,
+        type: 'boolean',
         editor: { model: Editors.checkbox },
       },
     ];
@@ -144,12 +139,13 @@ const Example35: React.FC = () => {
             method: 'POST',
             body: JSON.stringify({ effortDriven, percentComplete, finish, start, duration, title }),
             headers: {
-              'Content-type': 'application/json; charset=UTF-8'
-            }
-          }).catch(err => {
-            console.error(err);
-            return false;
+              'Content-type': 'application/json; charset=UTF-8',
+            },
           })
+            .catch((err) => {
+              console.error(err);
+              return false;
+            })
             .then((response: any) => {
               if (response === false) {
                 setStatusClass('alert alert-danger');
@@ -159,13 +155,14 @@ const Example35: React.FC = () => {
                 return response!.json();
               }
             })
-            .then(json => {
+            .then((json) => {
               setStatusClass('alert alert-success');
               setFetchResult(json.message);
               return true;
             });
         },
-        actionColumnConfig: { // override the defaults of the action column
+        actionColumnConfig: {
+          // override the defaults of the action column
           width: 100,
           minWidth: 100,
           maxWidth: 100,
@@ -246,7 +243,7 @@ const Example35: React.FC = () => {
   }
 
   async function switchLanguage() {
-    const nextLanguage = (selectedLanguage === 'en') ? 'fr' : 'en';
+    const nextLanguage = selectedLanguage === 'en' ? 'fr' : 'en';
     await i18next.changeLanguage(nextLanguage);
     setSelectedLanguage(nextLanguage);
   }
@@ -259,18 +256,27 @@ const Example35: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptionsRef.current ? '' : (
+  return !gridOptionsRef.current ? (
+    ''
+  ) : (
     <div>
       <h2>
         Example 35: Row Based Editing
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example35.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example35.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
@@ -278,34 +284,38 @@ const Example35: React.FC = () => {
       <div className="subtitle">
         <ul>
           <li>
-            The Row Based Edit plugin allows you to edit either a single or multiple
-            specific rows at a time, while disabling the rest of the grid rows.
+            The Row Based Edit plugin allows you to edit either a single or multiple specific rows at a time, while disabling the rest of
+            the grid rows.
           </li>
           <li>
-            Editedable rows, as well as modified cells are highlighted with a
-            different color, which you can customize using css variables (see
+            Editedable rows, as well as modified cells are highlighted with a different color, which you can customize using css variables
+            (see
             <a
               target="_blank"
-              href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/example35.scss"
+              href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/example35.scss"
             >
-              example35.scss </a
-            >)
+              example35.scss{' '}
+            </a>
+            )
           </li>
+          <li>Modifications are kept track of and if the cancel button is pressed, all modifications are rolled back.</li>
           <li>
-            Modifications are kept track of and if the cancel button is pressed, all
-            modifications are rolled back.
-          </li>
-          <li>
-            If the save button is pressed, a custom "onBeforeRowUpdated" callback is called, which you can use to save the data with your backend.<br />
-            The callback needs to return a Promise&lt;boolean&gt; and if the promise resolves to true, then the row will be updated, otherwise it will be cancelled and stays in edit mode.
-            You can try out the later by defining a Duration value <b>larger than 40</b>.
+            If the save button is pressed, a custom "onBeforeRowUpdated" callback is called, which you can use to save the data with your
+            backend.
             <br />
-            <small><span className="has-text-danger">NOTE:</span> You can also combine this with e.g. Batch Editing like shown <a href="#/example30">in Example 30</a></small>
+            The callback needs to return a Promise&lt;boolean&gt; and if the promise resolves to true, then the row will be updated,
+            otherwise it will be cancelled and stays in edit mode. You can try out the later by defining a Duration value{' '}
+            <b>larger than 40</b>.
+            <br />
+            <small>
+              <span className="has-text-danger">NOTE:</span> You can also combine this with e.g. Batch Editing like shown{' '}
+              <a href="#/example30">in Example 30</a>
+            </small>
           </li>
           <li>
             This example additionally uses the ExcelCopyBuffer Plugin, which you can see also in Slickgrid-Universal
-            <a href="https://ghiscoding.github.io/slickgrid-universal/#/example19">example 19</a>.
-            The example defines a rule that pastes in the first column are prohibited. In combination with the Row Based Editing Plugin though, this rule gets enhanced with the fact
+            <a href="https://ghiscoding.github.io/slickgrid-universal/#/example19">example 19</a>. The example defines a rule that pastes in
+            the first column are prohibited. In combination with the Row Based Editing Plugin though, this rule gets enhanced with the fact
             that only the edited rows are allowed to be pasted into, while still respecting the original rule.
           </li>
         </ul>
@@ -338,14 +348,15 @@ const Example35: React.FC = () => {
         </div>
       </section>
 
-      <SlickgridReact gridId="grid35"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptionsRef.current}
+      <SlickgridReact
+        gridId="grid35"
+        columns={columnDefinitions}
+        options={gridOptionsRef.current}
         dataset={dataset}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
       />
     </div>
   );
-}
+};
 
 export default withTranslation()(Example35);

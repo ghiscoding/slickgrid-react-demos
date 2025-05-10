@@ -1,12 +1,5 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import {
-  type Column,
-  Editors,
-  type GridOption,
-  type ItemMetadata,
-  SlickgridReact,
-  type SlickgridReactInstance,
-} from 'slickgrid-react';
+import { type Column, Editors, type GridOption, type ItemMetadata, SlickgridReact, type SlickgridReactInstance } from 'slickgrid-react';
 import { useRef, useState } from 'react';
 
 import './example43.scss';
@@ -184,7 +177,7 @@ export default function Example43() {
 
   function toggleEditing() {
     const editable = !isEditable;
-    setIsEditable(editable)
+    setIsEditable(editable);
     reactGrid?.slickGrid.setOptions({ editable });
   }
 
@@ -427,13 +420,13 @@ export default function Example43() {
     }
 
     // update column definitions
-    const cols = reactGrid?.slickGrid.getColumns() || [];
+    const cols: Column[] = reactGrid?.slickGrid.getColumns() || [];
     if (newShowEmployeeId) {
       cols.unshift({ id: 'employeeID', name: 'Employee ID', field: 'employeeID', width: 100 });
     } else {
       cols.splice(0, 1);
     }
-    reactGrid?.slickGrid.setColumns(cols) || [];
+    reactGrid?.slickGrid.setColumns(cols || []);
 
     // update & remap rowspans
     metadataRef.current = newMetadata;
@@ -457,26 +450,32 @@ export default function Example43() {
           <a
             style={{ fontSize: '18px' }}
             target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example43.tsx"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example43.tsx"
           >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
       <div className="subtitle">
         <p className="italic example-details">
-          <b>NOTES</b>: <code>rowspan</code> is an opt-in feature, because of its small perf hit (it needs to loop through all row metadatas to
-          map all rowspan), and requires the <code>enableCellRowSpan</code> grid option to be enabled to work properly. The
+          <b>NOTES</b>: <code>rowspan</code> is an opt-in feature, because of its small perf hit (it needs to loop through all row metadatas
+          to map all rowspan), and requires the <code>enableCellRowSpan</code> grid option to be enabled to work properly. The
           <code>colspan</code>/<code>rowspan</code> are both using DataView item metadata and are both based on row indexes and will
-          <b>not</b> keep the row in sync with the data. It is really up to you the user to update the metadata logic of how and where the cells
-          should span when a side effect kicks in. (i.e: Filtering/Sorting/Paging/Column Reorder... will <b>not</b> change/update the spanning
-          in the grid by itself and that is why they these features are all disabled in this example). Also, column/row freezing (pinning) are
-          also not supported, or at least not recommended unless you know exactly what you're doing (like in this demo here because we know our
-          pinning doesn't intersect)! Any freezing column/row that could intersect with a <code>colspan</code>/<code>rowspan</code>
+          <b>not</b> keep the row in sync with the data. It is really up to you the user to update the metadata logic of how and where the
+          cells should span when a side effect kicks in. (i.e: Filtering/Sorting/Paging/Column Reorder... will <b>not</b> change/update the
+          spanning in the grid by itself and that is why they these features are all disabled in this example). Also, column/row freezing
+          (pinning) are also not supported, or at least not recommended unless you know exactly what you're doing (like in this demo here
+          because we know our pinning doesn't intersect)! Any freezing column/row that could intersect with a <code>colspan</code>/
+          <code>rowspan</code>
           &nbsp;<b>will cause problems</b>.
         </p>
       </div>
@@ -517,23 +516,32 @@ export default function Example43() {
         <span className="mdi mdi-chevron-down mdi-rotate-270"></span>
         Navigate to Right Cell
       </button>
-      <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon mx-1"
-        data-test="toggle-employee-id" onClick={() => toggleEmployeeIdVisibility()}>
+      <button
+        className="ms-2 btn btn-outline-secondary btn-sm btn-icon mx-1"
+        data-test="toggle-employee-id"
+        onClick={() => toggleEmployeeIdVisibility()}
+      >
         Show/Hide EmployeeID
       </button>
       <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon mx-1" onClick={() => toggleEditing()} data-test="toggle-editing">
         <span className="mdi mdi-pencil-outline"></span>
-        <span>Toggle Editing: <span id="isEditable" className="text-italic">{isEditable + ''}</span></span>
+        <span>
+          Toggle Editing:{' '}
+          <span id="isEditable" className="text-italic">
+            {isEditable + ''}
+          </span>
+        </span>
       </button>
       <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="export-excel-btn" onClick={() => exportToExcel()}>
         <i className="mdi mdi-file-excel-outline text-success"></i> Export to Excel
       </button>
 
-      <SlickgridReact gridId="grid43"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid43"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
       />
     </div>
   );

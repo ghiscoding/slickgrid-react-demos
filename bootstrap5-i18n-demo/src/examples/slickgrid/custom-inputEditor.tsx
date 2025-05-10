@@ -1,10 +1,4 @@
-import type {
-  Column,
-  ColumnEditor,
-  Editor,
-  EditorValidator,
-  EditorValidationResult,
-} from 'slickgrid-react';
+import type { Column, ColumnEditor, Editor, EditorValidator, EditorValidationResult } from 'slickgrid-react';
 
 /*
  * An example of a 'detached' editor.
@@ -31,7 +25,7 @@ export class CustomInputEditor implements Editor {
 
   /** Get the Validator function, can be passed in Editor property or Column Definition */
   get validator(): EditorValidator | undefined {
-    return (this.columnEditor?.validator) || (this.columnDef?.validator);
+    return this.columnEditor?.validator || this.columnDef?.validator;
   }
 
   init(): void {
@@ -95,18 +89,18 @@ export class CustomInputEditor implements Editor {
     if (this.columnEditor?.alwaysSaveOnEnterKey && lastKeyEvent === 'Enter') {
       return true;
     }
-    return (!(this.inputElm.value === '' && this.defaultValue === null)) && (this.inputElm.value !== this.defaultValue);
+    return !(this.inputElm.value === '' && this.defaultValue === null) && this.inputElm.value !== this.defaultValue;
   }
 
   validate(inputValue?: any): EditorValidationResult {
     if (this.validator) {
-      const value = (inputValue !== undefined) ? inputValue : this.inputElm?.value;
+      const value = inputValue !== undefined ? inputValue : this.inputElm?.value;
       return this.validator(value, this.args);
     }
 
     return {
       valid: true,
-      msg: null
+      msg: null,
     };
   }
 }

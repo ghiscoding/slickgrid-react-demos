@@ -3,11 +3,10 @@ import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import i18next from 'i18next';
 
-import { CustomInputFilter } from './custom-inputFilter';
+import { CustomInputFilter } from './custom-inputFilter.js';
 import {
   type Column,
   type CurrentFilter,
-  FieldType,
   Filters,
   type Formatter,
   Formatters,
@@ -44,10 +43,10 @@ const Example23: React.FC = () => {
   const [gridOptions, setGridOptions] = useState<GridOption | undefined>(undefined);
   const [selectedLanguage, setSelectedLanguage] = useState<string>(defaultLang);
   const reactGridRef = useRef<SlickgridReactInstance | null>(null);
-  const [filterList] = useState<{ value: string; label: string; }[]>([
+  const [filterList] = useState<{ value: string; label: string }[]>([
     { value: '', label: '...' },
     { value: 'currentYearTasks', label: 'Current Year Completed Tasks' },
-    { value: 'nextYearTasks', label: 'Next Year Active Tasks' }
+    { value: 'nextYearTasks', label: 'Next Year Active Tasks' },
   ]);
   const [metrics, setMetrics] = useState<Metrics>();
   const [hideSubTitle, setHideSubTitle] = useState(false);
@@ -59,7 +58,7 @@ const Example23: React.FC = () => {
     // save grid state before unmounting
     return () => {
       saveCurrentGridState();
-    }
+    };
   }, []);
 
   function reactGridReady(reactGrid: SlickgridReactInstance) {
@@ -70,69 +69,113 @@ const Example23: React.FC = () => {
   function defineGrid() {
     const columnDefinitions: Column[] = [
       {
-        id: 'title', name: 'Title', field: 'id', nameKey: 'TITLE', minWidth: 100,
+        id: 'title',
+        name: 'Title',
+        field: 'id',
+        nameKey: 'TITLE',
+        minWidth: 100,
         formatter: taskTranslateFormatter,
         sortable: true,
         filterable: true,
-        params: { useFormatterOuputToFilter: true }
+        params: { useFormatterOuputToFilter: true },
       },
       {
-        id: 'description', name: 'Description', field: 'description', filterable: true, sortable: true, minWidth: 80,
-        type: FieldType.string,
+        id: 'description',
+        name: 'Description',
+        field: 'description',
+        filterable: true,
+        sortable: true,
+        minWidth: 80,
         filter: {
           model: CustomInputFilter, // create a new instance to make each Filter independent from each other
-          enableTrimWhiteSpace: true // or use global "enableFilterTrimWhiteSpace" to trim on all Filters
-        }
+          enableTrimWhiteSpace: true, // or use global "enableFilterTrimWhiteSpace" to trim on all Filters
+        },
       },
       {
-        id: 'percentComplete', name: '% Complete', field: 'percentComplete', nameKey: 'PERCENT_COMPLETE', minWidth: 120,
+        id: 'percentComplete',
+        name: '% Complete',
+        field: 'percentComplete',
+        nameKey: 'PERCENT_COMPLETE',
+        minWidth: 120,
         sortable: true,
         customTooltip: { position: 'center' },
         formatter: Formatters.progressBar,
-        type: FieldType.number,
+        type: 'number',
         filterable: true,
         filter: {
           model: Filters.sliderRange,
-          maxValue: 100, // or you can use the filterOptions as well
+          maxValue: 100, // or you can use the options as well
           operator: OperatorType.rangeInclusive, // defaults to inclusive
-          filterOptions: {
+          options: {
             hideSliderNumbers: false, // you can hide/show the slider numbers on both side
-            min: 0, step: 5
-          } as SliderRangeOption
-        }
+            min: 0,
+            step: 5,
+          } as SliderRangeOption,
+        },
       },
       {
-        id: 'start', name: 'Start', field: 'start', nameKey: 'START', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 100, exportWithFormatter: true,
-        type: FieldType.date, filterable: true, filter: { model: Filters.compoundDate }
+        id: 'start',
+        name: 'Start',
+        field: 'start',
+        nameKey: 'START',
+        formatter: Formatters.dateIso,
+        sortable: true,
+        minWidth: 75,
+        width: 100,
+        exportWithFormatter: true,
+        type: 'date',
+        filterable: true,
+        filter: { model: Filters.compoundDate },
       },
       {
-        id: 'finish', name: 'Finish', field: 'finish', nameKey: 'FINISH', formatter: Formatters.dateIso, sortable: true, minWidth: 75, width: 120, exportWithFormatter: true,
-        type: FieldType.date,
+        id: 'finish',
+        name: 'Finish',
+        field: 'finish',
+        nameKey: 'FINISH',
+        formatter: Formatters.dateIso,
+        sortable: true,
+        minWidth: 75,
+        width: 120,
+        exportWithFormatter: true,
+        type: 'date',
         filterable: true,
         filter: {
           model: Filters.dateRange,
-        }
+        },
       },
       {
-        id: 'duration', field: 'duration', nameKey: 'DURATION', maxWidth: 90,
-        type: FieldType.number,
+        id: 'duration',
+        field: 'duration',
+        nameKey: 'DURATION',
+        maxWidth: 90,
+        type: 'number',
         sortable: true,
-        filterable: true, filter: {
+        filterable: true,
+        filter: {
           model: Filters.input,
-          operator: OperatorType.rangeExclusive // defaults to exclusive
-        }
+          operator: OperatorType.rangeExclusive, // defaults to exclusive
+        },
       },
       {
-        id: 'completed', name: 'Completed', field: 'completed', nameKey: 'COMPLETED', minWidth: 85, maxWidth: 90,
+        id: 'completed',
+        name: 'Completed',
+        field: 'completed',
+        nameKey: 'COMPLETED',
+        minWidth: 85,
+        maxWidth: 90,
         formatter: Formatters.checkmarkMaterial,
         exportWithFormatter: true, // you can set this property in the column definition OR in the grid options, column def has priority over grid options
         filterable: true,
         filter: {
-          collection: [{ value: '', label: '' }, { value: true, label: 'True' }, { value: false, label: 'False' }],
+          collection: [
+            { value: '', label: '' },
+            { value: true, label: 'True' },
+            { value: false, label: 'False' },
+          ],
           model: Filters.singleSelect,
-          filterOptions: { autoAdjustDropHeight: true } as MultipleSelectOption
-        }
-      }
+          options: { autoAdjustDropHeight: true } as MultipleSelectOption,
+        },
+      },
     ];
 
     const presetLowestDay = format(addDay(new Date(), -2), 'YYYY-MM-DD');
@@ -141,7 +184,7 @@ const Example23: React.FC = () => {
     const gridOptions: GridOption = {
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableExcelCopyBuffer: true,
       enableFiltering: true,
@@ -177,7 +220,7 @@ const Example23: React.FC = () => {
   function getData(itemCount: number, startingIndex = 0): any[] {
     // mock a dataset
     const tempDataset: any[] = [];
-    for (let i = startingIndex; i < (startingIndex + itemCount); i++) {
+    for (let i = startingIndex; i < startingIndex + itemCount; i++) {
       const randomDuration = randomBetween(0, 365);
       const randomYear = randomBetween(new Date().getFullYear(), new Date().getFullYear() + 1);
       const randomMonth = randomBetween(0, 12);
@@ -187,13 +230,13 @@ const Example23: React.FC = () => {
       tempDataset.push({
         id: i,
         title: 'Task ' + i,
-        description: (i % 5) ? 'desc ' + i : null, // also add some random to test NULL field
+        description: i % 5 ? 'desc ' + i : null, // also add some random to test NULL field
         duration: randomDuration,
         percentComplete: randomPercent,
         percentCompleteNumber: randomPercent,
-        start: (i % 4) ? null : new Date(randomYear, randomMonth, randomDay),          // provide a Date format
+        start: i % 4 ? null : new Date(randomYear, randomMonth, randomDay), // provide a Date format
         finish: new Date(randomYear, randomMonth, randomDay),
-        completed: (randomPercent === 100) ? true : false,
+        completed: randomPercent === 100 ? true : false,
       });
     }
 
@@ -221,7 +264,7 @@ const Example23: React.FC = () => {
         setMetrics({
           startTime: new Date(),
           itemCount: args?.current ?? 0,
-          totalItemCount: dataset?.length || 0
+          totalItemCount: dataset?.length || 0,
         });
       });
     }
@@ -255,7 +298,7 @@ const Example23: React.FC = () => {
   }
 
   async function switchLanguage() {
-    const nextLanguage = (selectedLanguage === 'en') ? 'fr' : 'en';
+    const nextLanguage = selectedLanguage === 'en' ? 'fr' : 'en';
     await i18next.changeLanguage(nextLanguage);
     setSelectedLanguage(nextLanguage);
   }
@@ -287,28 +330,47 @@ const Example23: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptions ? '' : (
+  return !gridOptions ? (
+    ''
+  ) : (
     <div id="demo-container" className="container-fluid">
       <h2>
         Example 23: Filtering from Range of Search Values
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example23.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example23.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
       <div className="subtitle">
-        This demo shows how to use Filters with Range of Search Values (<a href="https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/filters/range-filters" target="_blank">Docs</a>)
+        This demo shows how to use Filters with Range of Search Values (
+        <a href="https://ghiscoding.gitbook.io/slickgrid-react/column-functionalities/filters/range-filters" target="_blank">
+          Docs
+        </a>
+        )
         <br />
         <ul className="small">
-          <li>All input filters support the following operators: (&gt;, &gt;=, &lt;, &lt;=, &lt;&gt;, !=, =, ==, *) and now also the (..) for an input range</li>
-          <li>All filters (which support ranges) can be defined via the 2 dots (..) which represents a range, this also works for dates and slider in the "presets"</li>
+          <li>
+            All input filters support the following operators: (&gt;, &gt;=, &lt;, &lt;=, &lt;&gt;, !=, =, ==, *) and now also the (..) for
+            an input range
+          </li>
+          <li>
+            All filters (which support ranges) can be defined via the 2 dots (..) which represents a range, this also works for dates and
+            slider in the "presets"
+          </li>
           <ul>
             <li>For a numeric range defined in an input filter (must be of type text), you can use 2 dots (..) to represent a range</li>
             <li>example: typing "10..90" will filter values between 10 and 90 (but excluding the number 10 and 90)</li>
@@ -318,46 +380,70 @@ const Example23: React.FC = () => {
 
       <br />
 
-      {metrics && <span><><b>Metrics:</b>
-        {metrics.endTime ? format(metrics.endTime, 'YYYY-MM-DD HH:mm:ss') : ''}
-        | {metrics.itemCount} of {metrics.totalItemCount} items </>
-      </span>}
+      {metrics && (
+        <span>
+          <>
+            <b>Metrics:</b>
+            {metrics.endTime ? format(metrics.endTime, 'YYYY-MM-DD HH:mm:ss') : ''}| {metrics.itemCount} of {metrics.totalItemCount}{' '}
+            items{' '}
+          </>
+        </span>
+      )}
 
       <form className="row row-cols-lg-auto g-1 align-items-center" onSubmit={(e) => e.preventDefault()}>
         <div className="col">
-          <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-filters"
-            onClick={() => reactGridRef.current?.filterService.clearFilters()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon"
+            data-test="clear-filters"
+            onClick={() => reactGridRef.current?.filterService.clearFilters()}
+          >
             Clear Filters
           </button>
         </div>
         <div className="col">
-          <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="clear-sorting"
-            onClick={() => reactGridRef.current?.sortService.clearSorting()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon"
+            data-test="clear-sorting"
+            onClick={() => reactGridRef.current?.sortService.clearSorting()}
+          >
             Clear Sorting
           </button>
         </div>
         <div className="col">
-          <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-filter"
-            onClick={() => setFiltersDynamically()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon"
+            data-test="set-dynamic-filter"
+            onClick={() => setFiltersDynamically()}
+          >
             Set Filters Dynamically
           </button>
         </div>
         <div className="col">
-          <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-sorting"
-            onClick={() => setSortingDynamically()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon"
+            data-test="set-dynamic-sorting"
+            onClick={() => setSortingDynamically()}
+          >
             Set Sorting Dynamically
           </button>
         </div>
         <div className="col">
-          <label htmlFor="selectedFilter" style={{ marginLeft: '10px' }}>Predefined Filters</label>
+          <label htmlFor="selectedFilter" style={{ marginLeft: '10px' }}>
+            Predefined Filters
+          </label>
         </div>
         <div className="col">
-          <select className="form-select" data-test="select-dynamic-filter" name="selectedFilter" onChange={($event) => predefinedFilterChanged($event)}>
-            {
-              filterList.map((filter) =>
-                <option value={filter.value} key={filter.value}>{filter.label}</option>
-              )
-            }
+          <select
+            className="form-select"
+            data-test="select-dynamic-filter"
+            name="selectedFilter"
+            onChange={($event) => predefinedFilterChanged($event)}
+          >
+            {filterList.map((filter) => (
+              <option value={filter.value} key={filter.value}>
+                {filter.label}
+              </option>
+            ))}
           </select>
         </div>
       </form>
@@ -368,20 +454,24 @@ const Example23: React.FC = () => {
             <i className="mdi mdi-translate me-1"></i>
             Switch Language
           </button>
-          <b>Locale: </b> <span style={{ fontStyle: 'italic' }} data-test="selected-locale">{selectedLanguage + '.json'}</span>
+          <b>Locale: </b>{' '}
+          <span style={{ fontStyle: 'italic' }} data-test="selected-locale">
+            {selectedLanguage + '.json'}
+          </span>
         </div>
       </div>
 
-      <SlickgridReact gridId="grid23"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid23"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
-        onGridStateChanged={$event => gridStateChanged($event.detail)}
-        onRowCountChanged={$event => refreshMetrics($event.detail.eventData, $event.detail.args)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
+        onGridStateChanged={($event) => gridStateChanged($event.detail)}
+        onRowCountChanged={($event) => refreshMetrics($event.detail.eventData, $event.detail.args)}
       />
     </div>
   );
-}
+};
 
 export default withTranslation()(Example23);

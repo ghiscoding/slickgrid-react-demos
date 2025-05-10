@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 
 import {
   type Column,
-  FieldType,
   Filters,
   type GridOption,
   type GridStateChange,
@@ -20,7 +19,10 @@ const defaultPageSize = 20;
 const CARET_HTML_ESCAPED = '%5E';
 const PERCENT_HTML_ESCAPED = '%25';
 
-interface Status { text: string, class: string }
+interface Status {
+  text: string;
+  class: string;
+}
 
 const Example5: React.FC = () => {
   const [gridOptions, setGridOptions] = useState<GridOption | undefined>(undefined);
@@ -56,16 +58,16 @@ const Example5: React.FC = () => {
       enableAutoResize: true,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       checkboxSelector: {
         // you can toggle these 2 properties to show the "select all" checkbox in different location
         hideInFilterHeaderRow: false,
-        hideInColumnTitleRow: true
+        hideInColumnTitleRow: true,
       },
       compoundOperatorAltTexts: {
         // where '=' is any of the `OperatorString` type shown above
-        text: { 'Custom': { operatorAlt: '%%', descAlt: 'SQL Like' } },
+        text: { Custom: { operatorAlt: '%%', descAlt: 'SQL Like' } },
       },
       enableCellNavigation: true,
       enableFiltering: true,
@@ -75,18 +77,16 @@ const Example5: React.FC = () => {
       pagination: {
         pageSizes: [10, 20, 50, 100, 500, 50000],
         pageSize: defaultPageSize,
-        totalItems: 0
+        totalItems: 0,
       },
       presets: {
         // you can also type operator as string, e.g.: operator: 'EQ'
-        filters: [
-          { columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal },
-        ],
+        filters: [{ columnId: 'gender', searchTerms: ['male'], operator: OperatorType.equal }],
         sorters: [
           // direction can be written as 'asc' (uppercase or lowercase) and/or use the SortDirection type
           { columnId: 'name', direction: 'asc' },
         ],
-        pagination: { pageNumber: 2, pageSize: 20 }
+        pagination: { pageNumber: 2, pageSize: 20 },
       },
       backendServiceApi: {
         service: new GridOdataService(),
@@ -98,13 +98,13 @@ const Example5: React.FC = () => {
             if (columnFilterOperator === OperatorType.custom && columnDef?.id === 'name') {
               let matchesSearch = searchValues[0].replace(/\*/g, '.*');
               matchesSearch = matchesSearch.slice(0, 1) + CARET_HTML_ESCAPED + matchesSearch.slice(1);
-              matchesSearch = matchesSearch.slice(0, -1) + '$\'';
+              matchesSearch = matchesSearch.slice(0, -1) + "$'";
 
               return `matchesPattern(${fieldName}, ${matchesSearch})`;
             }
             return;
           },
-          version: odataVersion // defaults to 2, the query string is slightly different between OData 2 and 4
+          version: odataVersion, // defaults to 2, the query string is slightly different between OData 2 and 4
         },
         onError: (error: Error) => {
           setErrorStatus(error.message);
@@ -119,16 +119,18 @@ const Example5: React.FC = () => {
           setMetrics(response.metrics);
           getCustomerCallback(response);
           displaySpinner(false);
-        }
-      } as OdataServiceApi
+        },
+      } as OdataServiceApi,
     };
   }
 
   function getColumnDefinitions(): Column[] {
     return [
       {
-        id: 'name', name: 'Name', field: 'name', sortable: true,
-        type: FieldType.string,
+        id: 'name',
+        name: 'Name',
+        field: 'name',
+        sortable: true,
         filterable: true,
         filter: {
           model: Filters.compoundInput,
@@ -140,14 +142,22 @@ const Example5: React.FC = () => {
             { operator: 'a*', desc: 'Starts With' },
             { operator: 'Custom', desc: 'SQL Like' },
           ],
-        }
+        },
       },
       {
-        id: 'gender', name: 'Gender', field: 'gender', filterable: true, sortable: true,
+        id: 'gender',
+        name: 'Gender',
+        field: 'gender',
+        filterable: true,
+        sortable: true,
         filter: {
           model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: 'male', label: 'male' }, { value: 'female', label: 'female' }]
-        }
+          collection: [
+            { value: '', label: '' },
+            { value: 'male', label: 'male' },
+            { value: 'female', label: 'female' },
+          ],
+        },
       },
       { id: 'company', name: 'Company', field: 'company', filterable: true, sortable: true },
       { id: 'category_name', name: 'Category', field: 'category/name', filterable: true, sortable: true },
@@ -169,9 +179,7 @@ const Example5: React.FC = () => {
     if (isError) {
       setStatus({ text: 'ERROR!!!', class: 'alert alert-danger' });
     } else {
-      setStatus(isProcessing
-        ? { text: 'loading', class: 'alert alert-warning' }
-        : { text: 'finished', class: 'alert alert-success' });
+      setStatus(isProcessing ? { text: 'loading', class: 'alert alert-warning' } : { text: 'finished', class: 'alert alert-success' });
     }
   }
 
@@ -180,7 +188,7 @@ const Example5: React.FC = () => {
     // however we need to force React to do a dirty check, doing a clone object will do just that
     let totalItemCount: number = data['totalRecordCount'];
     if (isCountEnabled) {
-      totalItemCount = (odataVersion === 4) ? data['@odata.count'] : data['d']['__count'];
+      totalItemCount = odataVersion === 4 ? data['@odata.count'] : data['d']['__count'];
     }
 
     // once pagination totalItems is filled, we can update the dataset
@@ -190,7 +198,11 @@ const Example5: React.FC = () => {
     setMetrics({ ...metrics, totalItemCount });
 
     // Slickgrid-React requires the user to update pagination via this pubsub publish
-    reactGridRef.current?.eventPubSubService?.publish('onPaginationOptionsChanged', { ...gridOptionsRef.current!.pagination, totalItems: totalItemCount } as Pagination, 1);
+    reactGridRef.current?.eventPubSubService?.publish(
+      'onPaginationOptionsChanged',
+      { ...gridOptionsRef.current!.pagination, totalItems: totalItemCount } as Pagination,
+      1
+    );
   }
 
   function getCustomerApiCall(query: string) {
@@ -205,7 +217,7 @@ const Example5: React.FC = () => {
    */
   function getCustomerDataApiMock(query: string): Promise<any> {
     // the mock is returning a Promise, just like a WebAPI typically does
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const queryParams = query.toLowerCase().split('&');
       let top: number;
       let skip = 0;
@@ -220,13 +232,13 @@ const Example5: React.FC = () => {
 
       for (const param of queryParams) {
         if (param.includes('$top=')) {
-          top = +(param.substring('$top='.length));
+          top = +param.substring('$top='.length);
           if (top === 50000) {
             throw new Error('Server timed out retrieving 50,000 rows');
           }
         }
         if (param.includes('$skip=')) {
-          skip = +(param.substring('$skip='.length));
+          skip = +param.substring('$skip='.length);
         }
         if (param.includes('$orderby=')) {
           orderBy = param.substring('$orderby='.length);
@@ -287,7 +299,7 @@ const Example5: React.FC = () => {
       }
 
       // read the JSON and create a fresh copy of the data that we are free to modify
-      let data = Data as unknown as { name: string; gender: string; company: string; id: string, category: { id: string; name: string; }; }[];
+      let data = Data as unknown as { name: string; gender: string; company: string; id: string; category: { id: string; name: string } }[];
       data = JSON.parse(JSON.stringify(data));
 
       // Sort the data
@@ -323,7 +335,7 @@ const Example5: React.FC = () => {
       if (columnFilters) {
         for (const columnId in columnFilters) {
           if (columnFilters.hasOwnProperty(columnId)) {
-            filteredData = filteredData.filter(column => {
+            filteredData = filteredData.filter((column) => {
               const filterType = (columnFilters as any)[columnId].type;
               const searchTerm = (columnFilters as any)[columnId].term;
               let colId = columnId;
@@ -342,17 +354,28 @@ const Example5: React.FC = () => {
                 const [term1, term2] = Array.isArray(searchTerm) ? searchTerm : [searchTerm];
 
                 switch (filterType) {
-                  case 'eq': return filterTerm.toLowerCase() === term1;
-                  case 'ne': return filterTerm.toLowerCase() !== term1;
-                  case 'le': return filterTerm.toLowerCase() <= term1;
-                  case 'lt': return filterTerm.toLowerCase() < term1;
-                  case 'gt': return filterTerm.toLowerCase() > term1;
-                  case 'ge': return filterTerm.toLowerCase() >= term1;
-                  case 'ends': return filterTerm.toLowerCase().endsWith(term1);
-                  case 'starts': return filterTerm.toLowerCase().startsWith(term1);
-                  case 'starts+ends': return filterTerm.toLowerCase().startsWith(term1) && filterTerm.toLowerCase().endsWith(term2);
-                  case 'substring': return filterTerm.toLowerCase().includes(term1);
-                  case 'matchespattern': return new RegExp((term1 as string).replace(new RegExp(PERCENT_HTML_ESCAPED, 'g'), '.*'), 'i').test(filterTerm);
+                  case 'eq':
+                    return filterTerm.toLowerCase() === term1;
+                  case 'ne':
+                    return filterTerm.toLowerCase() !== term1;
+                  case 'le':
+                    return filterTerm.toLowerCase() <= term1;
+                  case 'lt':
+                    return filterTerm.toLowerCase() < term1;
+                  case 'gt':
+                    return filterTerm.toLowerCase() > term1;
+                  case 'ge':
+                    return filterTerm.toLowerCase() >= term1;
+                  case 'ends':
+                    return filterTerm.toLowerCase().endsWith(term1);
+                  case 'starts':
+                    return filterTerm.toLowerCase().startsWith(term1);
+                  case 'starts+ends':
+                    return filterTerm.toLowerCase().startsWith(term1) && filterTerm.toLowerCase().endsWith(term2);
+                  case 'substring':
+                    return filterTerm.toLowerCase().includes(term1);
+                  case 'matchespattern':
+                    return new RegExp((term1 as string).replace(new RegExp(PERCENT_HTML_ESCAPED, 'g'), '.*'), 'i').test(filterTerm);
                 }
               }
             });
@@ -415,9 +438,7 @@ const Example5: React.FC = () => {
   }
 
   function setSortingDynamically() {
-    reactGridRef.current?.sortService.updateSorting([
-      { columnId: 'name', direction: 'DESC' },
-    ]);
+    reactGridRef.current?.sortService.updateSorting([{ columnId: 'name', direction: 'DESC' }]);
   }
 
   function throwPageChangeError() {
@@ -497,12 +518,19 @@ const Example5: React.FC = () => {
         Example 5: Grid with Backend OData Service
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example5.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example5.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
@@ -510,31 +538,49 @@ const Example5: React.FC = () => {
       <div className="row">
         <div className="col-sm-9">
           <div className="subtitle">
-            Use it when you need to support Pagination with a OData endpoint (for simple JSON, use a regular grid)<br />
-            Take a look at the (<a href="https://ghiscoding.gitbook.io/slickgrid-react/backend-services/odata" target="_blank">Wiki documentation</a>)
+            Use it when you need to support Pagination with a OData endpoint (for simple JSON, use a regular grid)
+            <br />
+            Take a look at the (
+            <a href="https://ghiscoding.gitbook.io/slickgrid-react/backend-services/odata" target="_blank">
+              Wiki documentation
+            </a>
+            )
             <br />
             <ul className="small">
-              <li>Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported</li>
+              <li>
+                Only "Name" field is sortable for the demo (because we use JSON files), however "multiColumnSort: true" is also supported
+              </li>
               <li>This example also demos the Grid State feature, open the console log to see the changes</li>
               <li>String column also support operator (&gt;, &gt;=, &lt;, &lt;=, &lt;&gt;, !=, =, ==, *)</li>
               <ul>
-                <li>The (*) can be used as startsWith (ex.: "abc*" =&gt; startsWith "abc") / endsWith (ex.: "*xyz" =&gt; endsWith "xyz")</li>
+                <li>
+                  The (*) can be used as startsWith (ex.: "abc*" =&gt; startsWith "abc") / endsWith (ex.: "*xyz" =&gt; endsWith "xyz")
+                </li>
                 <li>The other operators can be used on column type number for example: "&gt;=100" (greater than or equal to 100)</li>
               </ul>
               <li>OData Service could be replaced by other Service type in the future (GraphQL or whichever you provide)</li>
-              <li>You can also preload a grid with certain "presets" like Filters / Sorters / Pagination <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/grid-state-preset" target="_blank">Wiki - Grid Preset</a></li>
-              <li><span className="text-danger">NOTE:</span> For demo purposes, the last column (filter & sort) will always throw an
-                error and its only purpose is to demo what would happen when you encounter a backend server error
-                (the UI should rollback to previous state before you did the action).
-                Also changing Page Size to 50,000 will also throw which again is for demo purposes.
+              <li>
+                You can also preload a grid with certain "presets" like Filters / Sorters / Pagination{' '}
+                <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/grid-state-preset" target="_blank">
+                  Wiki - Grid Preset
+                </a>
+              </li>
+              <li>
+                <span className="text-danger">NOTE:</span> For demo purposes, the last column (filter & sort) will always throw an error and
+                its only purpose is to demo what would happen when you encounter a backend server error (the UI should rollback to previous
+                state before you did the action). Also changing Page Size to 50,000 will also throw which again is for demo purposes.
               </li>
             </ul>
           </div>
         </div>
         <div className="col-sm-3">
-          {errorStatus && <div className="alert alert-danger" data-test="error-status">
-            <em><strong>Backend Error:</strong> <span>{errorStatus}</span></em>
-          </div>}
+          {errorStatus && (
+            <div className="alert alert-danger" data-test="error-status">
+              <em>
+                <strong>Backend Error:</strong> <span>{errorStatus}</span>
+              </em>
+            </div>
+          )}
         </div>
       </div>
 
@@ -542,9 +588,11 @@ const Example5: React.FC = () => {
         <div className="col-sm-2">
           <div className={status.class} role="alert" data-test="status">
             <strong>Status: </strong> {status.text}
-            {processing && <span>
-              <i className="mdi mdi-sync mdi-spin"></i>
-            </span>}
+            {processing && (
+              <span>
+                <i className="mdi mdi-sync mdi-spin"></i>
+              </span>
+            )}
           </div>
         </div>
         <div className="col-sm-10">
@@ -556,52 +604,93 @@ const Example5: React.FC = () => {
 
       <div className="row">
         <div className="col-sm-4">
-
-          <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-filter" onClick={() => setFiltersDynamically()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon"
+            data-test="set-dynamic-filter"
+            onClick={() => setFiltersDynamically()}
+          >
             Set Filters Dynamically
           </button>
-          <button className="btn btn-outline-secondary btn-sm btn-icon mx-1" data-test="set-dynamic-sorting" onClick={() => setSortingDynamically()}>
+          <button
+            className="btn btn-outline-secondary btn-sm btn-icon mx-1"
+            data-test="set-dynamic-sorting"
+            onClick={() => setSortingDynamically()}
+          >
             Set Sorting Dynamically
           </button>
           <br />
-          {metrics && <span><><b>Metrics:</b>
-            {metrics?.endTime ? format(metrics.endTime, 'YYYY-MM-DD HH:mm:ss') : ''}
-            | {metrics.itemCount} of {metrics.totalItemCount} items </>
-          </span>}
+          {metrics && (
+            <span>
+              <>
+                <b>Metrics:</b>
+                {metrics?.endTime ? format(metrics.endTime, 'YYYY-MM-DD HH:mm:ss') : ''}| {metrics.itemCount} of {metrics.totalItemCount}{' '}
+                items{' '}
+              </>
+            </span>
+          )}
         </div>
         <div className="col-sm-8">
           <label>OData Version:&nbsp;</label>
           <span data-test="radioVersion">
             <label className="radio-inline control-label" htmlFor="radio2">
-              <input type="radio" name="inlineRadioOptions" data-test="version2" id="radio2" defaultChecked={true} value="2"
-                onChange={() => changeOdataVersion(2)} /> 2&nbsp;
+              <input
+                type="radio"
+                name="inlineRadioOptions"
+                data-test="version2"
+                id="radio2"
+                defaultChecked={true}
+                value="2"
+                onChange={() => changeOdataVersion(2)}
+              />{' '}
+              2&nbsp;
             </label>
             <label className="radio-inline control-label" htmlFor="radio4">
-              <input type="radio" name="inlineRadioOptions" data-test="version4" id="radio4" value="4"
-                onChange={() => changeOdataVersion(4)} /> 4
+              <input
+                type="radio"
+                name="inlineRadioOptions"
+                data-test="version4"
+                id="radio4"
+                value="4"
+                onChange={() => changeOdataVersion(4)}
+              />{' '}
+              4
             </label>
           </span>
           <label className="checkbox-inline control-label" htmlFor="enableCount" style={{ marginLeft: '20px' }}>
-            <input type="checkbox" id="enableCount" data-test="enable-count" defaultChecked={isCountEnabled}
-              onChange={() => changeCountEnableFlag()} />
+            <input
+              type="checkbox"
+              id="enableCount"
+              data-test="enable-count"
+              defaultChecked={isCountEnabled}
+              onChange={() => changeCountEnableFlag()}
+            />
             <span style={{ fontWeight: 'bold' }}> Enable Count</span> (add to OData query)
           </label>
           <label className="checkbox-inline control-label" htmlFor="enableSelect" style={{ marginLeft: '20px' }}>
-            <input type="checkbox" id="enableSelect" data-test="enable-select" defaultChecked={isSelectEnabled}
-              onChange={() => changeEnableSelectFlag()} />
+            <input
+              type="checkbox"
+              id="enableSelect"
+              data-test="enable-select"
+              defaultChecked={isSelectEnabled}
+              onChange={() => changeEnableSelectFlag()}
+            />
             <span style={{ fontWeight: 'bold' }}> Enable Select</span> (add to OData query)
           </label>
           <label className="checkbox-inline control-label" htmlFor="enableExpand" style={{ marginLeft: '20px' }}>
-            <input type="checkbox" id="enableExpand" data-test="enable-expand" defaultChecked={isExpandEnabled}
-              onChange={() => changeEnableExpandFlag()} />
+            <input
+              type="checkbox"
+              id="enableExpand"
+              data-test="enable-expand"
+              defaultChecked={isExpandEnabled}
+              onChange={() => changeEnableExpandFlag()}
+            />
             <span style={{ fontWeight: 'bold' }}> Enable Expand</span> (add to OData query)
           </label>
-        </div >
-      </div >
+        </div>
+      </div>
       <div className="row mt-2 mb-1">
         <div className="col-md-12">
-          <button className="btn btn-outline-danger btn-sm" data-test="throw-page-error-btn"
-            onClick={() => throwPageChangeError()}>
+          <button className="btn btn-outline-danger btn-sm" data-test="throw-page-error-btn" onClick={() => throwPageChangeError()}>
             <span>Throw Error Going to Last Page... </span>
             <i className="mdi mdi-page-last"></i>
           </button>
@@ -609,7 +698,11 @@ const Example5: React.FC = () => {
           <span className="ms-2">
             <label>Programmatically go to first/last page:</label>
             <div className="btn-group" role="group">
-              <button className="btn btn-outline-secondary btn-xs btn-icon px-2" data-test="goto-first-page" onClick={() => goToFirstPage()}>
+              <button
+                className="btn btn-outline-secondary btn-xs btn-icon px-2"
+                data-test="goto-first-page"
+                onClick={() => goToFirstPage()}
+              >
                 <i className="mdi mdi-page-first"></i>
               </button>
               <button className="btn btn-outline-secondary btn-xs btn-icon px-2" data-test="goto-last-page" onClick={() => goToLastPage()}>
@@ -620,16 +713,17 @@ const Example5: React.FC = () => {
         </div>
       </div>
 
-      <SlickgridReact gridId="grid5"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid5"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
         paginationOptions={paginationOptions}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
-        onGridStateChanged={$event => gridStateChanged($event.detail)}
-        onBeforeSort={$event => handleOnBeforeSort($event.detail.eventData)}
-        onBeforeSearchChange={$event => handleOnBeforeSearchChange($event.detail.eventData)}
-        onBeforePaginationChange={$event => handleOnBeforePaginationChange($event.detail.eventData)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
+        onGridStateChanged={($event) => gridStateChanged($event.detail)}
+        onBeforeSort={($event) => handleOnBeforeSort($event.detail.eventData)}
+        onBeforeSearchChange={($event) => handleOnBeforeSearchChange($event.detail.eventData)}
+        onBeforePaginationChange={($event) => handleOnBeforePaginationChange($event.detail.eventData)}
       />
     </div>
   );

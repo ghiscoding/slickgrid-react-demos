@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
-import { type Column, type GridOption, type GridState, type RowDetailViewProps, SlickgridReact, type SlickgridReactInstance } from 'slickgrid-react';
+import {
+  type Column,
+  type GridOption,
+  type GridState,
+  type RowDetailViewProps,
+  SlickgridReact,
+  type SlickgridReactInstance,
+} from 'slickgrid-react';
 
-import type Example45 from './Example45';
+import type Example45 from './Example45.js';
 import './example45-detail-view.scss';
 
 export interface Distributor {
@@ -49,7 +56,7 @@ const Example45DetailView: React.FC<RowDetailViewProps<Distributor, typeof Examp
       { id: 'freight', field: 'freight', name: 'Freight', filterable: true, sortable: true, type: 'number' },
       { id: 'shipName', field: 'shipName', name: 'Ship Name', filterable: true, sortable: true },
     ];
-  }
+  };
 
   function defineGrid() {
     const columnDefinitions = getColumnDefinitions();
@@ -82,6 +89,7 @@ const Example45DetailView: React.FC<RowDetailViewProps<Distributor, typeof Examp
       enableCellNavigation: true,
       datasetIdPropertyName: 'orderId',
       presets: gridState,
+      rowTopOffsetRenderType: 'top', // RowDetail and/or RowSpan don't render well with "transform", you should use "top"
     };
   }
 
@@ -98,15 +106,17 @@ const Example45DetailView: React.FC<RowDetailViewProps<Distributor, typeof Examp
 
   return (
     <div className={`container-fluid ${innerGridClass}`} style={{ marginTop: '10px' }}>
-      <h4>{props.model.companyName} - Order Details (id: {props.model.id})</h4>
+      <h4>
+        {props.model.companyName} - Order Details (id: {props.model.id})
+      </h4>
       <div className="container-fluid innergrid">
         {showGrid && (
           <SlickgridReact
             gridId={`innergrid-${props.model.id}`}
-            columnDefinitions={innerColDefs}
-            gridOptions={innerGridOptions}
+            columns={innerColDefs}
+            options={innerGridOptions}
             dataset={innerDataset}
-            onReactGridCreated={$event => reactGridReady($event.detail)}
+            onReactGridCreated={($event) => reactGridReady($event.detail)}
             onBeforeGridDestroy={handleBeforeGridDestroy}
           />
         )}

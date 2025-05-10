@@ -3,7 +3,6 @@ import {
   type Column,
   createDomElement,
   deepCopy,
-  FieldType,
   Filters,
   type Formatter,
   Formatters,
@@ -59,7 +58,7 @@ const historicSparklineFormatter: Formatter = (_row, _cell, _value: string, _col
       const tooltip = svg?.nextElementSibling as HTMLElement;
       if (tooltip) {
         tooltip.hidden = false;
-        tooltip.textContent = `$${(datapoint.value * 100 / 100).toFixed(2)}`;
+        tooltip.textContent = `$${((datapoint.value * 100) / 100).toFixed(2)}`;
         tooltip.style.top = `${event.offsetY}px`;
         tooltip.style.left = `${event.offsetX + 20}px`;
       }
@@ -70,7 +69,7 @@ const historicSparklineFormatter: Formatter = (_row, _cell, _value: string, _col
       if (tooltip) {
         tooltip.hidden = true;
       }
-    }
+    },
   });
   const div = document.createElement('div');
   div.appendChild(svgElem);
@@ -94,7 +93,7 @@ const Example34: React.FC = () => {
   const maxChangePerCycleRef = useRef(maxChangePerCycle);
   const highlightDurationRef = useRef(highlightDuration);
   const refreshRateRef = useRef(refreshRate);
-  const timerRef = useRef<any>();
+  const timerRef = useRef<any>(null);
   const reactGridRef = useRef<SlickgridReactInstance | null>(null);
 
   useEffect(() => {
@@ -118,83 +117,150 @@ const Example34: React.FC = () => {
   function defineGrid() {
     const columnDefinitions: Column[] = [
       {
-        id: 'currency', name: 'Currency', field: 'currency', filterable: true, sortable: true, minWidth: 65, width: 65,
+        id: 'currency',
+        name: 'Currency',
+        field: 'currency',
+        filterable: true,
+        sortable: true,
+        minWidth: 65,
+        width: 65,
         formatter: currencyFormatter,
         filter: {
           model: Filters.singleSelect,
-          collection: [{ label: '', value: '' }, { label: 'CAD', value: 'CAD' }, { label: 'USD', value: 'USD' }]
+          collection: [
+            { label: '', value: '' },
+            { label: 'CAD', value: 'CAD' },
+            { label: 'USD', value: 'USD' },
+          ],
         },
         grouping: {
           getter: 'currency',
-          formatter: (g) => `Currency: <span style="var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
-          aggregators: [
-            new Aggregators.Sum('amount')
-          ],
+          formatter: (g) =>
+            `Currency: <span style="var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
+          aggregators: [new Aggregators.Sum('amount')],
           aggregateCollapsed: true,
-          collapsed: false
-        }
+          collapsed: false,
+        },
       },
       { id: 'symbol', name: 'Symbol', field: 'symbol', filterable: true, sortable: true, minWidth: 65, width: 65 },
       {
-        id: 'market', name: 'Market', field: 'market', filterable: true, sortable: true, minWidth: 75, width: 75,
+        id: 'market',
+        name: 'Market',
+        field: 'market',
+        filterable: true,
+        sortable: true,
+        minWidth: 75,
+        width: 75,
         grouping: {
           getter: 'market',
-          formatter: (g) => `Market: <span style="var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
-          aggregators: [
-            new Aggregators.Sum('amount')
-          ],
+          formatter: (g) =>
+            `Market: <span style="var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
+          aggregators: [new Aggregators.Sum('amount')],
           aggregateCollapsed: true,
-          collapsed: false
-        }
+          collapsed: false,
+        },
       },
       { id: 'company', name: 'Company', field: 'company', filterable: true, sortable: true, minWidth: 80, width: 130 },
       {
-        id: 'trsnType', name: 'Type', field: 'trsnType', filterable: true, sortable: true, minWidth: 60, width: 60,
+        id: 'trsnType',
+        name: 'Type',
+        field: 'trsnType',
+        filterable: true,
+        sortable: true,
+        minWidth: 60,
+        width: 60,
         formatter: transactionTypeFormatter,
         filter: {
           model: Filters.singleSelect,
-          collection: [{ label: '', value: '' }, { label: 'Buy', value: 'Buy' }, { label: 'Sell', value: 'Sell' }]
+          collection: [
+            { label: '', value: '' },
+            { label: 'Buy', value: 'Buy' },
+            { label: 'Sell', value: 'Sell' },
+          ],
         },
         grouping: {
           getter: 'trsnType',
-          formatter: (g) => `Type: <span style="var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
-          aggregators: [
-            new Aggregators.Sum('amount')
-          ],
+          formatter: (g) =>
+            `Type: <span style="var(--slick-primary-color); font-weight: bold;">${g.value}</span>  <span style="color: #659bff;">(${g.count} items)</span>`,
+          aggregators: [new Aggregators.Sum('amount')],
           aggregateCollapsed: true,
-          collapsed: false
-        }
+          collapsed: false,
+        },
       },
       {
-        id: 'priceChange', name: 'Change', field: 'priceChange', filterable: true, sortable: true, minWidth: 80, width: 80,
-        filter: { model: Filters.compoundInputNumber }, type: FieldType.number,
+        id: 'priceChange',
+        name: 'Change',
+        field: 'priceChange',
+        filterable: true,
+        sortable: true,
+        minWidth: 80,
+        width: 80,
+        filter: { model: Filters.compoundInputNumber },
+        type: 'number',
         formatter: Formatters.multiple,
         params: {
           formatters: [Formatters.dollar, priceFormatter],
           maxDecimal: 2,
-        }
-
+        },
       },
       {
-        id: 'price', name: 'Price', field: 'price', filterable: true, sortable: true, minWidth: 70, width: 70,
-        filter: { model: Filters.compoundInputNumber }, type: FieldType.number,
-        formatter: Formatters.dollar, params: { maxDecimal: 2 }
+        id: 'price',
+        name: 'Price',
+        field: 'price',
+        filterable: true,
+        sortable: true,
+        minWidth: 70,
+        width: 70,
+        filter: { model: Filters.compoundInputNumber },
+        type: 'number',
+        formatter: Formatters.dollar,
+        params: { maxDecimal: 2 },
       },
       {
-        id: 'quantity', name: 'Quantity', field: 'quantity', filterable: true, sortable: true, minWidth: 70, width: 70,
-        filter: { model: Filters.compoundInputNumber }, type: FieldType.number,
+        id: 'quantity',
+        name: 'Quantity',
+        field: 'quantity',
+        filterable: true,
+        sortable: true,
+        minWidth: 70,
+        width: 70,
+        filter: { model: Filters.compoundInputNumber },
+        type: 'number',
       },
       {
-        id: 'amount', name: 'Amount', field: 'amount', filterable: true, sortable: true, minWidth: 70, width: 60,
-        filter: { model: Filters.compoundInputNumber }, type: FieldType.number,
-        formatter: Formatters.dollar, params: { maxDecimal: 2 },
+        id: 'amount',
+        name: 'Amount',
+        field: 'amount',
+        filterable: true,
+        sortable: true,
+        minWidth: 70,
+        width: 60,
+        filter: { model: Filters.compoundInputNumber },
+        type: 'number',
+        formatter: Formatters.dollar,
+        params: { maxDecimal: 2 },
         groupTotalsFormatter: GroupTotalFormatters.sumTotalsDollarBold,
       },
-      { id: 'historic', name: 'Price History', field: 'historic', minWidth: 100, width: 150, maxWidth: 150, formatter: historicSparklineFormatter },
       {
-        id: 'execution', name: 'Execution Timestamp', field: 'execution', filterable: true, sortable: true, minWidth: 125,
-        formatter: Formatters.dateTimeIsoAmPm, exportWithFormatter: true,
-        type: FieldType.dateTimeIsoAM_PM, filter: { model: Filters.compoundDate }
+        id: 'historic',
+        name: 'Price History',
+        field: 'historic',
+        minWidth: 100,
+        width: 150,
+        maxWidth: 150,
+        formatter: historicSparklineFormatter,
+      },
+      {
+        id: 'execution',
+        name: 'Execution Timestamp',
+        field: 'execution',
+        filterable: true,
+        sortable: true,
+        minWidth: 125,
+        formatter: Formatters.dateTimeIsoAmPm,
+        exportWithFormatter: true,
+        type: 'dateTimeIsoAM_PM',
+        filter: { model: Filters.compoundDate },
       },
     ];
 
@@ -207,7 +273,7 @@ const Example34: React.FC = () => {
       },
       formatterOptions: {
         displayNegativeNumberWithParentheses: true,
-        thousandSeparator: ','
+        thousandSeparator: ',',
       },
       draggableGrouping: {
         dropPlaceHolderText: 'Drop a column header here to group by any of these available columns: Currency, Market or Type',
@@ -241,24 +307,24 @@ const Example34: React.FC = () => {
       const amount = price * quantity;
       const now = new Date();
       now.setHours(9, 30, 0);
-      const currency = (Math.floor(Math.random() * 10)) % 2 ? 'CAD' : 'USD';
+      const currency = Math.floor(Math.random() * 10) % 2 ? 'CAD' : 'USD';
       const company = faker.company.name();
 
       tmpData[i] = {
         id: i,
         currency,
-        trsnType: (Math.round(Math.random() * 100)) % 2 ? 'Buy' : 'Sell',
+        trsnType: Math.round(Math.random() * 100) % 2 ? 'Buy' : 'Sell',
         company,
         symbol: currency === 'CAD' ? company.substr(0, 3).toUpperCase() + '.TO' : company.substr(0, 4).toUpperCase(),
         market: currency === 'CAD' ? 'TSX' : price > 200 ? 'Nasdaq' : 'S&P 500',
-        duration: (i % 33 === 0) ? null : Math.random() * 100 + '',
+        duration: i % 33 === 0 ? null : Math.random() * 100 + '',
         percentCompleteNumber: randomPercent,
         priceChange,
         price,
         quantity,
         amount,
         execution: now,
-        historic: [price]
+        historic: [price],
       };
     }
     return tmpData;
@@ -279,10 +345,10 @@ const Example34: React.FC = () => {
       }
       const itemTmp = { ...dataset?.[rowNumber] };
       itemTmp.priceChange = priceChange;
-      itemTmp.price = ((itemTmp.price + priceChange) < 0) ? 0 : itemTmp.price + priceChange;
+      itemTmp.price = itemTmp.price + priceChange < 0 ? 0 : itemTmp.price + priceChange;
       itemTmp.quantity = itemTmp.price < 5 ? randomHighQty : randomLowQty;
       itemTmp.amount = itemTmp.price * itemTmp.quantity;
-      itemTmp.trsnType = (Math.round(Math.random() * 100)) % 2 ? 'Buy' : 'Sell';
+      itemTmp.trsnType = Math.round(Math.random() * 100) % 2 ? 'Buy' : 'Sell';
       itemTmp.execution = new Date();
       itemTmp.historic?.push(itemTmp.price);
       itemTmp.historic = itemTmp.historic?.slice(-20); // keep a max of X historic values
@@ -312,7 +378,7 @@ const Example34: React.FC = () => {
   }
 
   function findColumnById(columnName: string): Column {
-    return columnDefinitionsRef.current.find(col => col.field === columnName) as Column;
+    return columnDefinitionsRef.current.find((col) => col.field === columnName) as Column;
   }
 
   function handleRefreshRateChange(elm: HTMLInputElement) {
@@ -320,7 +386,7 @@ const Example34: React.FC = () => {
     setRefreshRate(+newVal);
     refreshRateRef.current = +newVal;
 
-    const inputElmId = (elm.type === 'number') ? '#refreshRateSlider' : '#refreshRateInput';
+    const inputElmId = elm.type === 'number' ? '#refreshRateSlider' : '#refreshRateInput';
     const otherInputElm = document.querySelector<HTMLInputElement>(inputElmId);
     if (otherInputElm) {
       otherInputElm.value = newVal;
@@ -404,18 +470,27 @@ const Example34: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptions ? '' : (
+  return !gridOptions ? (
+    ''
+  ) : (
     <div>
       <h2>
         Example 34: Real-Time Trading Platform
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example34.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example34.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
         <button className="btn btn-outline-secondary btn-sm btn-icon ms-2" onClick={() => toggleDarkMode()} data-test="toggle-dark-mode">
@@ -425,9 +500,13 @@ const Example34: React.FC = () => {
       </h2>
 
       <div className="subtitle">
-        Simulate a stock trading platform with lot of price changes, it is strongly suggested to disable the <code>autoResize.autoHeight</code> grid option for this type of grid.
+        Simulate a stock trading platform with lot of price changes, it is strongly suggested to disable the{' '}
+        <code>autoResize.autoHeight</code> grid option for this type of grid.
         <ul>
-          <li>you can start/stop the simulation, you can see SlickGrid huge perf by setting: (1) lower Changes Rate, (2) increase both Changes per Cycle, and (3) lower Highlight Duration</li>
+          <li>
+            you can start/stop the simulation, you can see SlickGrid huge perf by setting: (1) lower Changes Rate, (2) increase both Changes
+            per Cycle, and (3) lower Highlight Duration
+          </li>
           <li>optionally change random numbers, between 0 and 10 symbols, per cycle (higher numbers means more changes)</li>
           <li>optionally change the simulation changes refresh rate in ms (lower number means more changes).</li>
           <li>you can Group by 1 of these columns: Currency, Market or Type</li>
@@ -438,11 +517,25 @@ const Example34: React.FC = () => {
         <div className="row mb-4 simulation-form">
           <div className="col-sm-12 d-flex align-items-center">
             <div className="range">
-              <label htmlFor="refreshRateRange" className="form-label me-1">Changes Rate(ms)</label>
-              <input type="range" className="form-range" id="refreshRateRange" min="0" max="250" value={refreshRate}
-                onInput={($event) => handleRefreshRateChange($event.target as HTMLInputElement)} />
+              <label htmlFor="refreshRateRange" className="form-label me-1">
+                Changes Rate(ms)
+              </label>
+              <input
+                type="range"
+                className="form-range"
+                id="refreshRateRange"
+                min="0"
+                max="250"
+                value={refreshRate}
+                onInput={($event) => handleRefreshRateChange($event.target as HTMLInputElement)}
+              />
               <span className="refresh-rate">
-                <input type="number" id="refreshRateInput" value={refreshRate} onInput={($event) => handleRefreshRateChange($event.target as HTMLInputElement)} />
+                <input
+                  type="number"
+                  id="refreshRateInput"
+                  value={refreshRate}
+                  onInput={($event) => handleRefreshRateChange($event.target as HTMLInputElement)}
+                />
               </span>
             </div>
             <span className="ms-3 me-1">
@@ -456,17 +549,35 @@ const Example34: React.FC = () => {
               </button>
             </span>
             <span className="mx-1">
-              <label htmlFor="change-per-cycle-input" className="me-1">Changes p/Cycle</label>
-              <input type="number" id="change-per-cycle-input" value={minChangePerCycle} max={maxChangePerCycle}
-                onInput={($event) => handleMinChangePerCycle(+($event.target as HTMLInputElement).value)} />
+              <label htmlFor="change-per-cycle-input" className="me-1">
+                Changes p/Cycle
+              </label>
+              <input
+                type="number"
+                id="change-per-cycle-input"
+                value={minChangePerCycle}
+                max={maxChangePerCycle}
+                onInput={($event) => handleMinChangePerCycle(+($event.target as HTMLInputElement).value)}
+              />
               &nbsp;to&nbsp;
-              <input type="number" min={minChangePerCycle} value={maxChangePerCycle}
-                onInput={($event) => handleMaxChangePerCycle(+($event.target as HTMLInputElement).value)} />
+              <input
+                type="number"
+                min={minChangePerCycle}
+                value={maxChangePerCycle}
+                onInput={($event) => handleMaxChangePerCycle(+($event.target as HTMLInputElement).value)}
+              />
             </span>
             <span className="ms-2">
-              <label htmlFor="highlight-input" className="me-1">Highlight Duration(ms)</label>
-              <input type="number" id="highlight-input" data-test="highlight-input" value={highlightDuration}
-                onInput={($event) => handleHighlightDuration(+($event.target as HTMLInputElement).value)} />
+              <label htmlFor="highlight-input" className="me-1">
+                Highlight Duration(ms)
+              </label>
+              <input
+                type="number"
+                id="highlight-input"
+                data-test="highlight-input"
+                value={highlightDuration}
+                onInput={($event) => handleHighlightDuration(+($event.target as HTMLInputElement).value)}
+              />
             </span>
             <div className="ms-auto">
               <button className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => toggleFullScreen()}>
@@ -476,15 +587,16 @@ const Example34: React.FC = () => {
           </div>
         </div>
 
-        <SlickgridReact gridId="grid34"
-          columnDefinitions={columnDefinitionsRef.current}
-          gridOptions={gridOptions}
+        <SlickgridReact
+          gridId="grid34"
+          columns={columnDefinitionsRef.current}
+          options={gridOptions}
           dataset={dataset}
-          onReactGridCreated={$event => reactGridReady($event.detail)}
+          onReactGridCreated={($event) => reactGridReady($event.detail)}
         />
       </div>
     </div>
   );
-}
+};
 
 export default Example34;

@@ -1,11 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  type Column,
-  type GridOption,
-  type SlickEventData,
-  SlickgridReact,
-  type SlickgridReactInstance
-} from 'slickgrid-react';
+import { type Column, type GridOption, type SlickEventData, SlickgridReact, type SlickgridReactInstance } from 'slickgrid-react';
 import './example7.scss';
 
 const Example7: React.FC = () => {
@@ -26,7 +20,6 @@ const Example7: React.FC = () => {
     defineGrid();
   }, []);
 
-
   function reactGrid1Ready(reactGrid: SlickgridReactInstance) {
     reactGridRef1.current = reactGrid;
   }
@@ -42,7 +35,7 @@ const Example7: React.FC = () => {
       enableHeaderMenu: false,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableFiltering: false,
       enableExcelCopyBuffer: true,
@@ -55,8 +48,8 @@ const Example7: React.FC = () => {
       gridHeight: 275,
       headerButton: {
         // you can use the "onCommand" (in Grid Options) and/or the "action" callback (in Column Definition)
-        onCommand: (_e, args) => handleOnCommand(_e, args, 1)
-      }
+        onCommand: (_e, args) => handleOnCommand(_e, args, 1),
+      },
     };
 
     // grid 2 options, same as grid 1 + extras
@@ -68,8 +61,8 @@ const Example7: React.FC = () => {
       // frozenColumn: 2,
       // frozenRow: 2,
       headerButton: {
-        onCommand: (_e, args) => handleOnCommand(_e, args, 2)
-      }
+        onCommand: (_e, args) => handleOnCommand(_e, args, 2),
+      },
     });
 
     const columnDefinitions1 = createColumnDefinitions(1);
@@ -150,10 +143,10 @@ const Example7: React.FC = () => {
                 // you can use the "action" callback and/or subscribe to the "onCallback" event, they both have the same arguments
                 // do something
                 console.log(`execute a callback action to "${args.command}" on ${args.column.name}`);
-              }
-            }
-          ]
-        }
+              },
+            },
+          ],
+        },
       });
     }
 
@@ -165,27 +158,27 @@ const Example7: React.FC = () => {
           cssClass: 'mdi mdi-message-text',
           handler: () => {
             alert('Tag');
-          }
+          },
         },
         {
           cssClass: 'mdi mdi-forum-outline',
           handler: () => {
             alert('Comment');
-          }
+          },
         },
         {
           cssClass: 'mdi mdi-information',
           handler: () => {
             alert('Info');
-          }
+          },
         },
         {
           cssClass: 'mdi mdi-help-circle',
           handler: () => {
             alert('Help');
-          }
-        }
-      ]
+          },
+        },
+      ],
     };
 
     // when floating to left, you might want to inverse the icon orders
@@ -203,9 +196,9 @@ const Example7: React.FC = () => {
           tooltip: 'This button only appears on hover.',
           handler: () => {
             alert('Help');
-          }
-        }
-      ]
+          },
+        },
+      ],
     };
 
     return columnDefinitions;
@@ -231,50 +224,69 @@ const Example7: React.FC = () => {
         Example 7: Header Button Plugin
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example7.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example7.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => setHideSubTitle(!hideSubTitle)}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => setHideSubTitle(!hideSubTitle)}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
-      {hideSubTitle ? null : <div className="subtitle">
-        This example demonstrates using the <b>SlickHeaderButtons</b> plugin to easily add buttons to colum headers.
-        These buttons can be specified directly in the column definition, and are very easy to configure and use.
-        (<a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/header-menu-header-buttons" target="_blank">Docs</a>)
-        <ul>
-          <li>Resize the 1st column to see all icon/command</li>
-          <li>Mouse hover the 2nd column to see it's icon/command</li>
-          <li>For all the other columns, click on top-right red circle icon to enable highlight of negative numbers.</li>
-          <li>Note: The "Header Button" & "Header Menu" Plugins cannot be used at the same time</li>
-          <li>Use override callback functions to change the properties of show/hide, enable/disable the menu or certain item(s) from the list</li>
-          <ol>
-            <li>These callbacks are: "itemVisibilityOverride", "itemUsabilityOverride"</li>
-            <li>for example the "Column E" does not show the header button via "itemVisibilityOverride"</li>
-            <li>for example the "Column J" header button is displayed but it not usable via "itemUsabilityOverride"</li>
-          </ol>
-        </ul>
-      </div>}
+      {hideSubTitle ? null : (
+        <div className="subtitle">
+          This example demonstrates using the <b>SlickHeaderButtons</b> plugin to easily add buttons to colum headers. These buttons can be
+          specified directly in the column definition, and are very easy to configure and use. (
+          <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/header-menu-header-buttons" target="_blank">
+            Docs
+          </a>
+          )
+          <ul>
+            <li>Resize the 1st column to see all icon/command</li>
+            <li>Mouse hover the 2nd column to see it's icon/command</li>
+            <li>For all the other columns, click on top-right red circle icon to enable highlight of negative numbers.</li>
+            <li>Note: The "Header Button" & "Header Menu" Plugins cannot be used at the same time</li>
+            <li>
+              Use override callback functions to change the properties of show/hide, enable/disable the menu or certain item(s) from the
+              list
+            </li>
+            <ol>
+              <li>These callbacks are: "itemVisibilityOverride", "itemUsabilityOverride"</li>
+              <li>for example the "Column E" does not show the header button via "itemVisibilityOverride"</li>
+              <li>for example the "Column J" header button is displayed but it not usable via "itemUsabilityOverride"</li>
+            </ol>
+          </ul>
+        </div>
+      )}
 
       <h5>Grid 1</h5>
-      <SlickgridReact gridId="grid7-1"
-        columnDefinitions={columnDefinitions1}
-        gridOptions={gridOptions1}
+      <SlickgridReact
+        gridId="grid7-1"
+        columns={columnDefinitions1}
+        options={gridOptions1}
         dataset={dataset1}
-        onReactGridCreated={$event => reactGrid1Ready($event.detail)}
+        onReactGridCreated={($event) => reactGrid1Ready($event.detail)}
       />
 
       <br />
 
-      <h5>Grid 2 - <span className="subtitle">with both Header Buttons & Menus</span></h5>
-      <SlickgridReact gridId="grid7-2"
-        columnDefinitions={columnDefinitions2}
-        gridOptions={gridOptions2}
+      <h5>
+        Grid 2 - <span className="subtitle">with both Header Buttons & Menus</span>
+      </h5>
+      <SlickgridReact
+        gridId="grid7-2"
+        columns={columnDefinitions2}
+        options={gridOptions2}
         dataset={dataset2}
-        onReactGridCreated={$event => reactGrid2Ready($event.detail)}
+        onReactGridCreated={($event) => reactGrid2Ready($event.detail)}
       />
     </div>
   );

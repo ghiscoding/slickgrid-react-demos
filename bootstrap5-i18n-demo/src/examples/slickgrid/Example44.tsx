@@ -390,12 +390,17 @@ export default function Example44() {
           <a
             style={{ fontSize: '18px' }}
             target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example44.tsx"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example44.tsx"
           >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
@@ -403,21 +408,30 @@ export default function Example44() {
       <div className="subtitle">
         <p className="italic example-details">
           This page demonstrates <code>colspan</code> & <code>rowspan</code> using DataView with item metadata. <b>Note</b>:
-          <code>colspan</code> & <code>rowspan</code> are rendered via row/cell indexes, any operations that could change these indexes (i.e.
-          Filtering/Sorting/Paging/Column Reorder) will require you to implement proper logic to recalculate these indexes (it becomes your
-          responsability). This demo does not show this because it is up to you to decide what to do when the span changes shape (i.e. you
-          default to 3 rowspan but you filter a row in the middle, how do you want to proceed?).
+          <code>colspan</code> & <code>rowspan</code> are rendered via row/cell indexes, any operations that could change these indexes
+          (i.e. Filtering/Sorting/Paging/Column Reorder) will require you to implement proper logic to recalculate these indexes (it becomes
+          your responsability). This demo does not show this because it is up to you to decide what to do when the span changes shape (i.e.
+          you default to 3 rowspan but you filter a row in the middle, how do you want to proceed?).
         </p>
       </div>
 
       <section className="row mb-2">
         <div className="d-flex">
-          <button className="ms-1 btn btn-outline-secondary btn-sm" data-test="add-500-rows-btn" onClick={() => loadData(500)}>500 rows</button>
-          <button className="ms-1 btn btn-outline-secondary btn-sm" data-test="add-5k-rows-btn" onClick={() => loadData(5000)}>5k rows</button>
-          <button className="ms-1 btn btn-outline-secondary btn-sm" data-test="add-50k-rows-btn" onClick={() => loadData(50000)}>50k rows</button>
-          <button className="mx-1 btn btn-outline-secondary btn-sm" data-test="add-50k-rows-btn" onClick={() => loadData(500000)}>500k rows</button>
+          <button className="ms-1 btn btn-outline-secondary btn-sm" data-test="add-500-rows-btn" onClick={() => loadData(500)}>
+            500 rows
+          </button>
+          <button className="ms-1 btn btn-outline-secondary btn-sm" data-test="add-5k-rows-btn" onClick={() => loadData(5000)}>
+            5k rows
+          </button>
+          <button className="ms-1 btn btn-outline-secondary btn-sm" data-test="add-50k-rows-btn" onClick={() => loadData(50000)}>
+            50k rows
+          </button>
+          <button className="mx-1 btn btn-outline-secondary btn-sm" data-test="add-50k-rows-btn" onClick={() => loadData(500000)}>
+            500k rows
+          </button>
           <div className="mx-2">
-            <label>data length: </label><span id="dataLn">{dataLn}</span>
+            <label>data length: </label>
+            <span id="dataLn">{dataLn}</span>
           </div>
           <button
             id="toggleSpans"
@@ -428,7 +442,12 @@ export default function Example44() {
             <span className="mdi mdi-flip-vertical"></span>
             <span>Toggle blue cell colspan &amp; rowspan</span>
           </button>
-          <button id="scrollTo" className="ms-1 btn btn-outline-secondary btn-sm btn-icon" onClick={() => handleScrollTo()} data-test="scrollToBtn">
+          <button
+            id="scrollTo"
+            className="ms-1 btn btn-outline-secondary btn-sm btn-icon"
+            onClick={() => handleScrollTo()}
+            data-test="scrollToBtn"
+          >
             <span className="mdi mdi-arrow-down"></span>
             <span>Scroll To Row</span>
           </button>
@@ -442,19 +461,24 @@ export default function Example44() {
               placeholder="search value"
               onInput={($event) => onScrollToRow(($event.target as HTMLInputElement).value)}
             />
-            <button className="btn btn-sm btn-outline-secondary d-flex align-items-center" data-test="clearScrollTo" onClick={() => clearScrollTo()}>
+            <button
+              className="btn btn-sm btn-outline-secondary d-flex align-items-center"
+              data-test="clearScrollTo"
+              onClick={() => clearScrollTo()}
+            >
               <span className="icon mdi mdi-close-thick"></span>
             </button>
           </div>
         </div>
-      </section >
+      </section>
 
-      <SlickgridReact gridId="grid44"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid44"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
       />
-    </div >
+    </div>
   );
 }

@@ -5,7 +5,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Aggregators,
   type Column,
-  FieldType,
   Filters,
   type GridOption,
   type Grouping,
@@ -22,7 +21,10 @@ import './example38.scss';
 const CARET_HTML_ESCAPED = '%5E';
 const PERCENT_HTML_ESCAPED = '%25';
 
-interface Status { text: string, class: string }
+interface Status {
+  text: string;
+  class: string;
+}
 
 const Example38: React.FC = () => {
   const [columnDefinitions, setColumnDefinitions] = useState<Column[]>([]);
@@ -35,7 +37,7 @@ const Example38: React.FC = () => {
   const [isPageErrorTest, setIsPageErrorTest] = useState(false);
   const [hideSubTitle, setHideSubTitle] = useState(false);
 
-  const gridOptionsRef = useRef<GridOption>();
+  const gridOptionsRef = useRef<GridOption>(null);
   const metricsRef = useRef({} as Metrics);
   const reactGridRef = useRef<SlickgridReactInstance | null>(null);
 
@@ -50,35 +52,49 @@ const Example38: React.FC = () => {
   function defineGrid() {
     const columnDefinitions: Column[] = [
       {
-        id: 'name', name: 'Name', field: 'name', sortable: true,
-        type: FieldType.string,
+        id: 'name',
+        name: 'Name',
+        field: 'name',
+        sortable: true,
         filterable: true,
-        filter: { model: Filters.compoundInput }
+        filter: { model: Filters.compoundInput },
       },
       {
-        id: 'gender', name: 'Gender', field: 'gender', filterable: true, sortable: true,
+        id: 'gender',
+        name: 'Gender',
+        field: 'gender',
+        filterable: true,
+        sortable: true,
         filter: {
           model: Filters.singleSelect,
-          collection: [{ value: '', label: '' }, { value: 'male', label: 'male' }, { value: 'female', label: 'female' }]
-        }
+          collection: [
+            { value: '', label: '' },
+            { value: 'male', label: 'male' },
+            { value: 'female', label: 'female' },
+          ],
+        },
       },
       { id: 'company', name: 'Company', field: 'company', filterable: true, sortable: true },
       {
-        id: 'category_name', name: 'Category', field: 'category/name', filterable: true, sortable: true,
-        formatter: (_row, _cell, _val, _colDef, dataContext) => dataContext['category']?.['name'] || ''
-      }
+        id: 'category_name',
+        name: 'Category',
+        field: 'category/name',
+        filterable: true,
+        sortable: true,
+        formatter: (_row, _cell, _val, _colDef, dataContext) => dataContext['category']?.['name'] || '',
+      },
     ];
 
     const gridOptions: GridOption = {
       enableAutoResize: true,
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       checkboxSelector: {
         // you can toggle these 2 properties to show the "select all" checkbox in different location
         hideInFilterHeaderRow: false,
-        hideInColumnTitleRow: true
+        hideInColumnTitleRow: true,
       },
       enableCellNavigation: true,
       enableFiltering: true,
@@ -95,7 +111,7 @@ const Example38: React.FC = () => {
           // enable infinite via Boolean OR via { fetchSize: number }
           infiniteScroll: { fetchSize: 30 }, // or use true, in that case it would use default size of 25
           enableCount: true,
-          version: 4
+          version: 4,
         },
         onError: (error: Error) => {
           setErrorStatus(error.message);
@@ -110,8 +126,8 @@ const Example38: React.FC = () => {
           metricsRef.current = response.metrics;
           getCustomerCallback(response);
           displaySpinner(false);
-        }
-      } as OdataServiceApi
+        },
+      } as OdataServiceApi,
     };
 
     setColumnDefinitions(columnDefinitions);
@@ -124,10 +140,7 @@ const Example38: React.FC = () => {
     if (isError) {
       setStatus({ text: 'ERROR!!!', class: 'alert alert-danger' });
     } else {
-      setStatus(isProcessing
-        ? { text: 'loading', class: 'alert alert-warning' }
-        : { text: 'finished', class: 'alert alert-success' }
-      );
+      setStatus(isProcessing ? { text: 'loading', class: 'alert alert-warning' } : { text: 'finished', class: 'alert alert-success' });
     }
   }
 
@@ -171,7 +184,7 @@ const Example38: React.FC = () => {
    */
   function getCustomerDataApiMock(query: string): Promise<any> {
     // the mock is returning a Promise, just like a WebAPI typically does
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const queryParams = query.toLowerCase().split('&');
       let top: number;
       let skip = 0;
@@ -186,13 +199,13 @@ const Example38: React.FC = () => {
 
       for (const param of queryParams) {
         if (param.includes('$top=')) {
-          top = +(param.substring('$top='.length));
+          top = +param.substring('$top='.length);
           if (top === 50000) {
             throw new Error('Server timed out retrieving 50,000 rows');
           }
         }
         if (param.includes('$skip=')) {
-          skip = +(param.substring('$skip='.length));
+          skip = +param.substring('$skip='.length);
         }
         if (param.includes('$orderby=')) {
           orderBy = param.substring('$orderby='.length);
@@ -253,7 +266,7 @@ const Example38: React.FC = () => {
       }
 
       /// read the JSON and create a fresh copy of the data that we are free to modify
-      let data = Data as unknown as { name: string; gender: string; company: string; id: string, category: { id: string; name: string; }; }[];
+      let data = Data as unknown as { name: string; gender: string; company: string; id: string; category: { id: string; name: string } }[];
       data = JSON.parse(JSON.stringify(data));
 
       // Sort the data
@@ -289,7 +302,7 @@ const Example38: React.FC = () => {
       if (columnFilters) {
         for (const columnId in columnFilters) {
           if (columnFilters.hasOwnProperty(columnId)) {
-            filteredData = filteredData.filter(column => {
+            filteredData = filteredData.filter((column) => {
               const filterType = (columnFilters as any)[columnId].type;
               const searchTerm = (columnFilters as any)[columnId].term;
               let colId = columnId;
@@ -308,17 +321,28 @@ const Example38: React.FC = () => {
                 const [term1, term2] = Array.isArray(searchTerm) ? searchTerm : [searchTerm];
 
                 switch (filterType) {
-                  case 'eq': return filterTerm.toLowerCase() === term1;
-                  case 'ne': return filterTerm.toLowerCase() !== term1;
-                  case 'le': return filterTerm.toLowerCase() <= term1;
-                  case 'lt': return filterTerm.toLowerCase() < term1;
-                  case 'gt': return filterTerm.toLowerCase() > term1;
-                  case 'ge': return filterTerm.toLowerCase() >= term1;
-                  case 'ends': return filterTerm.toLowerCase().endsWith(term1);
-                  case 'starts': return filterTerm.toLowerCase().startsWith(term1);
-                  case 'starts+ends': return filterTerm.toLowerCase().startsWith(term1) && filterTerm.toLowerCase().endsWith(term2);
-                  case 'substring': return filterTerm.toLowerCase().includes(term1);
-                  case 'matchespattern': return new RegExp((term1 as string).replace(new RegExp(PERCENT_HTML_ESCAPED, 'g'), '.*'), 'i').test(filterTerm);
+                  case 'eq':
+                    return filterTerm.toLowerCase() === term1;
+                  case 'ne':
+                    return filterTerm.toLowerCase() !== term1;
+                  case 'le':
+                    return filterTerm.toLowerCase() <= term1;
+                  case 'lt':
+                    return filterTerm.toLowerCase() < term1;
+                  case 'gt':
+                    return filterTerm.toLowerCase() > term1;
+                  case 'ge':
+                    return filterTerm.toLowerCase() >= term1;
+                  case 'ends':
+                    return filterTerm.toLowerCase().endsWith(term1);
+                  case 'starts':
+                    return filterTerm.toLowerCase().startsWith(term1);
+                  case 'starts+ends':
+                    return filterTerm.toLowerCase().startsWith(term1) && filterTerm.toLowerCase().endsWith(term2);
+                  case 'substring':
+                    return filterTerm.toLowerCase().includes(term1);
+                  case 'matchespattern':
+                    return new RegExp((term1 as string).replace(new RegExp(PERCENT_HTML_ESCAPED, 'g'), '.*'), 'i').test(filterTerm);
                 }
               }
             });
@@ -349,11 +373,9 @@ const Example38: React.FC = () => {
       getter: 'gender',
       formatter: (g) => `Gender: ${g.value} <span class="text-green">(${g.count} items)</span>`,
       comparer: (a, b) => SortComparers.string(a.value, b.value),
-      aggregators: [
-        new Aggregators.Sum('gemder')
-      ],
+      aggregators: [new Aggregators.Sum('gemder')],
       aggregateCollapsed: false,
-      lazyTotalsCalculation: true
+      lazyTotalsCalculation: true,
     } as Grouping);
 
     // you need to manually add the sort icon(s) in UI
@@ -371,24 +393,17 @@ const Example38: React.FC = () => {
     const itemCount = reactGridRef.current?.dataView?.getFilteredItemCount() || 0;
     if (args?.current >= 0) {
       metricsRef.current = { ...metricsRef.current, itemCount };
-      setTagDataClass(itemCount === metricsRef.current.totalItemCount
-        ? 'fully-loaded'
-        : 'partial-load'
-      );
+      setTagDataClass(itemCount === metricsRef.current.totalItemCount ? 'fully-loaded' : 'partial-load');
     }
   }
 
   function setFiltersDynamically() {
     // we can Set Filters Dynamically (or different filters) afterward through the FilterService
-    reactGridRef.current?.filterService.updateFilters([
-      { columnId: 'gender', searchTerms: ['female'] },
-    ]);
+    reactGridRef.current?.filterService.updateFilters([{ columnId: 'gender', searchTerms: ['female'] }]);
   }
 
   function setSortingDynamically() {
-    reactGridRef.current?.sortService.updateSorting([
-      { columnId: 'name', direction: 'DESC' },
-    ]);
+    reactGridRef.current?.sortService.updateSorting([{ columnId: 'name', direction: 'DESC' }]);
   }
 
   function toggleSubTitle() {
@@ -399,19 +414,28 @@ const Example38: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptionsRef.current ? '' : (
+  return !gridOptionsRef.current ? (
+    ''
+  ) : (
     <div className="demo38">
       <div id="demo-container" className="container-fluid">
         <h2>
           Example 38: OData (v4) Backend Service with Infinite Scroll
           <span className="float-end font18">
             see&nbsp;
-            <a target="_blank"
-              href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example38.tsx">
+            <a
+              target="_blank"
+              href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example38.tsx"
+            >
               <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
-          <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+          <button
+            className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+            type="button"
+            data-test="toggle-subtitle"
+            onClick={() => toggleSubTitle()}
+          >
             <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
           </button>
         </h2>
@@ -419,19 +443,20 @@ const Example38: React.FC = () => {
         <div className="subtitle">
           <ul>
             <li>
-              Infinite scrolling allows the grid to lazy-load rows from the server when reaching the scroll bottom (end) position.
-              In its simplest form, the more the user scrolls down, the more rows get loaded.
-              If we reached the end of the dataset and there is no more data to load, then we'll assume to have the entire dataset loaded in memory.
-              This contrast with the regular Pagination approach which will only hold a single page data at a time.
+              Infinite scrolling allows the grid to lazy-load rows from the server when reaching the scroll bottom (end) position. In its
+              simplest form, the more the user scrolls down, the more rows get loaded. If we reached the end of the dataset and there is no
+              more data to load, then we'll assume to have the entire dataset loaded in memory. This contrast with the regular Pagination
+              approach which will only hold a single page data at a time.
             </li>
             <li>NOTES</li>
             <ol>
               <li>
-                <code>presets.pagination</code> is not supported with Infinite Scroll and will revert to the first page,
-                simply because since we keep appending data, we always have to start from index zero (no offset).
+                <code>presets.pagination</code> is not supported with Infinite Scroll and will revert to the first page, simply because
+                since we keep appending data, we always have to start from index zero (no offset).
               </li>
               <li>
-                Pagination is not shown BUT in fact, that is what is being used behind the scene whenever reaching the scroll end (fetching next batch).
+                Pagination is not shown BUT in fact, that is what is being used behind the scene whenever reaching the scroll end (fetching
+                next batch).
               </li>
               <li>
                 Also note that whenever the user changes the Sort(s)/Filter(s) it will always reset and go back to zero index (first page).
@@ -441,18 +466,24 @@ const Example38: React.FC = () => {
         </div>
 
         <div className="col-sm-3">
-          {errorStatus && <div className="alert alert-danger" data-test="error-status">
-            <em><strong>Backend Error:</strong> <span>{errorStatus}</span></em>
-          </div>}
+          {errorStatus && (
+            <div className="alert alert-danger" data-test="error-status">
+              <em>
+                <strong>Backend Error:</strong> <span>{errorStatus}</span>
+              </em>
+            </div>
+          )}
         </div>
 
         <div className="row">
           <div className="col-sm-2">
             <div className={status.class} role="alert" data-test="status">
               <strong>Status: </strong> {status.text}
-              {processing && <span>
-                <i className="mdi mdi-sync mdi-spin"></i>
-              </span>}
+              {processing && (
+                <span>
+                  <i className="mdi mdi-sync mdi-spin"></i>
+                </span>
+              )}
             </div>
           </div>
           <div className="col-sm-10">
@@ -464,44 +495,66 @@ const Example38: React.FC = () => {
 
         <div className="row">
           <div className="col-sm-12">
-            <button className="btn btn-outline-secondary btn-sm btn-icon me-1" data-test="clear-filters-sorting"
-              onClick={() => clearAllFiltersAndSorts()} title="Clear all Filters & Sorts">
+            <button
+              className="btn btn-outline-secondary btn-sm btn-icon me-1"
+              data-test="clear-filters-sorting"
+              onClick={() => clearAllFiltersAndSorts()}
+              title="Clear all Filters & Sorts"
+            >
               <i className="mdi mdi-filter-remove-outline"></i>
               Clear all Filter & Sorts
             </button>
-            <button className="btn btn-outline-secondary btn-sm mx-1 btn-icon" data-test="set-dynamic-filter" onClick={() => setFiltersDynamically()}>
+            <button
+              className="btn btn-outline-secondary btn-sm mx-1 btn-icon"
+              data-test="set-dynamic-filter"
+              onClick={() => setFiltersDynamically()}
+            >
               Set Filters Dynamically
             </button>
-            <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-sorting" onClick={() => setSortingDynamically()}>
+            <button
+              className="btn btn-outline-secondary btn-sm btn-icon"
+              data-test="set-dynamic-sorting"
+              onClick={() => setSortingDynamically()}
+            >
               Set Sorting Dynamically
             </button>
             <button className="btn btn-outline-secondary btn-sm mx-1" data-test="group-by-gender" onClick={() => groupByGender()}>
               Group by Gender
             </button>
 
-            {metricsRef.current && <div><><b className="me-1">Metrics:</b>
-              {metricsRef.current?.endTime ? dateFormatter(metricsRef.current.endTime, 'DD MMM, h:mm:ss a') : ''} —
-              <span className="mx-1" data-test="itemCount">{metricsRef.current.itemCount}</span>
-              of
-              <span className="mx-1" data-test="totalItemCount">{metricsRef.current.totalItemCount}</span> items
-              <span className={'badge rounded-pill text-bg-primary mx-1 ' + tagDataClass} data-test="data-loaded-tag">
-                All Data Loaded!!!
-              </span>
-            </>
-            </div>}
+            {metricsRef.current && (
+              <div>
+                <>
+                  <b className="me-1">Metrics:</b>
+                  {metricsRef.current?.endTime ? dateFormatter(metricsRef.current.endTime, 'DD MMM, h:mm:ss a') : ''} —
+                  <span className="mx-1" data-test="itemCount">
+                    {metricsRef.current.itemCount}
+                  </span>
+                  of
+                  <span className="mx-1" data-test="totalItemCount">
+                    {metricsRef.current.totalItemCount}
+                  </span>{' '}
+                  items
+                  <span className={'badge rounded-pill text-bg-primary mx-1 ' + tagDataClass} data-test="data-loaded-tag">
+                    All Data Loaded!!!
+                  </span>
+                </>
+              </div>
+            )}
           </div>
-        </div >
+        </div>
 
-        <SlickgridReact gridId="grid38"
-          columnDefinitions={columnDefinitions}
-          gridOptions={gridOptionsRef.current}
+        <SlickgridReact
+          gridId="grid38"
+          columns={columnDefinitions}
+          options={gridOptionsRef.current}
           dataset={dataset}
-          onReactGridCreated={$event => reactGridReady($event.detail)}
-          onRowCountChanged={$event => refreshMetrics($event.detail.args)}
+          onReactGridCreated={($event) => reactGridReady($event.detail)}
+          onRowCountChanged={($event) => refreshMetrics($event.detail.args)}
         />
       </div>
-    </div >
+    </div>
   );
-}
+};
 
 export default Example38;

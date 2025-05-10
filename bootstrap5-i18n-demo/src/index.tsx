@@ -3,8 +3,9 @@ import i18n from 'i18next';
 import { createRoot } from 'react-dom/client';
 import { initReactI18next } from 'react-i18next';
 import { HashRouter } from 'react-router-dom';
+import { I18nextProvider } from 'slickgrid-react';
 
-import App from './examples/slickgrid/App';
+import App from './examples/slickgrid/App.js';
 import localeEn from './assets/locales/en/translation.json';
 import localeFr from './assets/locales/fr/translation.json';
 import './styles.scss';
@@ -26,15 +27,15 @@ i18n
     fallbackLng: 'en',
     debug: false,
     interpolation: {
-      escapeValue: false // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
-    }
+      escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+    },
   });
 
-const mainContainer = document.getElementById('main') as HTMLElement;
-const root = createRoot(mainContainer);
+const root = createRoot(document.getElementById('main')!);
 root.render(
-  // @ts-ignore
-  <HashRouter>
-    <App />
-  </HashRouter>
+  <I18nextProvider value={i18n}>
+    <HashRouter>
+      <App />
+    </HashRouter>
+  </I18nextProvider>
 );

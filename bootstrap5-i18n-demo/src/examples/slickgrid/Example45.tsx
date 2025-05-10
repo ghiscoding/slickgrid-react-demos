@@ -10,8 +10,8 @@ import {
   SlickRowDetailView,
 } from 'slickgrid-react';
 
-import { Example45Preload } from './Example45-preload';
-import Example45DetailView, { type Distributor, type OrderData } from './Example45-detail-view';
+import { Example45Preload } from './Example45-preload.js';
+import Example45DetailView, { type Distributor, type OrderData } from './Example45-detail-view.js';
 
 const FAKE_SERVER_DELAY = 250;
 const NB_ITEMS = 995;
@@ -157,10 +157,11 @@ const Example45: React.FC = () => {
       autoResize: {
         container: '#demo-container',
         autoHeight: isUsingAutoHeightRef.current, // works with/without autoHeight
-        rightPadding: 10
+        rightPadding: 10,
       },
       enableFiltering: true,
       enableRowDetailView: true,
+      rowTopOffsetRenderType: 'top', // RowDetail and/or RowSpan don't render well with "transform", you should use "top"
       rowHeight: 33,
       darkMode,
       preRegisterExternalExtensions: (pubSubService) => {
@@ -195,7 +196,7 @@ const Example45: React.FC = () => {
     }
 
     return mockDataset;
-  };
+  }
 
   function changeDetailViewRowCount() {
     const options = rowDetailInstance().getOptions();
@@ -203,7 +204,7 @@ const Example45: React.FC = () => {
       options.panelRows = detailViewRowCount;
       rowDetailInstance().setOptions(options);
     }
-  };
+  }
 
   function changeUsingInnerGridStatePresets() {
     const newIsUsingInnerGridStatePresets = !isUsingInnerGridStatePresets;
@@ -217,7 +218,7 @@ const Example45: React.FC = () => {
     setIsUsingAutoHeight(newIsUsingAutoHeight);
     reactGridRef.current?.slickGrid?.setOptions({ autoResize: { ...gridOptions?.autoResize, autoHeight: newIsUsingAutoHeight } });
     reactGridRef.current?.resizerService.resizeGrid();
-    console.log('auto-height', reactGridRef.current?.slickGrid.getOptions())
+    console.log('auto-height', reactGridRef.current?.slickGrid.getOptions());
     return true;
   }
 
@@ -272,11 +273,19 @@ const Example45: React.FC = () => {
           Example 45: Row Detail with inner Grid
           <span className="float-end font18">
             see&nbsp;
-            <a target="_blank" href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example45.tsx">
+            <a
+              target="_blank"
+              href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example45.tsx"
+            >
               <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
-          <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+          <button
+            className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+            type="button"
+            data-test="toggle-subtitle"
+            onClick={() => toggleSubTitle()}
+          >
             <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
           </button>
           <button className="btn btn-outline-secondary btn-sm btn-icon ms-3" onClick={toggleDarkMode} data-test="toggle-dark-mode">
@@ -286,7 +295,14 @@ const Example45: React.FC = () => {
         </h2>
 
         <div className="subtitle">
-          Add functionality to show extra information with a Row Detail View, (<a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/row-detail" target="_blank">Wiki docs</a>), we'll use an inner grid inside our Row Detail Component. Note that because SlickGrid uses Virtual Scroll, the rows and row details are often be re-rendered (when row is out of viewport range) and this means unmounting Row Detail Component which indirectly mean that all component states (dynamic elements, forms, ...) will be disposed as well, however you can use Grid State/Presets to reapply previous state whenever the row detail gets re-rendered when back to viewport.
+          Add functionality to show extra information with a Row Detail View, (
+          <a href="https://ghiscoding.gitbook.io/slickgrid-react/grid-functionalities/row-detail" target="_blank">
+            Wiki docs
+          </a>
+          ), we'll use an inner grid inside our Row Detail Component. Note that because SlickGrid uses Virtual Scroll, the rows and row
+          details are often be re-rendered (when row is out of viewport range) and this means unmounting Row Detail Component which
+          indirectly mean that all component states (dynamic elements, forms, ...) will be disposed as well, however you can use Grid
+          State/Presets to reapply previous state whenever the row detail gets re-rendered when back to viewport.
         </div>
 
         <div className="row">
@@ -300,14 +316,43 @@ const Example45: React.FC = () => {
 
             <span className="d-inline-flex gap-4px">
               <label htmlFor="detailViewRowCount">Detail View Rows Shown: </label>
-              <input id="detailViewRowCount" type="number" defaultValue={detailViewRowCount} data-test="detail-view-row-count" style={{ height: '26px', width: '40px' }} onInput={($event) => detailViewRowCountChanged(($event.target as HTMLInputElement).value)} />
-              <button className="btn btn-outline-secondary btn-xs btn-icon" style={{ height: '26px' }} onClick={changeDetailViewRowCount} data-test="set-count-btn">
+              <input
+                id="detailViewRowCount"
+                type="number"
+                defaultValue={detailViewRowCount}
+                data-test="detail-view-row-count"
+                style={{ height: '26px', width: '40px' }}
+                onInput={($event) => detailViewRowCountChanged(($event.target as HTMLInputElement).value)}
+              />
+              <button
+                className="btn btn-outline-secondary btn-xs btn-icon"
+                style={{ height: '26px' }}
+                onClick={changeDetailViewRowCount}
+                data-test="set-count-btn"
+              >
                 Set
               </button>
-              <label htmlFor="serverdelay" className="ms-2">Server Delay: </label>
-              <input id="serverdelay" type="number" defaultValue={serverWaitDelay} data-test="server-delay" style={{ width: '55px' }} onInput={serverDelayChanged} title="input a fake timer delay to simulate slow server response" />
+              <label htmlFor="serverdelay" className="ms-2">
+                Server Delay:{' '}
+              </label>
+              <input
+                id="serverdelay"
+                type="number"
+                defaultValue={serverWaitDelay}
+                data-test="server-delay"
+                style={{ width: '55px' }}
+                onInput={serverDelayChanged}
+                title="input a fake timer delay to simulate slow server response"
+              />
               <label className="checkbox-inline control-label ms-2" htmlFor="useInnerGridStatePresets">
-                <input type="checkbox" id="useInnerGridStatePresets" data-test="use-inner-grid-state-presets" className="me-1" checked={isUsingInnerGridStatePresets} onChange={changeUsingInnerGridStatePresets} />
+                <input
+                  type="checkbox"
+                  id="useInnerGridStatePresets"
+                  data-test="use-inner-grid-state-presets"
+                  className="me-1"
+                  checked={isUsingInnerGridStatePresets}
+                  onChange={changeUsingInnerGridStatePresets}
+                />
                 <span title="should we use Grid State/Presets to keep the inner grid state whenever Row Details are out and back to viewport and re-rendered">
                   Use Inner Grid State/Presets
                 </span>
@@ -319,10 +364,9 @@ const Example45: React.FC = () => {
                   data-test="use-auto-height"
                   className="me-1"
                   checked={isUsingAutoHeight}
-                  onChange={() => changeUsingResizerAutoHeight()} />
-                <span
-                  title="should we use Grid State/Presets to keep the inner grid state whenever Row Details are out and back to viewport and re-rendered"
-                >
+                  onChange={() => changeUsingResizerAutoHeight()}
+                />
+                <span title="should we use Grid State/Presets to keep the inner grid state whenever Row Details are out and back to viewport and re-rendered">
                   Use <code>autoResize.autoHeight</code>
                 </span>
               </label>
@@ -332,7 +376,13 @@ const Example45: React.FC = () => {
 
         <hr />
 
-        <SlickgridReact gridId="grid45" columnDefinitions={columnDefinitions} gridOptions={gridOptions} dataset={dataset} onReactGridCreated={$event => (reactGridRef.current = $event.detail)} />
+        <SlickgridReact
+          gridId="grid45"
+          columns={columnDefinitions}
+          options={gridOptions}
+          dataset={dataset}
+          onReactGridCreated={($event) => (reactGridRef.current = $event.detail)}
+        />
       </div>
     </div>
   );

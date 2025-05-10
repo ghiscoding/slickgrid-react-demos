@@ -1,7 +1,6 @@
 import {
   type Column,
   Editors,
-  FieldType,
   type GridOption,
   type OnCellChangeEventArgs,
   SlickgridReact,
@@ -43,9 +42,9 @@ const Example37: React.FC = () => {
         id: i,
         name: String.fromCharCode('A'.charCodeAt(0) + i),
         field: String(i),
-        type: FieldType.number,
+        type: 'number',
         width: 58,
-        editor: { model: Editors.integer }
+        editor: { model: Editors.integer },
       });
     }
 
@@ -119,7 +118,7 @@ const Example37: React.FC = () => {
     let total = 0;
     let i = dataset!.length || 0;
     while (i--) {
-      total += (parseInt(dataset![i][columnId], 10) || 0);
+      total += parseInt(dataset![i][columnId], 10) || 0;
     }
     const columnElement = reactGridRef.current?.slickGrid?.getFooterRowColumn(columnId);
     if (columnElement) {
@@ -135,7 +134,9 @@ const Example37: React.FC = () => {
     reactGridRef.current?.resizerService.resizeGrid(0);
   }
 
-  return !gridOptions ? '' : (
+  return !gridOptions ? (
+    ''
+  ) : (
     <div id="demo-container" className="container-fluid">
       <h2>
         Example 37: Footer Totals Row
@@ -145,30 +146,36 @@ const Example37: React.FC = () => {
         </button>
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example37.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example37.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => toggleSubTitle()}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => toggleSubTitle()}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
 
-      <div className="subtitle">
-        Display a totals row at the end of the grid.
-      </div>
+      <div className="subtitle">Display a totals row at the end of the grid.</div>
 
-      <SlickgridReact gridId="grid37"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid37"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
-        onReactGridCreated={$event => reactGridReady($event.detail)}
-        onCellChange={$event => handleOnCellChange($event.detail.eventData, $event.detail.args)}
+        onReactGridCreated={($event) => reactGridReady($event.detail)}
+        onCellChange={($event) => handleOnCellChange($event.detail.eventData, $event.detail.args)}
         onColumnsReordered={() => handleOnColumnsReordered()}
       />
     </div>
   );
-}
+};
 
 export default Example37;

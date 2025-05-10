@@ -10,7 +10,9 @@ const Footer = () => {
   return (
     <div>
       <h5>Footer Slot</h5>
-      <button data-test="footer-btn" onClick={() => buttonClick()}>I'm a button in Slickgrid-React footer (click me)</button>
+      <button data-test="footer-btn" onClick={() => buttonClick()}>
+        I'm a button in Slickgrid-React footer (click me)
+      </button>
       {state.clickedTimes > 0 && <div>You've clicked me {state.clickedTimes} time(s)</div>}
     </div>
   );
@@ -34,7 +36,7 @@ const Example29: React.FC = () => {
       { id: '%', name: '% Complete', field: 'percentComplete', sortable: true, minWidth: 100 },
       { id: 'start', name: 'Start', field: 'start', formatter: Formatters.dateIso },
       { id: 'finish', name: 'Finish', field: 'finish', formatter: Formatters.dateIso },
-      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', sortable: true, minWidth: 100 }
+      { id: 'effort-driven', name: 'Effort Driven', field: 'effortDriven', sortable: true, minWidth: 100 },
     ];
     const gridOptions = {
       enableAutoResize: false,
@@ -53,7 +55,7 @@ const Example29: React.FC = () => {
     for (let i = 0; i < count; i++) {
       const randomYear = 2000 + Math.floor(Math.random() * 10);
       const randomMonth = Math.floor(Math.random() * 11);
-      const randomDay = Math.floor((Math.random() * 29));
+      const randomDay = Math.floor(Math.random() * 29);
       const randomPercent = Math.round(Math.random() * 100);
 
       mockDataset[i] = {
@@ -63,13 +65,12 @@ const Example29: React.FC = () => {
         percentComplete: randomPercent,
         start: new Date(randomYear, randomMonth + 1, randomDay),
         finish: new Date(randomYear + 1, randomMonth + 1, randomDay),
-        effortDriven: (i % 5 === 0)
+        effortDriven: i % 5 === 0,
       };
     }
 
     return mockDataset;
   }
-
 
   return !gridOptions ? null : (
     <div id="demo-container" className="container-fluid">
@@ -77,30 +78,36 @@ const Example29: React.FC = () => {
         Example 29: Grid with Header and Footer slot
         <span className="float-end font18">
           see&nbsp;
-          <a target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react/blob/master/src/examples/slickgrid/Example29.tsx">
+          <a
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example29.tsx"
+          >
             <span className="mdi mdi-link-variant"></span> code
           </a>
         </span>
-        <button className="ms-2 btn btn-outline-secondary btn-sm btn-icon" type="button" data-test="toggle-subtitle" onClick={() => setHideSubTitle(!hideSubTitle)}>
+        <button
+          className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
+          type="button"
+          data-test="toggle-subtitle"
+          onClick={() => setHideSubTitle(!hideSubTitle)}
+        >
           <span className="mdi mdi-information-outline" title="Toggle example sub-title details"></span>
         </button>
       </h2>
-      {hideSubTitle ? null : <div className="subtitle">
-        Simple Grids with a custom header and footer via named slots
-      </div>}
+      {hideSubTitle ? null : <div className="subtitle">Simple Grids with a custom header and footer via named slots</div>}
 
       <hr />
 
-      <SlickgridReact gridId="grid"
-        columnDefinitions={columnDefinitions}
-        gridOptions={gridOptions}
+      <SlickgridReact
+        gridId="grid"
+        columns={columnDefinitions}
+        options={gridOptions}
         dataset={dataset}
         header={<Header />}
         footer={<Footer />}
       />
     </div>
   );
-}
+};
 
 export default Example29;
