@@ -1,5 +1,5 @@
 # Slickgrid-React Demos
-## Multiple Demos of the [Slickgrid-React](https://github.com/ghiscoding/slickgrid-react) library
+## Multiple Demos of the [Slickgrid-React](https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/slickgrid-react) library
 
 ### Installation
 Git clone the demo and npm install it, then run and enjoy fully working demo.
