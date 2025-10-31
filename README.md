@@ -1,4 +1,4 @@
-# Slickgrid-React Demos
+# <a href="https://react.dev/" rel="nofollow"><img alt="React" src="https://ghiscoding.github.io/slickgrid-react-demos/assets/react-logo-DuD1bc7a.png" width="55"></a> Slickgrid-React Demos
 ## Multiple Demos of the [Slickgrid-React](https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/slickgrid-react) library
 
 ### Installation
