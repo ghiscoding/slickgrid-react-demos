@@ -6,14 +6,11 @@ $button-border-color: #ababab;
 $button-style-bg-color: #fff;
 $primary-color: #0e6cfa;
 
-@use 'bootstrap/scss/bootstrap' with (
-  $primary: $primary-color
-);
+@use 'bootstrap/scss/bootstrap' with ($primary: $primary-color);
 
 // -- 1. load with modern `@use`
 // @use '@slickgrid-universal/common/dist/styles/sass/slickgrid-theme-bootstrap.scss';
-@use '@slickgrid-universal/common/dist/styles/sass/slickgrid-theme-bootstrap.scss' with (
-  $slick-primary-color: $primary-color // $slick-input-focus-box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25),
+@use '@slickgrid-universal/common/dist/styles/sass/slickgrid-theme-bootstrap.scss' with ($slick-primary-color: $primary-color // $slick-input-focus-box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25),
 );
 
 // -- 2. load with legacy `@import`
@@ -57,7 +54,7 @@ $primary-color: #0e6cfa;
   gap: 4px;
 }
 
-.btn-group-xs > .btn,
+.btn-group-xs>.btn,
 .btn-xs {
   padding: 1px 5px;
   font-size: 12px;
@@ -72,6 +69,7 @@ $primary-color: #0e6cfa;
 .mdi-pencil.pointer:hover {
   color: #00bfff;
 }
+
 .mdi-trash-can.pointer:hover {
   color: #ff002b;
 }
@@ -130,7 +128,7 @@ section {
     }
   }
 
-  .nav > li > a {
+  .nav>li>a {
     padding: 10px 15px;
     border-radius: 0;
   }
@@ -159,6 +157,7 @@ section {
   .navbar-brand {
     margin-right: 0px;
   }
+
   .logo {
     margin: 0 8px;
   }
@@ -169,9 +168,17 @@ section {
   margin: 0 5px;
 }
 
+.subtitle {
+  font-size: 15px;
+  font-style: italic;
+  color: grey;
+  margin-bottom: 10px;
+}
+
 .slick-dark-mode {
   --slick-button-style-bg-color: #212121;
   --slick-button-border-color: #626262;
+
   .text-primary {
     color: #599bfe !important;
   }

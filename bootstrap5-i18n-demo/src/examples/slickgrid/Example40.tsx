@@ -3,19 +3,18 @@ import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Aggregators,
-  type Column,
   Filters,
   Formatters,
+  SlickgridReact,
+  SortComparers,
+  SortDirectionNumber,
+  type Column,
   type GridOption,
   type Grouping,
   type Metrics,
   type OnRowCountChangedEventArgs,
-  SlickgridReact,
   type SlickgridReactInstance,
-  SortComparers,
-  SortDirectionNumber,
 } from 'slickgrid-react';
-
 import './example39.scss';
 import { randomNumber } from './utilities.js';
 
@@ -231,7 +230,10 @@ const Example40: React.FC = () => {
           Example 40: Infinite Scroll from JSON data
           <span className="float-end font18">
             see&nbsp;
-            <a target="_blank" href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example40.tsx">
+            <a
+              target="_blank"
+              href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example40.tsx"
+            >
               <span className="mdi mdi-link-variant"></span> code
             </a>
           </span>
@@ -276,7 +278,11 @@ const Example40: React.FC = () => {
             >
               Set Filters Dynamically
             </button>
-            <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="set-dynamic-sorting" onClick={() => setSortingDynamically()}>
+            <button
+              className="btn btn-outline-secondary btn-sm btn-icon"
+              data-test="set-dynamic-sorting"
+              onClick={() => setSortingDynamically()}
+            >
               Set Sorting Dynamically
             </button>
             <button className="btn btn-outline-secondary btn-sm mx-1" data-test="group-by-duration" onClick={() => groupByDuration()}>

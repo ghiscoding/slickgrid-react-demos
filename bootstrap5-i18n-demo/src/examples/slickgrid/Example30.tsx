@@ -1,30 +1,31 @@
-import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
 import { SlickCompositeEditor, SlickCompositeEditorComponent } from '@slickgrid-universal/composite-editor-component';
+import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  Editors,
+  Filters,
+  formatNumber,
+  Formatters,
+  SlickGlobalEditorLock,
+  SlickgridReact,
+  SortComparers,
   type AutocompleterOption,
   type Column,
   type CompositeEditorModalType,
   type EditCommand,
-  Editors,
-  Filters,
-  formatNumber,
   type Formatter,
-  Formatters,
   type GridOption,
   type GridStateChange,
   type LongTextEditorOption,
+  type MultipleSelectOption,
   type OnCompositeEditorChangeEventArgs,
-  SlickGlobalEditorLock,
-  type SlickgridReactInstance,
   type SlickGrid,
-  SlickgridReact,
-  SortComparers,
+  type SlickgridReactInstance,
+  type SliderOption,
   type VanillaCalendarOption,
 } from 'slickgrid-react';
 import COUNTRIES_COLLECTION from './data/countries.json';
-
 import './example30.scss'; // provide custom CSS/SASS styling
 
 const NB_ITEMS = 500;
@@ -135,6 +136,7 @@ const Example30: React.FC = () => {
         editor: {
           model: Editors.longText,
           massUpdate: false,
+          compositeEditorFormOrder: 0, // you can use this option to always keep same order and make this the 1st input
           required: true,
           alwaysSaveOnEnterKey: true,
           maxLength: 12,
@@ -166,6 +168,7 @@ const Example30: React.FC = () => {
         },
         editor: {
           model: Editors.float,
+          compositeEditorFormOrder: 2, // inverse order of Duration & Percent Complete in the form
           massUpdate: true,
           decimal: 2,
           valueStep: 1,
@@ -201,6 +204,7 @@ const Example30: React.FC = () => {
         editor: {
           model: Editors.slider,
           massUpdate: true,
+          compositeEditorFormOrder: 1, // inverse order of Duration & Percent Complete in the form
           minValue: 0,
           maxValue: 100,
         },
@@ -245,6 +249,7 @@ const Example30: React.FC = () => {
         filter: {
           model: Filters.multipleSelect,
           collection: complexityLevelList,
+          options: { showClear: true } as MultipleSelectOption,
         },
         editor: {
           model: Editors.singleSelect,
@@ -266,7 +271,7 @@ const Example30: React.FC = () => {
         saveOutputType: 'dateUtc',
         filterable: true,
         filter: { model: Filters.compoundDate },
-        editor: { model: Editors.date, massUpdate: true, options: { hideClearButton: false } },
+        editor: { model: Editors.date, massUpdate: true, options: { hideClearButton: false } as SliderOption },
       },
       {
         id: 'completed',
@@ -275,10 +280,10 @@ const Example30: React.FC = () => {
         width: 80,
         minWidth: 75,
         maxWidth: 100,
-        cssClass: 'text-center',
-        columnGroup: 'Period',
         sortable: true,
         filterable: true,
+        columnGroup: 'Period',
+        cssClass: 'text-center',
         formatter: Formatters.checkmarkMaterial,
         exportWithFormatter: false,
         filter: {
@@ -288,6 +293,7 @@ const Example30: React.FC = () => {
             { value: false, label: 'False' },
           ],
           model: Filters.singleSelect,
+          options: { showClear: true } as MultipleSelectOption,
         },
         editor: { model: Editors.checkbox, massUpdate: true },
         // editor: { model: Editors.singleSelect, collection: [{ value: true, label: 'Yes' }, { value: false, label: 'No' }], },
@@ -309,14 +315,14 @@ const Example30: React.FC = () => {
         editor: {
           model: Editors.date,
           options: {
-            displayDateMin: 'today',
+            displayDateMin: 'today', // set minimum date as today
 
             // if we want to preload the date picker with a different date,
-            // we could do it by assigning settings.seleted.dates
+            // we could do it by assigning `selectedDates: []`
             // NOTE: vanilla-calendar doesn't automatically focus the picker to the year/month and you need to do it yourself
-            // selectedDates: ['2021-06-04'],
-            // selectedMonth: 6 - 1, // Note: JS Date month (only) is zero index based, so June is 6-1 => 5
-            // selectedYear: 2021
+            //  selectedDates: ['2021-06-04'],
+            //  selectedMonth: 6 - 1, // Note: JS Date month (only) is zero index based, so June is 6-1 => 5
+            //  selectedYear: 2021
           } as VanillaCalendarOption,
           massUpdate: true,
           validator: (value, args) => {
@@ -351,7 +357,6 @@ const Example30: React.FC = () => {
           options: {
             minLength: 1,
             fetch: (searchTerm: string, callback: (items: false | any[]) => void) => {
-              // const items = require('c://TEMP/items.json');
               const products = mockProducts();
               callback(products.filter((product) => product.itemName.toLowerCase().includes(searchTerm.toLowerCase())));
             },
@@ -367,6 +372,7 @@ const Example30: React.FC = () => {
         filter: {
           model: Filters.inputText,
           // placeholder: '🔎︎ search product',
+          type: 'string',
           queryField: 'product.itemName',
         },
       },
@@ -636,7 +642,7 @@ const Example30: React.FC = () => {
     // }
   }
 
-  function handleOnCompositeEditorChange(_e: Event, args: OnCompositeEditorChangeEventArgs) {
+  function handleOnCompositeEditorChange(args: OnCompositeEditorChangeEventArgs) {
     const columnDef = args.column;
     const formValues = args.formValues;
 
@@ -728,7 +734,7 @@ const Example30: React.FC = () => {
         // when processing a mass update or mass selection
         if (modalType === 'mass-update' || modalType === 'mass-selection') {
           return new Promise((resolve, reject) => {
-            window.setTimeout(() => {
+            setTimeout(() => {
               if (formValues.percentComplete >= 50) {
                 resolve(true);
               } else {
@@ -741,7 +747,7 @@ const Example30: React.FC = () => {
           // we'll just apply the change without any rejection from the server and
           // note that we also have access to the "dataContext" which is only available for these modal
           console.log(`${modalType} item data context`, dataContext);
-          return new Promise((resolve) => window.setTimeout(() => resolve(true), serverResponseDelay));
+          return new Promise((resolve) => setTimeout(() => resolve(true), serverResponseDelay));
         }
       },
     });
@@ -1204,7 +1210,7 @@ const Example30: React.FC = () => {
         onBeforeEditCell={($event) => handleOnBeforeEditCell($event.detail.eventData, $event.detail.args)}
         onCellChange={($event) => handleOnCellChange($event.detail.eventData, $event.detail.args)}
         onClick={($event) => handleOnCellClicked($event.detail.eventData, $event.detail.args)}
-        onCompositeEditorChange={($event) => handleOnCompositeEditorChange($event.detail.eventData, $event.detail.args)}
+        onCompositeEditorChange={($event) => handleOnCompositeEditorChange($event.detail.args)}
         onItemsDeleted={($event) => handleItemsDeleted($event.detail)}
         onGridStateChanged={($event) => handleOnGridStateChanged($event.detail)}
         onRowsOrCountChanged={() => handleReRenderUnsavedStyling()}

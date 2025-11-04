@@ -1,8 +1,7 @@
 import React, { forwardRef, useState } from 'react';
 import type { RowDetailViewProps } from 'slickgrid-react';
-
 import './example47-detail-view.scss';
-import { showToast } from './utilities';
+import { showToast } from './utilities.js';
 
 interface Item {
   id: number;
@@ -54,7 +53,7 @@ const Example47DetailView: React.FC<RowDetailViewProps<Item, any>> = forwardRef(
         <div className="col-3 detail-label">
           <label>Assignee:</label>{' '}
           <input
-            className="form-control"
+            className="form-control assignee"
             value={assignee}
             onInput={function ($event) {
               assigneeChanged(($event.target as HTMLInputElement).value);
