@@ -29,11 +29,6 @@
     "preview": "vite preview",
     "lint": "eslint . --no-cache"
   },
-  "browserslist": [
-    "last 2 version",
-    "> 1%",
-    "not dead"
-  ],
   "dependencies": {
     "@slickgrid-universal/composite-editor-component": "^9.10.0",
     "@slickgrid-universal/custom-tooltip-plugin": "^9.10.0",
