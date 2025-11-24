@@ -1,16 +1,15 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  type Column,
   Filters,
   Formatters,
+  SlickgridReact,
+  type Column,
   type GridOption,
+  type SlickgridReactInstance,
   type TreeToggledItem,
   type TreeToggleStateChange,
-  SlickgridReact,
-  type SlickgridReactInstance,
 } from 'slickgrid-react';
-import React, { useEffect, useRef, useState } from 'react';
-
 import './example27.scss'; // provide custom CSS/SASS styling
 
 const NB_ITEMS = 500;
@@ -245,7 +244,7 @@ const Example27: React.FC = () => {
   }
 
   function showSpinner() {
-    setLoadingClass('mdi mdi-load mdi-spin-1s mdi-24px color-alt-success');
+    setLoadingClass('mdi mdi-load mdi-spin-1s font-24px color-alt-success');
   }
 
   function loadData(rowCount: number) {
@@ -407,8 +406,8 @@ const Example27: React.FC = () => {
           <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="add-500-rows-btn" onClick={() => setData(500)}>
             500 rows
           </button>
-          <button className="btn btn-outline-secondary btn-xs btn-icon mx-1" data-test="add-50k-rows-btn" onClick={() => setData(25000)}>
-            25k rows
+          <button className="btn btn-outline-secondary btn-xs btn-icon mx-1" data-test="add-75k-rows-btn" onClick={() => setData(75000)}>
+            75k rows
           </button>
           <button
             onClick={() => dynamicallyChangeFilter()}
@@ -487,8 +486,6 @@ const Example27: React.FC = () => {
           onFilterCleared={() => hideSpinner()}
           onBeforeSortChange={() => showSpinner()}
           onSortChanged={() => hideSpinner()}
-          onBeforeToggleTreeCollapse={() => showSpinner()}
-          onToggleTreeCollapsed={() => hideSpinner()}
           onTreeFullToggleStart={() => showSpinner()}
           onTreeFullToggleEnd={($event) => handleOnTreeFullToggleEnd($event.detail)}
           onTreeItemToggled={($event) => handleOnTreeItemToggled($event.detail)}

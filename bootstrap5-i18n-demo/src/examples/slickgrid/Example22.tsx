@@ -1,8 +1,6 @@
-import { type Column, Filters, type GridOption, SlickgridReact, type SlickgridReactInstance } from 'slickgrid-react';
 import React, { useEffect, useRef, useState } from 'react';
-
+import { Filters, SlickgridReact, type Column, type GridOption, type SlickgridReactInstance } from 'slickgrid-react';
 import './example22.scss';
-
 import CUSTOMERS_URL from './data/customers_100.json?url';
 
 const Example22: React.FC = () => {
@@ -158,7 +156,7 @@ const Example22: React.FC = () => {
         <div className="subtitle">
           This example demonstrate the creation of multiple grids in Bootstrap Tabs
           <ol>
-            <li>Regular mocked data with javascript</li>
+            <li>Regular mocked data with JavaScript</li>
             <li>Load dataset through Fetch. Also note we need to call a "resizeGrid()" after focusing on this tab</li>
           </ol>
         </div>

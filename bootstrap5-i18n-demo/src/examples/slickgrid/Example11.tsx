@@ -1,14 +1,13 @@
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  type Column,
   Editors,
   Formatters,
+  SlickgridReact,
+  type Column,
   type GridOption,
   type OnEventArgs,
-  SlickgridReact,
   type SlickgridReactInstance,
 } from 'slickgrid-react';
-import React, { useEffect, useRef, useState } from 'react';
-
 import './example11.scss';
 
 const Example11: React.FC = () => {
@@ -31,7 +30,6 @@ const Example11: React.FC = () => {
     /*
     dataView.getItemMetadata = updateItemMetadataForDurationOver50(dataView.getItemMetadata);
     grid.invalidate();
-    grid.render();
     */
   }
 
@@ -199,7 +197,6 @@ const Example11: React.FC = () => {
     reactGridRef.current!.dataView.getItemMetadata = updateItemMetadataForDurationOver40(reactGridRef.current!.dataView.getItemMetadata);
     // also re-render the grid for the styling to be applied right away
     reactGridRef.current!.slickGrid.invalidate();
-    reactGridRef.current!.slickGrid.render();
     // or use the SlickGrid-React GridService
     // gridService.renderGrid();
   }
@@ -311,7 +308,7 @@ const Example11: React.FC = () => {
           <li>
             You can change the highlighted color &amp; animation by changing the{' '}
             <a
-              href="https://github.com/ghiscoding/slickgrid-universal/blob/master/packages/common/styles/_variables.scss"
+              href="https://github.com/ghiscoding/slickgrid-universal/blob/master/packages/common/src/styles/_variables.scss"
               target="_blank"
             >
               SASS Variables

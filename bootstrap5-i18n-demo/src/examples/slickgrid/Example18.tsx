@@ -1,19 +1,19 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Aggregators,
-  type Column,
   Filters,
   Formatters,
-  type GridOption,
   GroupTotalFormatters,
+  SlickgridReact,
   SortComparers,
   SortDirectionNumber,
+  type Column,
+  type GridOption,
   type Grouping,
-  SlickgridReact,
   type SlickgridReactInstance,
 } from 'slickgrid-react';
-import React, { useEffect, useRef, useState } from 'react';
 
 const Example18: React.FC = () => {
   const [columnDefinitions, setColumnDefinitions] = useState<Column[]>([]);
@@ -31,7 +31,7 @@ const Example18: React.FC = () => {
 
   useEffect(() => {
     defineGrid();
-    setDataset(loadData(500));
+    setDataset(loadData(10_000));
 
     // reset to light mode before unmounting
     return () => {
@@ -78,7 +78,7 @@ const Example18: React.FC = () => {
         groupTotalsFormatter: GroupTotalFormatters.sumTotals,
         grouping: {
           getter: 'duration',
-          formatter: (g) => `Duration: ${g.value}  <span class="text-primary">(${g.count} items)</span>`,
+          formatter: (g) => `Duration: ${g.value} <span class="text-primary">(${g.count} items)</span>`,
           comparer: (a, b) => {
             return durationOrderByCount ? a.count - b.count : SortComparers.numeric(a.value, b.value, SortDirectionNumber.asc);
           },
@@ -236,13 +236,12 @@ const Example18: React.FC = () => {
       draggableGrouping: {
         dropPlaceHolderText: 'Drop a column header here to group by the column',
         // groupIconCssClass: 'mdi mdi-drag-vertical',
-        deleteIconCssClass: 'mdi mdi-close text-color-danger',
+        deleteIconCssClass: 'mdi mdi-close color-danger',
         sortAscIconCssClass: 'mdi mdi-arrow-up',
         sortDescIconCssClass: 'mdi mdi-arrow-down',
         onGroupChanged: (_e, args) => onGroupChanged(args),
-        onExtensionRegistered: (extension) => {
-          setDraggableGroupingPlugin(extension);
-        },
+        onExtensionRegistered: (extension) => setDraggableGroupingPlugin(extension),
+        initialGroupBy: ['duration'],
       },
       darkMode,
       enableTextExport: true,
@@ -503,11 +502,11 @@ const Example18: React.FC = () => {
       <form className="form-inline" onSubmit={(e) => e.preventDefault()}>
         <div className="row">
           <div className="col-sm-12">
-            <button className="btn btn-outline-secondary btn-xs btn-icon mx-1" data-test="add-500-rows-btn" onClick={() => setData(500)}>
-              500 rows
+            <button className="btn btn-outline-secondary btn-xs btn-icon mx-1" data-test="add-5k-rows-btn" onClick={() => setData(5000)}>
+              5K rows
             </button>
             <button className="btn btn-outline-secondary btn-xs btn-icon mx-1" data-test="add-50k-rows-btn" onClick={() => setData(50000)}>
-              50k rows
+              50K rows
             </button>
             <button
               className="btn btn-outline-secondary btn-xs btn-icon mx-1"

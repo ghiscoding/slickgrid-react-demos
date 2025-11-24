@@ -1,20 +1,19 @@
-import {
-  Aggregators,
-  type Column,
-  createDomElement,
-  deepCopy,
-  Filters,
-  type Formatter,
-  Formatters,
-  type GridOption,
-  GroupTotalFormatters,
-  SlickgridReact,
-  type SlickgridReactInstance,
-} from 'slickgrid-react';
 import { faker } from '@faker-js/faker';
 import sparkline from '@fnando/sparkline';
 import React, { useEffect, useRef, useState } from 'react';
-
+import {
+  Aggregators,
+  createDomElement,
+  deepCopy,
+  Filters,
+  Formatters,
+  GroupTotalFormatters,
+  SlickgridReact,
+  type Column,
+  type Formatter,
+  type GridOption,
+  type SlickgridReactInstance,
+} from 'slickgrid-react';
 import './example34.scss';
 
 const NB_ROWS = 200;
@@ -40,7 +39,7 @@ const priceFormatter: Formatter = (_cell, _row, value, _col, dataContext) => {
 };
 
 const transactionTypeFormatter: Formatter = (_row, _cell, value: string) =>
-  `<div class="d-inline-flex align-items-center"><span class="me-1 mdi mdi-16px mdi-${value === 'Buy' ? 'plus' : 'minus'}-circle ${value === 'Buy' ? 'text-info' : 'text-warning'}"></span> ${value}</div>`;
+  `<div class="d-inline-flex align-items-center"><span class="me-1 mdi font-16px mdi-${value === 'Buy' ? 'plus' : 'minus'}-circle ${value === 'Buy' ? 'text-info' : 'text-warning'}"></span> ${value}</div>`;
 
 const historicSparklineFormatter: Formatter = (_row, _cell, _value: string, _col, dataContext) => {
   if (dataContext.historic.length < 2) {
@@ -277,7 +276,7 @@ const Example34: React.FC = () => {
       },
       draggableGrouping: {
         dropPlaceHolderText: 'Drop a column header here to group by any of these available columns: Currency, Market or Type',
-        deleteIconCssClass: 'mdi mdi-close text-color-danger',
+        deleteIconCssClass: 'mdi mdi-close color-danger',
         sortAscIconCssClass: 'mdi mdi-arrow-up',
         sortDescIconCssClass: 'mdi mdi-arrow-down',
       },
@@ -374,7 +373,7 @@ const Example34: React.FC = () => {
   }
 
   function stopSimulation() {
-    window.clearTimeout(timerRef.current);
+    clearTimeout(timerRef.current);
   }
 
   function findColumnById(columnName: string): Column {

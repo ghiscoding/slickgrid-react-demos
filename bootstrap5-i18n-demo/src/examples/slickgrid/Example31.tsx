@@ -1,19 +1,19 @@
-import { GridOdataService, type OdataServiceApi, type OdataOption } from '@slickgrid-universal/odata';
+import { GridOdataService, type OdataOption, type OdataServiceApi } from '@slickgrid-universal/odata';
 import { RxJsResource } from '@slickgrid-universal/rxjs-observable';
+import React, { useEffect, useRef, useState } from 'react';
 import { Observable, of, type Subject } from 'rxjs';
 import {
-  type Column,
   Editors,
   Filters,
+  OperatorType,
+  SlickgridReact,
+  type Column,
   type GridOption,
   type GridStateChange,
   type Metrics,
-  OperatorType,
   type Pagination,
-  SlickgridReact,
   type SlickgridReactInstance,
 } from 'slickgrid-react';
-import React, { useEffect, useRef, useState } from 'react';
 import Data from './data/customers_100.json';
 
 const defaultPageSize = 20;
@@ -624,9 +624,9 @@ const Example31: React.FC = () => {
         paginationOptions={paginationOptions}
         onReactGridCreated={($event) => reactGridReady($event.detail)}
         onGridStateChanged={($event) => gridStateChanged($event.detail)}
-        onBeforeSort={($event) => handleOnBeforeSort($event.detail.eventData)}
-        onBeforeSearchChange={($event) => handleOnBeforeSearchChange($event.detail.eventData)}
-        onBeforePaginationChange={($event) => handleOnBeforePaginationChange($event.detail.eventData)}
+        onBeforeSort={($event) => handleOnBeforeSort($event)}
+        onBeforeSearchChange={($event) => handleOnBeforeSearchChange($event)}
+        onBeforePaginationChange={($event) => handleOnBeforePaginationChange($event)}
       />
     </div>
   );

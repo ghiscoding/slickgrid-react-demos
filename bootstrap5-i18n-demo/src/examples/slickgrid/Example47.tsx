@@ -1,24 +1,23 @@
 import { type EventPubSubService } from '@slickgrid-universal/event-pub-sub';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Aggregators,
-  type Column,
   Editors,
   ExtensionName,
   Filters,
   Formatters,
-  type GridOption,
-  type Grouping,
   GroupTotalFormatters,
   SlickgridReact,
-  type SlickgridReactInstance,
   SlickRowDetailView,
   SortComparers,
   SortDirectionNumber,
+  type Column,
+  type GridOption,
+  type Grouping,
+  type SlickgridReactInstance,
 } from 'slickgrid-react';
-
-import { ExampleDetailPreload } from './Example-detail-preload';
-import Example47DetailView from './Example47-detail-view';
+import { ExampleDetailPreload } from './Example-detail-preload.js';
+import Example47DetailView from './Example47-detail-view.js';
 
 export interface Item {
   id: number;
@@ -394,12 +393,16 @@ const Example47: React.FC = () => {
             </button>
             <button
               className="btn btn-outline-secondary btn-sm btn-icon"
-              data-test="collapse-all-group-btn"
+              data-test="collapse-all-groups-btn"
               onClick={() => collapseAllGroups()}
             >
               <i className="mdi mdi-arrow-collapse"></i> Collapse all groups
             </button>
-            <button className="btn btn-outline-secondary btn-sm btn-icon" data-test="expand-all-btn" onClick={() => expandAllGroups()}>
+            <button
+              className="btn btn-outline-secondary btn-sm btn-icon"
+              data-test="expand-all-groups-btn"
+              onClick={() => expandAllGroups()}
+            >
               <i className="mdi mdi-arrow-expand"></i> Expand all groups
             </button>
 

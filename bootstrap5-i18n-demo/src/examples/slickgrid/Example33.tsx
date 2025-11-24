@@ -1,23 +1,22 @@
+import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  type Column,
-  type EditCommand,
   Editors,
   Filters,
-  type Formatter,
   Formatters,
+  OperatorType,
+  SlickgridReact,
+  type Column,
+  type EditCommand,
+  type Formatter,
   type GridOption,
   type MenuCommandItemCallbackArgs,
   type MultipleSelectOption,
-  OperatorType,
   type SlickGrid,
-  SlickgridReact,
   type SlickgridReactInstance,
   type VanillaCalendarOption,
 } from 'slickgrid-react';
-import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import { SlickCustomTooltip } from '@slickgrid-universal/custom-tooltip-plugin';
-import React, { useEffect, useRef, useState } from 'react';
-
 import './example33.scss';
 
 const FAKE_SERVER_DELAY = 500;
@@ -70,10 +69,7 @@ const Example33: React.FC = () => {
           formatter: () => `<div><span class="mdi mdi-load mdi-spin"></span> loading...</div>`,
           asyncProcess: () =>
             new Promise((resolve) => {
-              setTimeout(
-                () => resolve({ ratio: (Math.random() * 10) / 10, lifespan: Math.random() * 100 }),
-                serverWaitDelayRef.current
-              );
+              setTimeout(() => resolve({ ratio: (Math.random() * 10) / 10, lifespan: Math.random() * 100 }), serverWaitDelayRef.current);
             }),
           asyncPostFormatter: tooltipTaskAsyncFormatter as Formatter,
 

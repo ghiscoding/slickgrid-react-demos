@@ -1,23 +1,25 @@
 import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Aggregators,
-  type Column,
   Filters,
   Formatters,
+  GroupTotalFormatters,
+  SlickgridReact,
+  SortComparers,
+  SortDirectionNumber,
+  type Column,
   type GridOption,
   type Grouping,
-  GroupTotalFormatters,
-  SortDirectionNumber,
-  SortComparers,
-  SlickgridReact,
   type SlickgridReactInstance,
 } from 'slickgrid-react';
-import React, { useEffect, useRef, useState } from 'react';
+
+const NB_ITEMS = 5000;
 
 const Example13: React.FC = () => {
   const [columnDefinitions, setColumnDefinitions] = useState<Column[]>([]);
-  const [dataset, setDataset] = useState<any[]>(loadData(500));
+  const [dataset, setDataset] = useState<any[]>(loadData(NB_ITEMS));
   const [gridOptions, setGridOptions] = useState<GridOption | undefined>(undefined);
   const reactGridRef = useRef<SlickgridReactInstance | null>(null);
   const [processing, setProcessing] = useState(false);
@@ -32,6 +34,7 @@ const Example13: React.FC = () => {
 
   function reactGridReady(reactGrid: SlickgridReactInstance) {
     reactGridRef.current = reactGrid;
+    groupByDuration(); // group by duration on page load
   }
 
   /* Define grid Options and Columns */
@@ -311,7 +314,7 @@ const Example13: React.FC = () => {
     reactGridRef.current?.dataView.setGrouping([
       {
         getter: 'duration',
-        formatter: (g) => `Duration: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+        formatter: (g) => `Duration: ${g.value} <span style="color:green">(${g.count} items)</span>`,
         aggregators: [new Aggregators.Sum('duration'), new Aggregators.Sum('cost')],
         aggregateCollapsed: true,
         lazyTotalsCalculation: true,
@@ -338,7 +341,7 @@ const Example13: React.FC = () => {
     reactGridRef.current?.dataView.setGrouping([
       {
         getter: 'duration',
-        formatter: (g) => `Duration: ${g.value}  <span style="color:green">(${g.count} items)</span>`,
+        formatter: (g) => `Duration: ${g.value} <span style="color:green">(${g.count} items)</span>`,
         aggregators: [new Aggregators.Sum('duration'), new Aggregators.Sum('cost')],
         aggregateCollapsed: true,
         lazyTotalsCalculation: true,
@@ -413,11 +416,11 @@ const Example13: React.FC = () => {
 
       <div className="row">
         <div className="col-sm-12">
-          <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="add-500-rows-btn" onClick={() => updateData(500)}>
-            500 rows
+          <button className="btn btn-outline-secondary btn-xs btn-icon" data-test="add-5k-rows-btn" onClick={() => updateData(5000)}>
+            5K rows
           </button>
           <button className="btn btn-outline-secondary btn-xs btn-icon mx-1" data-test="add-50k-rows-btn" onClick={() => updateData(50000)}>
-            50k rows
+            50K rows
           </button>
           <button className="btn btn-outline-secondary btn-xs btn-icon mx-1" data-test="clear-grouping-btn" onClick={() => clearGrouping()}>
             <i className="mdi mdi-close"></i> Clear grouping

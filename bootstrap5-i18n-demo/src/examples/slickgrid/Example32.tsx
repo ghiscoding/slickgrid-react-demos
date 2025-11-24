@@ -1,24 +1,23 @@
+import { ExcelExportService } from '@slickgrid-universal/excel-export';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  type AutocompleterOption,
-  type Column,
-  type EditCommand,
   Editors,
   Filters,
   formatNumber,
-  type Formatter,
   Formatters,
-  type GridOption,
-  type LongTextEditorOption,
   SlickGlobalEditorLock,
-  type SlickgridReactInstance,
   SlickgridReact,
   SortComparers,
-  type VanillaCalendarOption,
+  type AutocompleterOption,
+  type Column,
+  type EditCommand,
+  type Formatter,
+  type GridOption,
+  type LongTextEditorOption,
   type SearchTerm,
+  type SlickgridReactInstance,
+  type VanillaCalendarOption,
 } from 'slickgrid-react';
-import { ExcelExportService } from '@slickgrid-universal/excel-export';
-import React, { useEffect, useRef, useState } from 'react';
-
 import './example32.scss'; // provide custom CSS/SASS styling
 import COUNTRIES_COLLECTION_URL from './data/countries.json?url';
 
@@ -272,7 +271,7 @@ const Example32: React.FC = () => {
           model: Editors.date,
           options: { displayDateMin: 'today' } as VanillaCalendarOption,
           validator: (value, args) => {
-            const dataContext = args && args.item;
+            const dataContext = args?.item;
             if (dataContext && dataContext.completed && !value) {
               return { valid: false, msg: 'You must provide a "Finish" date when "Completed" is checked.' };
             }
@@ -670,6 +669,14 @@ const Example32: React.FC = () => {
     setEditedItems({});
   }
 
+  function toggleAutoEdit(state: boolean) {
+    reactGridRef.current?.slickGrid?.setOptions({ autoEdit: state });
+  }
+
+  function toggleAutoEditByKeypress(state: boolean) {
+    reactGridRef.current?.slickGrid?.setOptions({ autoEditByKeypress: state });
+  }
+
   function undoLastEdit(showLastEditor = false) {
     const lastEdit = editQueue.pop();
     const lastEditCommand = lastEdit?.editCommand;
@@ -961,6 +968,7 @@ const Example32: React.FC = () => {
               <i className="mdi mdi-arrow-expand"></i> Resize by Cell Content
             </label>
           </div>
+          <span className="ms-3 h5">Container Width (950px)</span>
         </div>
 
         <div className="mb-2">
@@ -992,6 +1000,48 @@ const Example32: React.FC = () => {
             </button>
             <button type="button" className="btn btn-outline-secondary btn-icon" data-test="save-all-btn" onClick={() => saveAll()}>
               Save All
+            </button>
+          </div>
+          <span className="ms-2">
+            <code>autoEdit</code>
+          </span>
+          <div className="btn-group" role="group" aria-label="autoEdit">
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-sm"
+              data-test="auto-edit-on-btn"
+              onClick={() => toggleAutoEdit(true)}
+            >
+              ON
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-sm"
+              data-test="auto-edit-off-btn"
+              onClick={() => toggleAutoEdit(false)}
+            >
+              OFF
+            </button>
+          </div>
+          <span className="ms-2">
+            <code>autoEditByKeypress</code>
+          </span>
+          <div className="btn-group" role="group" aria-label="autoEditByKeypress">
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-sm"
+              data-test="auto-edit-key-on-btn"
+              onClick={() => toggleAutoEditByKeypress(true)}
+            >
+              ON
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-sm"
+              data-test="auto-edit-key-off-btn"
+              onClick={() => toggleAutoEditByKeypress(false)}
+            >
+              OFF
             </button>
           </div>
         </div>

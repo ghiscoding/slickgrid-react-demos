@@ -1,5 +1,5 @@
-import { type Column, type GridOption, Formatters, SlickgridReact } from 'slickgrid-react';
 import React, { useEffect, useState } from 'react';
+import { Formatters, SlickgridReact, type Column, type GridOption } from 'slickgrid-react';
 
 const NB_ITEMS = 995;
 
@@ -99,7 +99,7 @@ const Example29: React.FC = () => {
       <hr />
 
       <SlickgridReact
-        gridId="grid"
+        gridId="grid29"
         columns={columnDefinitions}
         options={gridOptions}
         dataset={dataset}

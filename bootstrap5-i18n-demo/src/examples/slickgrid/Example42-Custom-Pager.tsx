@@ -1,6 +1,5 @@
 import type { PaginationMetadata, PaginationService, PubSubService, SlickGrid, Subscription } from '@slickgrid-universal/common';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
-
 import './Example42-Custom-Pager.scss';
 
 export interface CustomPagerComponentRef {
@@ -127,7 +126,7 @@ const CustomPagerComponent = React.forwardRef<CustomPagerComponentRef, any>((_pr
           <ul className="custom-pagination-ul">
             <li className={'li page-item seek-first' + (isLeftPaginationDisabled ? ' disabled' : '')}>
               <a
-                className="pagination-link mdi mdi-page-first icon-seek-first mdi-22px"
+                className="pagination-link mdi mdi-page-first icon-seek-first font-22px"
                 aria-label="First Page"
                 role="button"
                 onClick={onFirstPageClicked}
@@ -135,7 +134,7 @@ const CustomPagerComponent = React.forwardRef<CustomPagerComponentRef, any>((_pr
             </li>
             <li className={'li page-item seek-prev' + (isLeftPaginationDisabled ? ' disabled' : '')}>
               <a
-                className="pagination-link icon-seek-prev mdi mdi-chevron-down mdi-22px mdi-rotate-90"
+                className="pagination-link icon-seek-prev mdi mdi-chevron-down font-22px mdi-rotate-90"
                 aria-label="Previous Page"
                 role="button"
                 onClick={onPreviousPageClicked}
@@ -157,14 +156,14 @@ const CustomPagerComponent = React.forwardRef<CustomPagerComponentRef, any>((_pr
           <ul className="custom-pagination-ul">
             <li className={'li page-item seek-next' + (isRightPaginationDisabled ? ' disabled' : '')} onClick={onNextPageClicked}>
               <a
-                className="pagination-link icon-seek-next mdi mdi-chevron-down mdi-22px mdi-rotate-270"
+                className="pagination-link icon-seek-next mdi mdi-chevron-down font-22px mdi-rotate-270"
                 aria-label="Next Page"
                 role="button"
               ></a>
             </li>
             <li className={'li page-item seek-end' + (isRightPaginationDisabled ? ' disabled' : '')}>
               <a
-                className="pagination-link icon-seek-end mdi mdi-page-last mdi-22px"
+                className="pagination-link icon-seek-end mdi mdi-page-last font-22px"
                 aria-label="Last Page"
                 role="button"
                 onClick={onLastPageClicked}
