@@ -57,7 +57,6 @@ const Example50: React.FC = () => {
     enableHybridSelection: true,
     rowSelectionOptions: {
       selectionType: 'row',
-      selectActiveRow: true,
     },
   };
 
