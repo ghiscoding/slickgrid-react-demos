@@ -4,7 +4,7 @@
 ### Installation
 Git clone the demo and npm install it, then run and enjoy fully working demo.
 
-#### Bootstrap 5 - with `i18n`
+### Bootstrap 5 - with `i18n` Translate
 
 Common Bootstrap 5 demo using `i18n` to provide the use of multiple languages (locales) which can be switched dynamically (on the fly).
 
@@ -19,7 +19,7 @@ npm install
 npm run build # OR yarn run build
 ```
 
-## Bootstrap 5 - with Custom Locales (single locale)
+### Bootstrap 5 - with Custom Locales (single locale)
 
 > This folder purposely has less examples compared to the project with `i18n`
 

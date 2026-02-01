@@ -1,4 +1,4 @@
-# <a href="https://react.dev/" rel="nofollow"><img alt="React" src="https://ghiscoding.github.io/slickgrid-react-demos/assets/react-logo-DuD1bc7a.png" width="70"></a> Slickgrid-React - Bootstrap 5 Demo with a Single Locale (single locale)
+# <a href="https://react.dev/" rel="nofollow"><img alt="React" src="https://ghiscoding.github.io/slickgrid-react-demos/assets/react-logo-DuD1bc7a.png" width="70"></a> Slickgrid-React with a Single Locale (single locale)
 
 Demo with a custom Single Locale, this mean that we load a static locale and this also mean that we don't need `i18n`
 
