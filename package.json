@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "cd bootstrap5-i18n-demo && yarn install && yarn dev"
+    "dev": "cd with-i18n-translate && yarn install && yarn dev"
   },
   "private": false,
   "dependencies": {}

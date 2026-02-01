@@ -1,0 +1,78 @@
+{
+  "name": "slickgrid-react",
+  "version": "4.0.0",
+  "description": "Slickgrid components made available in React",
+  "keywords": [
+    "react",
+    "datagrid",
+    "datatable",
+    "plugin",
+    "slickgrid"
+  ],
+  "homepage": "https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/slickgrid-react",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghiscoding/slickgrid-universal.git",
+    "directory": "frameworks/slickgrid-react"
+  },
+  "bugs": {
+    "url": "https://github.com/ghiscoding/slickgrid-universal/issues"
+  },
+  "license": "MIT",
+  "author": "Ghislain B.",
+  "main": "dist/commonjs/index.js",
+  "typings": "dist/commonjs/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "prebuild": "npm run lint",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --no-cache"
+  },
+  "dependencies": {
+    "@slickgrid-universal/composite-editor-component": "^9.13.0",
+    "@slickgrid-universal/custom-tooltip-plugin": "^9.13.0",
+    "@slickgrid-universal/excel-export": "^9.13.0",
+    "@slickgrid-universal/graphql": "^9.13.0",
+    "@slickgrid-universal/odata": "^9.13.0",
+    "@slickgrid-universal/pdf-export": "^9.13.0",
+    "@slickgrid-universal/rxjs-observable": "^9.13.0",
+    "@slickgrid-universal/text-export": "^9.13.0",
+    "bootstrap": "^5.3.8",
+    "dompurify": "^3.3.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "slickgrid-react": "^9.13.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.2.0",
+    "@fnando/sparkline": "^0.3.10",
+    "@popperjs/core": "^2.11.8",
+    "@types/fnando__sparkline": "^0.3.7",
+    "@types/node": "^24.10.9",
+    "@types/react": "^19.2.10",
+    "@types/react-dom": "^19.2.3",
+    "@types/sortablejs": "^1.15.9",
+    "@types/text-encoding-utf-8": "^1.0.5",
+    "@vitejs/plugin-react": "^5.1.2",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-n": "^17.23.2",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.2.0",
+    "react-router-dom": "^7.13.0",
+    "rxjs": "^7.8.2",
+    "sass": "^1.97.3",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0",
+    "vite": "^7.3.1",
+    "vite-plugin-svgr": "^4.5.0",
+    "vite-tsconfig-paths": "^6.0.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

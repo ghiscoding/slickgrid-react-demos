@@ -1,0 +1,39 @@
+{
+  // Use IntelliSense to find out which attributes exist for node debugging
+  // Use hover for the description of the existing attributes
+  // For further information visit https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Chrome Debugger",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:8082",
+      "webRoot": "${workspaceFolder}/src",
+      "pathMapping": {
+        "/@fs/": ""
+      }
+    },
+    {
+      "type": "msedge",
+      "request": "launch",
+      "name": "Ms Edge Debugger",
+      "url": "http://localhost:8082",
+      "webRoot": "${workspaceFolder}/src",
+      "pathMapping": {
+        "/@fs/": ""
+      }
+    },
+    {
+      "name": "Vitest - Debug Current Test File",
+      "type": "node",
+      "request": "launch",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+      "args": ["run", "${relativeFile}",  "--no-watch", "--config", "./test/vitest.config.mts"],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    }
+  ]
+}

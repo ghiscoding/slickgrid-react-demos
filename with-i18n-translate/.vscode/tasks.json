@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Bootstrap 5 Demo Page",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${workspaceFolder}/with-i18n-translate",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Bootstrap 5 Demo Page",
+      "type": "shell",
+      "command": "yarn dev",
+      "options": {
+        "cwd": "${workspaceFolder}/with-i18n-translate",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build Bootstrap 5 Demo Page",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${workspaceFolder}/without-i18n-single-locale",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Bootstrap 5 Demo Page",
+      "type": "shell",
+      "command": "yarn dev",
+      "options": {
+        "cwd": "${workspaceFolder}/without-i18n-single-locale",
+      },
+      "problemMatcher": []
+    }
+  ]
+}
