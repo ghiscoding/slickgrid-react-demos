@@ -33,12 +33,12 @@ jobs:
 
       - name: Install npm/yarn dependencies
         run: |
-          cd bootstrap5-i18n-demo
+          cd with-i18n-translate
           yarn install
 
       - name: Prod Build for GitHub demo website
         run: |
-          cd bootstrap5-i18n-demo
+          cd with-i18n-translate
           yarn build
 
       - name: Deploy to gh-pages
@@ -46,4 +46,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./bootstrap5-i18n-demo/dist
+          publish_dir: ./with-i18n-translate/dist
