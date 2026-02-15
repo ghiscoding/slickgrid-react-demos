@@ -1,13 +1,12 @@
 import {
+  emptyElement,
   type Column,
   type ColumnFilter,
-  emptyElement,
   type Filter,
   type FilterArguments,
   type FilterCallback,
   type GridOption,
-  OperatorType,
-  type OperatorString,
+  type OperatorType,
   type SearchTerm,
   type SlickGrid,
 } from 'slickgrid-react';
@@ -20,7 +19,7 @@ export class CustomInputFilter implements Filter {
   searchTerms: SearchTerm[] = [];
   columnDef!: Column;
   callback!: FilterCallback;
-  operator: OperatorType | OperatorString = OperatorType.equal;
+  operator: OperatorType = 'EQ';
 
   /** Getter for the Filter Operator */
   get columnFilter(): ColumnFilter {

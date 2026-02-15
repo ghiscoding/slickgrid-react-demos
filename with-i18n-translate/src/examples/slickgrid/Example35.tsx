@@ -291,7 +291,7 @@ const Example35: React.FC = () => {
             (see
             <a
               target="_blank"
-              href="https://github.com/ghiscoding/slickgrid-react-demos/tree/main/with-i18n-translate/src/examples/slickgrid/example35.scss"
+              href="https://github.com/ghiscoding/slickgrid-react-demos/tree/main/with-i18n-translate/src/examples/slickgrid/Example35.scss"
             >
               example35.scss{' '}
             </a>
