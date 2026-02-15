@@ -2,7 +2,6 @@ import { ExcelExportService } from '@slickgrid-universal/excel-export';
 import { TextExportService } from '@slickgrid-universal/text-export';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  DelimiterType,
   Filters,
   Formatters,
   SlickgridReact,
@@ -81,7 +80,7 @@ const Example2: React.FC = () => {
     const gridOptions: GridOption = {
       autoResize: {
         container: '#demo-container',
-        rightPadding: 10
+        rightPadding: 10,
       },
       // use a Single Custom Locales set
       locale: 'fr', // this helps certain elements to know which locale to use, for example the Date Filter/Editor
@@ -92,10 +91,10 @@ const Example2: React.FC = () => {
       checkboxSelector: {
         // you can toggle these 2 properties to show the "select all" checkbox in different location
         hideInFilterHeaderRow: false,
-        hideInColumnTitleRow: true
+        hideInColumnTitleRow: true,
       },
       enableCheckboxSelector: true,
-      enableRowSelection: true,
+      enableSelection: true,
       showCustomFooter: true, // display some metrics in the bottom custom footer
       customFooterOptions: {
         // optionally display some text on the left footer container
@@ -142,7 +141,7 @@ const Example2: React.FC = () => {
       textExportOptions: {
         // set at the grid option level, meaning all column will evaluate the Formatter (when it has a Formatter defined)
         exportWithFormatter: true,
-        sanitizeDataExport: true
+        sanitizeDataExport: true,
       },
       externalResources: [excelExportService, textExportService],
     };
@@ -209,7 +208,7 @@ const Example2: React.FC = () => {
 
   function exportToFile(type = 'csv') {
     textExportService.exportToFile({
-      delimiter: type === 'csv' ? DelimiterType.comma : DelimiterType.tab,
+      delimiter: type === 'csv' ? ',' : '\t',
       filename: 'myExport',
       format: type === 'csv' ? 'csv' : 'txt',
     });
@@ -235,8 +234,6 @@ const Example2: React.FC = () => {
     <div id="demo-container" className="container-fluid">
       <h2>
         Example 2: Localization with Locales - French Locale displayed
-        <span className="float-end font18">
-        </span>
         <button
           className="ms-2 btn btn-outline-secondary btn-sm btn-icon"
           type="button"
@@ -289,6 +286,7 @@ const Example2: React.FC = () => {
           </span>
         </div>
       </div>
+
       <SlickgridReact
         gridId="grid2"
         columns={columnDefinitions}
