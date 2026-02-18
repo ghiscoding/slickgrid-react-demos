@@ -13,6 +13,7 @@ Again the following dependencies are totally **optional**
 | [@slickgrid-universal/text-export](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/text-export) | [![npm](https://img.shields.io/npm/v/@slickgrid-universal/text-export.svg?color=forest)](https://www.npmjs.com/package/@slickgrid-universal/text-export) | Export to Text File Service (csv/txt) |
 | [@slickgrid-universal/graphql](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/graphql) | [![npm](https://img.shields.io/npm/v/@slickgrid-universal/graphql.svg?color=forest)](https://www.npmjs.com/package/@slickgrid-universal/graphql) | GraphQL Query Service (support Filter/Sort/Pagination) |
 | [@slickgrid-universal/odata](https://github.com/ghiscoding/slickgrid-universal/tree/master/packages/odata) | [![npm](https://img.shields.io/npm/v/@slickgrid-universal/odata.svg?color=forest)](https://www.npmjs.com/package/@slickgrid-universal/odata) | OData Query Service (support Filter/Sort/Pagination) |
+| [@slickgrid-universal/react-row-detail-plugin](https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks-plugins/react-row-detail-plugin) | [![npm](https://img.shields.io/npm/v/@slickgrid-universal/react-row-detail-plugin.svg?color=forest)](https://www.npmjs.com/package/@slickgrid-universal/react-row-detail-plugin) | Slickgrid-React Row Detail plugin |
 
 ---
 
