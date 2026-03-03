@@ -282,7 +282,7 @@ const Example25: React.FC = () => {
           see&nbsp;
           <a
             target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react-demos/tree/main/with-i18n-translate/src/examples/slickgrid/Example25.tsx"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example25.tsx"
           >
             <span className="mdi mdi-link-variant"></span> code
           </a>

@@ -15,6 +15,7 @@ import {
   type Grouping,
   type SlickgridReactInstance,
 } from 'slickgrid-react';
+import './example13.scss';
 
 const NB_ITEMS = 5000;
 
@@ -397,7 +398,7 @@ const Example13: React.FC = () => {
           see&nbsp;
           <a
             target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react-demos/tree/main/with-i18n-translate/src/examples/slickgrid/Example13.tsx"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example13.tsx"
           >
             <span className="mdi mdi-link-variant"></span> code
           </a>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SlickgridReact, type Column, type GridOption, type SlickEventData, type SlickgridReactInstance } from 'slickgrid-react';
-import './example7.scss';
+import './example07.scss';
 
 const Example7: React.FC = () => {
   const [gridOptions1, setGridOptions1] = useState<GridOption | undefined>(undefined);
@@ -226,7 +226,7 @@ const Example7: React.FC = () => {
           see&nbsp;
           <a
             target="_blank"
-            href="https://github.com/ghiscoding/slickgrid-react-demos/tree/main/with-i18n-translate/src/examples/slickgrid/Example7.tsx"
+            href="https://github.com/ghiscoding/slickgrid-universal/blob/master/demos/react/src/examples/slickgrid/Example7.tsx"
           >
             <span className="mdi mdi-link-variant"></span> code
           </a>
