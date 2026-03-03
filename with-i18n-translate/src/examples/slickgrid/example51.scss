@@ -1,4 +1,4 @@
-body {
+.grid51-container {
   --slick-menu-item-height: 30px;
   --slick-menu-line-height: 30px;
   --slick-column-picker-item-height: 28px;
@@ -26,6 +26,25 @@ body {
   }
 }
 
+body {
+  .slick-menu-item.slot-menu-container {
+    --slick-menu-item-height: 40px;
+    --slick-menu-item-hover-border: 1px solid transparent;
+    --slick-menu-item-hover-color: transparent !important;
+
+    .footer-buttons-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      gap: 10px;
+    }
+
+    .footer-btn {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+}
 
 .key-hint {
   background: #eee;
@@ -61,9 +80,10 @@ body {
     border: 1px solid #fba321;
   }
 }
+
 kbd {
-  background-color: #eee !important;
-  color: #202020 !important;
+  background-color: #eee;
+  color: #202020;
 }
 
 .edit-cell {
