@@ -6,7 +6,7 @@
       "type": "shell",
       "command": "npm run build",
       "options": {
-        "cwd": "${workspaceFolder}/with-i18n-translate",
+        "cwd": "${workspaceFolder}/single-locale-without-i18n",
       },
       "problemMatcher": []
     },
@@ -15,7 +15,7 @@
       "type": "shell",
       "command": "yarn dev",
       "options": {
-        "cwd": "${workspaceFolder}/with-i18n-translate",
+        "cwd": "${workspaceFolder}/single-locale-without-i18n",
       },
       "problemMatcher": []
     },
