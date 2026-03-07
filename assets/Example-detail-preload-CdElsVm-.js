@@ -1,1 +1,0 @@
-import{r as t,j as e}from"./index-D9SeG3rZ.js";const o=s=>{const{ref:r,...n}=s;return t.useEffect(()=>()=>{console.log("Preload unmounted")},[]),e.jsxs("div",{ref:r,className:"container-fluid d-flex align-items-center",style:{marginTop:"10px"},...n,children:[e.jsx("i",{className:"mdi mdi-sync mdi-spin font-50px"}),e.jsx("h4",{children:"Loading..."})]})};export{o as E};
