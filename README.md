@@ -4,6 +4,12 @@
 ### Installation
 Git clone the demo and npm install it, then run and enjoy fully working demo.
 
+### Stackblitz
+
+Open in Stackblitz
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/ghiscoding/slickgrid-react-demos)
+
 ### Bootstrap 5 - with `i18n` Translate
 
 Common Bootstrap 5 demo using `i18n` to provide the use of multiple languages (locales) which can be switched dynamically (on the fly).
