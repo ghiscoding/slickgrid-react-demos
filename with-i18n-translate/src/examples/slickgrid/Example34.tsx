@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import sparkline from '@fnando/sparkline';
+import { sparkline } from '@fnando/sparkline';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Aggregators,
@@ -499,7 +499,7 @@ const Example34: React.FC = () => {
       </h2>
 
       <div className="subtitle">
-        Simulate a stock trading platform with lot of price changes, it is strongly suggested to disable the{' '}
+        Simulate a stock trading platform with lot of price changes, it is strongly suggested to disable the
         <code>autoResize.autoHeight</code> grid option for this type of grid.
         <ul>
           <li>
