@@ -13,10 +13,11 @@
   "license": "MIT",
   "author": "Ghislain B.",
   "scripts": {
-    "react-fluent:dev": "vite",
-    "react-fluent:preview": "vite preview",
-    "build": "pnpm type-check && vite build",
-    "type-check": "tsc --noEmit"
+    "dev": "vite",
+    "prebuild": "npm run lint",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --no-cache"
   },
   "dependencies": {
     "@fluentui/react-components": "^9.73.4",
