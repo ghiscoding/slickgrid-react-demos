@@ -46,6 +46,21 @@ npm install
 npm run build # OR yarn run build
 ```
 
+### Fluent UI Theme (single locale)
+
+This demo uses [Fluent UI](https://react.fluentui.dev/) and imports the Fluent Theme
+
+```sh
+git clone https://github.com/ghiscoding/slickgrid-react-demos
+cd react-fluent-ui
+npm install
+```
+
+##### Build Demo
+```bash
+npm run build # OR yarn run build
+```
+
 #### VScode
 If you use Visual Studio Code, you can also run each of the demo through the multiple VSCode Tasks.
 
