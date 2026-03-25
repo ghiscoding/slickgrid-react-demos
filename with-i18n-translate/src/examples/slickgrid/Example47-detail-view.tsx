@@ -1,3 +1,4 @@
+import { format } from '@formkit/tempo';
 import React, { useState } from 'react';
 import type { RowDetailViewProps } from 'slickgrid-react';
 import './example47-detail-view.scss';
@@ -6,7 +7,7 @@ import { showToast } from './utilities.js';
 interface Item {
   id: number;
   assignee: string;
-  duration: Date;
+  duration: number;
   percentComplete: number;
   reporter: string;
   start: Date;
@@ -65,7 +66,7 @@ const Example47DetailView: React.FC<RowDetailViewProps<Item, any>> = (props) => 
           <label>Reporter:</label> <span>{props.model.reporter}</span>
         </div>
         <div className="col-3 detail-label">
-          <label>Duration:</label> <span>{props.model.duration?.toISOString?.()}</span>
+          <label>Duration:</label> <span>{props.model.duration || 0}</span>
         </div>
         <div className="col-3 detail-label">
           <label>% Complete:</label> <span>{props.model.percentComplete}</span>
@@ -74,10 +75,10 @@ const Example47DetailView: React.FC<RowDetailViewProps<Item, any>> = (props) => 
 
       <div className="row">
         <div className="col-3 detail-label">
-          <label>Start:</label> <span>{props.model.start?.toISOString()}</span>
+          <label>Start:</label> <span>{props.model.start ? format(props.model.start, 'YYYY-MM-DD') : ''}</span>
         </div>
         <div className="col-3 detail-label">
-          <label>Finish:</label> <span>{props.model.finish?.toISOString()}</span>
+          <label>Finish:</label> <span>{props.model.finish ? format(props.model.finish, 'YYYY-MM-DD') : ''}</span>
         </div>
         <div className="col-3 detail-label">
           <label>Effort Driven:</label> <i className={props.model.effortDriven ? 'mdi mdi-check' : ''}></i>
@@ -90,13 +91,7 @@ const Example47DetailView: React.FC<RowDetailViewProps<Item, any>> = (props) => 
         <h4>
           Find out who is the Assignee
           <small>
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={function () {
-                alertAssignee(props.model.assignee);
-              }}
-              data-test="assignee-btn"
-            >
+            <button className="btn btn-primary btn-sm" onClick={() => alertAssignee(props.model.assignee)} data-test="assignee-btn">
               Click Me
             </button>
           </small>
@@ -104,22 +99,10 @@ const Example47DetailView: React.FC<RowDetailViewProps<Item, any>> = (props) => 
       </div>
 
       <div className="col-sm-4">
-        <button
-          className="btn btn-primary btn-danger btn-sm"
-          onClick={function () {
-            deleteRow(props.model);
-          }}
-          data-test="delete-btn"
-        >
+        <button className="btn btn-primary btn-danger btn-sm" onClick={() => deleteRow(props.model)} data-test="delete-btn">
           Delete Row
         </button>
-        <button
-          className="btn btn-outline-secondary btn-sm btn-icon"
-          onClick={function () {
-            showNotification(props.model);
-          }}
-          data-test="parent-btn"
-        >
+        <button className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => showNotification(props.model)} data-test="parent-btn">
           Call Parent Method
         </button>
       </div>
