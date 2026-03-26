@@ -50,8 +50,6 @@ const Example19: React.FC = () => {
         id: 'duration',
         name: 'Duration (days)',
         field: 'duration',
-        formatter: Formatters.decimal,
-        params: { minDecimal: 1, maxDecimal: 2 },
         sortable: true,
         type: 'number',
         minWidth: 90,
@@ -200,7 +198,7 @@ const Example19: React.FC = () => {
       tmpData[i] = {
         rowId: i,
         title: 'Task ' + i,
-        duration: i % 33 === 0 ? null : Math.random() * 100 + '',
+        duration: i % 33 === 0 ? null : Math.floor(Math.random() * 100) + 1,
         percentComplete: randomPercent,
         percentComplete2: randomPercent,
         percentCompleteNumber: randomPercent,
