@@ -1,1 +1,0 @@
-import{r,j as e}from"./index-DkgaaP-2.js";const i=s=>{const{ref:n}=s;return r.useEffect(()=>()=>{console.log("Preload unmounted")},[]),e.jsxs("div",{ref:n,className:"container-fluid d-flex align-items-center",style:{marginTop:"10px"},children:[e.jsx("i",{className:"mdi mdi-sync mdi-spin font-50px"}),e.jsx("h4",{children:"Loading..."})]})};export{i as E};
