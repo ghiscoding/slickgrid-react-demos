@@ -1,5 +1,4 @@
 import { Button, makeStyles, MessageBar, MessageBarBody, tokens } from '@fluentui/react-components';
-import { Alert } from '@fluentui/react-components/unstable';
 import { ChevronLeftRegular, ChevronRightRegular } from '@fluentui/react-icons';
 import { format as tempoFormat } from '@formkit/tempo';
 import { SqlService, type SqlResult, type SqlServiceApi } from '@slickgrid-universal/sql';
