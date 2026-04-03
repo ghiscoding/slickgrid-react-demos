@@ -30,16 +30,16 @@
     "lint": "eslint . --no-cache"
   },
   "dependencies": {
-    "@slickgrid-universal/composite-editor-component": "^10.3.0",
-    "@slickgrid-universal/custom-tooltip-plugin": "^10.3.0",
-    "@slickgrid-universal/excel-export": "^10.3.0",
-    "@slickgrid-universal/rxjs-observable": "^10.3.0",
-    "@slickgrid-universal/text-export": "^10.3.0",
+    "@slickgrid-universal/composite-editor-component": "^10.4.0",
+    "@slickgrid-universal/custom-tooltip-plugin": "^10.4.0",
+    "@slickgrid-universal/excel-export": "^10.4.0",
+    "@slickgrid-universal/rxjs-observable": "^10.4.0",
+    "@slickgrid-universal/text-export": "^10.4.0",
     "bootstrap": "^5.3.8",
     "dompurify": "^3.3.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "slickgrid-react": "^10.3.0"
+    "slickgrid-react": "^10.4.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.4.0",
@@ -62,10 +62,10 @@
     "react-router-dom": "^7.13.2",
     "rxjs": "^7.8.2",
     "sass": "^1.98.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.2",
-    "vite": "^7.3.1",
-    "vite-plugin-svgr": "^4.5.0"
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.0",
+    "vite": "^8.0.3",
+    "vite-plugin-svgr": "^5.2.0"
   },
   "engines": {
     "node": ">=20.0.0"

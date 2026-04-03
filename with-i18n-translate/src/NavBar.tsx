@@ -1,5 +1,4 @@
 import React from 'react';
-
 import ReactLogo from './assets/react-logo.png?url';
 
 export class NavBar extends React.Component {
@@ -7,7 +6,11 @@ export class NavBar extends React.Component {
     return (
       <div>
         <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-          <a className="navbar-brand ms-2" href="https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/slickgrid-react">
+          <a
+            className="navbar-brand ms-2"
+            target="_blank"
+            href="https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/slickgrid-react"
+          >
             <i className="mdi mdi-github"></i>
             <span className="ms-2">Slickgrid-React</span>
           </a>
@@ -24,8 +27,8 @@ export class NavBar extends React.Component {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="github-button-container">
-            <a href="https://github.com/ghiscoding/slickgrid-universal/tree/master/frameworks/slickgrid-react">
-              <img src="https://img.shields.io/github/stars/slickgrid-universal/slickgrid-universal?style=social" />
+            <a href="https://github.com/ghiscoding/slickgrid-universal">
+              <img src="https://img.shields.io/github/stars/ghiscoding/slickgrid-universal?style=social" />
             </a>
           </div>
 

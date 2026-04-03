@@ -2,6 +2,24 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Build Fluent UI",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${workspaceFolder}/react-fluent-ui",
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Fluent UI",
+      "type": "shell",
+      "command": "yarn dev",
+      "options": {
+        "cwd": "${workspaceFolder}/react-fluent-ui",
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Build Bootstrap 5 (single locale) Demo Page",
       "type": "shell",
       "command": "npm run build",

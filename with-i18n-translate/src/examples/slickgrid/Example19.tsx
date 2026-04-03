@@ -50,6 +50,8 @@ const Example19: React.FC = () => {
         id: 'duration',
         name: 'Duration (days)',
         field: 'duration',
+        formatter: Formatters.decimal,
+        params: { minDecimal: 1, maxDecimal: 2 },
         sortable: true,
         type: 'number',
         minWidth: 90,

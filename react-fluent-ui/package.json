@@ -20,21 +20,22 @@
     "lint": "eslint . --no-cache"
   },
   "dependencies": {
-    "@fluentui/react-components": "^9.73.4",
-    "@fluentui/react-icons": "^2.0.321",
-    "@slickgrid-universal/common": "^10.3.0",
+    "@fluentui/react-components": "^9.73.7",
+    "@fluentui/react-icons": "^2.0.323",
+    "@slickgrid-universal/common": "^10.4.0",
     "@slickgrid-universal/event-pub-sub": "^10.3.0",
-    "@slickgrid-universal/excel-export": "^10.3.0",
-    "@slickgrid-universal/pdf-export": "^10.3.0",
-    "@slickgrid-universal/react-row-detail-plugin": "^10.3.0",
-    "@slickgrid-universal/row-detail-view-plugin": "^10.3.0",
-    "@slickgrid-universal/rxjs-observable": "^10.3.0",
-    "@slickgrid-universal/text-export": "^10.3.0",
+    "@slickgrid-universal/excel-export": "^10.4.0",
+    "@slickgrid-universal/pdf-export": "^10.4.0",
+    "@slickgrid-universal/react-row-detail-plugin": "^10.4.0",
+    "@slickgrid-universal/row-detail-view-plugin": "^10.4.0",
+    "@slickgrid-universal/rxjs-observable": "^10.4.0",
+    "@slickgrid-universal/sql": "^10.4.2",
+    "@slickgrid-universal/text-export": "^10.4.0",
     "dompurify": "^3.3.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router": "^7.13.2",
-    "slickgrid-react": "^10.3.0"
+    "slickgrid-react": "^10.4.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.4.0",
@@ -50,8 +51,8 @@
     "globals": "^17.4.0",
     "rxjs": "^7.8.2",
     "sass": "^1.98.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3",
     "vite-tsconfig-paths": "^6.1.1"
   }
 }
