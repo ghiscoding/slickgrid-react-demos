@@ -14,10 +14,8 @@
   "author": "Ghislain B.",
   "scripts": {
     "dev": "vite",
-    "prebuild": "npm run lint",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "lint": "eslint . --no-cache"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@fluentui/react-components": "^9.73.7",
