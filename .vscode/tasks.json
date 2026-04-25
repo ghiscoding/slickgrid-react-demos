@@ -13,7 +13,7 @@
     {
       "label": "Start Fluent UI",
       "type": "shell",
-      "command": "yarn dev",
+      "command": "npm run dev",
       "options": {
         "cwd": "${workspaceFolder}/react-fluent-ui",
       },
@@ -31,7 +31,7 @@
     {
       "label": "Start Bootstrap 5 (single locale) Demo Page",
       "type": "shell",
-      "command": "yarn dev",
+      "command": "npm run dev",
       "options": {
         "cwd": "${workspaceFolder}/single-locale-without-i18n",
       },
@@ -49,7 +49,7 @@
     {
       "label": "Start Bootstrap 5 (i18n) Demo Page",
       "type": "shell",
-      "command": "yarn dev",
+      "command": "npm run dev",
       "options": {
         "cwd": "${workspaceFolder}/with-i18n-translate",
       },

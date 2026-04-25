@@ -12,8 +12,10 @@ import {
   SortComparers,
   SortDirectionNumber,
   type Column,
+  type ContextMenu,
   type GridOption,
   type Grouping,
+  type MenuCommandItem,
   type SlickgridReactInstance,
 } from 'slickgrid-react';
 import { baseFluentGridOption } from './base-fluent-grid-options.js';
@@ -204,6 +206,7 @@ const Example03: React.FC = () => {
     ];
 
     const gridOptions: GridOption = {
+      ...baseFluentGridOption,
       autoResize: {
         container: '#demo-container',
         rightPadding: 10,
@@ -235,8 +238,13 @@ const Example03: React.FC = () => {
           }
         },
       },
+      contextMenu: {
+        ...baseFluentGridOption.contextMenu,
+        ...getContextMenuOptions()
+      },
+      // contextMenu: getContextMenuOptions(),
       draggableGrouping: {
-        dropPlaceHolderText: 'Drop a column header here to group by the column',
+        dropPlaceHolderText: 'Drop a column...',
         deleteIconCssClass: 'fi fi-dismiss color-danger',
         sortAscIconCssClass: 'fi fi-arrow-up',
         sortDescIconCssClass: 'fi fi-arrow-down',
@@ -256,11 +264,108 @@ const Example03: React.FC = () => {
       // enableTextExport: true,
       // enablePdfExport: true,
       // enableExcelExport: true,
-      ...baseFluentGridOption,
     };
 
     setColumns(columns);
     setGridOptions(gridOptions);
+  }
+
+  function getContextMenuOptions(): ContextMenu {
+    return {
+      hideCommands: ["copy"],
+                hideCloseButton: true,
+                commandItems: [
+            // filter out commands
+              // ...builtInItems.filter((x) => x !== 'divider' && x.command !== 'copy'),
+            // Copy commands
+            {
+                command: "copy",
+                title: 'Title - slickGrid.copy',
+                iconCssClass: "fi fi-copy",
+                // positionOrder: 50,
+            },
+            {
+                command: "copy-with-headers",
+                title: 'Title - slickGrid.copyWithHeaders',
+                iconCssClass: "fi fi-copy",
+                positionOrder: 2,
+            },
+            {
+                command: "copy-headers",
+                title: 'Title - slickGrid.copyHeaders',
+                iconCssClass: "fi fi-copy",
+                positionOrder: 3,
+            },
+            // Divider before export
+            { divider: true, command: "", positionOrder: 4 },
+            // Export commands
+            {
+                command: "export-csv",
+                title: 'Title - slickGrid.exportToCsv',
+                iconCssClass: "fi fi-arrow-download",
+                positionOrder: 5,
+            },
+            {
+                command: "export-excel",
+                title: 'Title - slickGrid.exportToExcel',
+                iconCssClass: "fi fi-arrow-download",
+                positionOrder: 6,
+            },
+            {
+                command: "export-json",
+                title: 'Title - slickGrid.exportToJson',
+                iconCssClass: "fi fi-arrow-download",
+                positionOrder: 7,
+            },
+            // Divider before edit commands
+            { divider: true, command: "", positionOrder: 8 },
+            // Edit commands
+            {
+                command: "delete-row",
+                title: 'Title - tableExplorer.deleteRow',
+                iconCssClass: "fi fi-dismiss",
+                cssClass: "red",
+                textCssClass: "bold",
+                positionOrder: 9,
+                itemVisibilityOverride: (args: any) => {
+                    // Hide "Delete Row" if row is already deleted
+                    const rowId = args.dataContext?.id;
+                    return rowId !== 2;
+                },
+            },
+            {
+                command: "revert-cell",
+                title: 'Title - tableExplorer.revertCell',
+                iconCssClass: "fi fi-arrow-undo",
+                positionOrder: 10,
+            },
+            {
+                command: "revert-row",
+                title: 'Title - tableExplorer.revertRow',
+                iconCssClass: "fi fi-arrow-undo",
+                positionOrder: 11,
+            },
+            // Divider before navigation commands
+            { divider: true, command: "", positionOrder: 12 },
+            // Navigation commands
+            {
+                command: "modify-table",
+                title: 'Title - tableExplorer.modifyTable',
+                iconCssClass: "fi fi-table-edit",
+                positionOrder: 13,
+            },
+        ] as Array<MenuCommandItem | 'divider'>,
+      // },
+      onCommand: (e, args) => handleContextMenuCommand(e, args),
+    };
+  }
+
+  function handleContextMenuCommand(_e: any, args: any) {
+    const command = args.command;
+    const dataContext = args.dataContext;
+    const rowId = dataContext?.id;
+
+    console.log(`Command: ${command}, Row ID: ${rowId}`);
   }
 
   function loadData(rowCount: number) {
