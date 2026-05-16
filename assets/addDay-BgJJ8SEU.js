@@ -1,1 +1,0 @@
-import{w as e}from"./index-B1r1J7GN.js";function t(t,n=1){let r=e(t);return r.setDate(r.getDate()+n),r}export{t};
