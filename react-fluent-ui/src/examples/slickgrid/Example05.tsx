@@ -247,7 +247,7 @@ const Example05: React.FC = () => {
         container: '#demo-container',
         rightPadding: 10,
       },
-    darkMode: false,
+      darkMode: false,
       gridWidth: 920,
       enableCellNavigation: true,
       editable: true,
@@ -394,7 +394,7 @@ const Example05: React.FC = () => {
 
       <div className="row my-1">
         <div className="col-sm-12">
-         <Button className="mx-1" onClick={() => toggleDarkModeGrid()} data-test="toggle-dark-mode">
+          <Button className="mx-1" onClick={() => toggleDarkModeGrid()} data-test="toggle-dark-mode">
             <i className="fi fi-dark-theme"></i>
             <span className="ms-1">Toggle Dark Mode</span>
           </Button>
