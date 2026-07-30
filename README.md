@@ -61,8 +61,7 @@ npm install
 npm run build # OR yarn run build
 ```
 
-#### VScode
-If you use Visual Studio Code, you can also run each of the demo through the multiple VSCode Tasks.
+---
 
 ### Optional NPM Packages
 Please note that some of the npm packages installed in these demos are **optional** and are installed **only** for demo purposes. If you don't need the feature then don't install it (remove it from your `package.json`) and you'll end up with a smaller production build.
