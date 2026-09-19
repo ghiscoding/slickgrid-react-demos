@@ -1,1 +1,0 @@
-var e=``+new URL(`customers_100-R23S6Acw.json`,import.meta.url).href;export{e as t};
