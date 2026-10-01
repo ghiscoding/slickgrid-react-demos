@@ -1,0 +1,1 @@
+import{C as e}from"./index-DGAIzryG.js";function t(t,n=1){let r=e(t);return r.setDate(r.getDate()+n),r}export{t};
