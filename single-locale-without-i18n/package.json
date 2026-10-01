@@ -30,16 +30,16 @@
     "lint": "eslint . --no-cache"
   },
   "dependencies": {
-    "@slickgrid-universal/composite-editor-component": "^10.11.1",
-    "@slickgrid-universal/custom-tooltip-plugin": "^10.11.1",
-    "@slickgrid-universal/excel-export": "^10.11.1",
-    "@slickgrid-universal/rxjs-observable": "^10.11.1",
-    "@slickgrid-universal/text-export": "^10.11.1",
+    "@slickgrid-universal/composite-editor-component": "^10.11.2",
+    "@slickgrid-universal/custom-tooltip-plugin": "^10.11.2",
+    "@slickgrid-universal/excel-export": "^10.11.2",
+    "@slickgrid-universal/rxjs-observable": "^10.11.2",
+    "@slickgrid-universal/text-export": "^10.11.2",
     "bootstrap": "^5.3.8",
     "dompurify": "^3.4.16",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "slickgrid-react": "^10.11.1"
+    "slickgrid-react": "^10.11.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.6.0",
