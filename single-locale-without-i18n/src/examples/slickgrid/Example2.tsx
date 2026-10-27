@@ -132,16 +132,13 @@ const Example2: React.FC = () => {
           sheet.data.push(cols);
         }
       },
-      gridMenu: {
-        hideExportCsvCommand: false,           // false by default, so it's optional
-        hideExportTextDelimitedCommand: false  // true by default, so if you want it, you will need to disable the flag
-      },
       enableExcelExport: true,
       enableTextExport: true,
       textExportOptions: {
         // set at the grid option level, meaning all column will evaluate the Formatter (when it has a Formatter defined)
         exportWithFormatter: true,
         sanitizeDataExport: true,
+        menuFormats: ['csv', 'txt']
       },
       externalResources: [excelExportService, textExportService],
     };
