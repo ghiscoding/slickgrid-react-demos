@@ -26,8 +26,7 @@
     "dev": "vite",
     "prebuild": "npm run lint",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "lint": "eslint . --no-cache"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@slickgrid-universal/composite-editor-component": "^11.0.0-beta.0",
@@ -60,17 +59,11 @@
     "@types/react-dom": "^19.3.0",
     "@types/text-encoding-utf-8": "^1.0.5",
     "@vitejs/plugin-react": "^6.3.0",
-    "eslint": "^10.14.0",
-    "eslint-plugin-n": "^18.5.0",
-    "eslint-plugin-prefer-arrow": "^1.2.3",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.14.0",
     "react-router-dom": "^7.18.5",
     "rxjs": "^7.8.2",
     "sass": "^1.108.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.1",
     "vite": "^8.3.6",
     "vite-plugin-svgr": "^5.2.0"
   },
