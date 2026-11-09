@@ -1,6 +1,6 @@
 {
   "name": "slickgrid-react",
-  "version": "4.0.0",
+  "version": "1.0.0",
   "description": "Slickgrid components made available in React",
   "keywords": [
     "react",
@@ -44,8 +44,8 @@
     "bootstrap": "^5.3.8",
     "dompurify": "^3.4.17",
     "i18next": "^26.4.2",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-i18next": "^17.0.16",
     "slickgrid-react": "^11.0.0-beta.0"
   },
@@ -55,28 +55,24 @@
     "@popperjs/core": "^2.11.8",
     "@types/fnando__sparkline": "^0.3.7",
     "@types/i18next-xhr-backend": "^1.4.2",
-    "@types/node": "^26.6.4",
+    "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/text-encoding-utf-8": "^1.0.5",
-    "@vitejs/plugin-react": "^6.1.2",
-    "eslint": "^10.12.0",
-    "eslint-plugin-n": "^18.4.1",
+    "@vitejs/plugin-react": "^6.3.0",
+    "eslint": "^10.14.0",
+    "eslint-plugin-n": "^18.5.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "globals": "^17.13.0",
-    "react-router-dom": "^7.18.4",
+    "globals": "^17.14.0",
+    "react-router-dom": "^7.18.5",
     "rxjs": "^7.8.2",
-    "sass": "^1.105.1",
+    "sass": "^1.108.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.71.1",
-    "vite": "^8.3.3",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^8.3.6",
     "vite-plugin-svgr": "^5.2.0"
-  },
-  "overrides": {
-    "brace-expansion": "^5.0.12",
-    "immutable": "^5.1.9"
   },
   "engines": {
     "node": ">=20.0.0"
