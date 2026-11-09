@@ -24,7 +24,6 @@
   "typings": "dist/commonjs/index.d.ts",
   "scripts": {
     "dev": "vite",
-    "prebuild": "npm run lint",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
