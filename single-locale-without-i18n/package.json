@@ -28,16 +28,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@slickgrid-universal/composite-editor-component": "^11.0.0-beta.0",
-    "@slickgrid-universal/custom-tooltip-plugin": "^11.0.0-beta.0",
-    "@slickgrid-universal/excel-export": "^11.0.0-beta.0",
-    "@slickgrid-universal/rxjs-observable": "^11.0.0-beta.0",
-    "@slickgrid-universal/text-export": "^11.0.0-beta.0",
+    "@slickgrid-universal/composite-editor-component": "^11.0.0",
+    "@slickgrid-universal/custom-tooltip-plugin": "^11.0.0",
+    "@slickgrid-universal/excel-export": "^11.0.0",
+    "@slickgrid-universal/rxjs-observable": "^11.0.0",
+    "@slickgrid-universal/text-export": "^11.0.0",
     "bootstrap": "^5.3.8",
     "dompurify": "^3.4.17",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "slickgrid-react": "^11.0.0-beta.0"
+    "slickgrid-react": "^11.0.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.6.0",
@@ -54,12 +54,12 @@
     "rxjs": "^7.8.2",
     "sass": "^1.108.1",
     "typescript": "^6.0.3",
-    "vite": "^8.3.6",
+    "vite": "^8.3.7",
     "vite-plugin-svgr": "^5.2.0"
   },
   "overrides": {
     "brace-expansion": "^5.0.12",
-    "immutable": "^5.1.9"
+    "immutable": "^5.1.10"
   },
   "engines": {
     "node": ">=20.0.0"

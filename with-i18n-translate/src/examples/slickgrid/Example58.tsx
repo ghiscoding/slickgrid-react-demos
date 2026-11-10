@@ -10,7 +10,6 @@ import {
 import './example58.scss';
 
 const MONTH_FIELDS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'] as const;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const PERIOD_FIELDS = [...MONTH_FIELDS, 'q1', 'q2', 'q3', 'q4', 'ytd'] as const;
 
 type MonthField = (typeof MONTH_FIELDS)[number];

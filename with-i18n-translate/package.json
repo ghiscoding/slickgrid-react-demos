@@ -28,24 +28,24 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@slickgrid-universal/composite-editor-component": "^11.0.0-beta.0",
-    "@slickgrid-universal/custom-tooltip-plugin": "^11.0.0-beta.0",
-    "@slickgrid-universal/excel-export": "^11.0.0-beta.0",
-    "@slickgrid-universal/graphql": "^11.0.0-beta.0",
-    "@slickgrid-universal/odata": "^11.0.0-beta.0",
-    "@slickgrid-universal/pdf-export": "^11.0.0-beta.0",
-    "@slickgrid-universal/react-row-detail-plugin": "^11.0.0-beta.0",
-    "@slickgrid-universal/rxjs-observable": "^11.0.0-beta.0",
-    "@slickgrid-universal/sql": "^11.0.0-beta.0",
-    "@slickgrid-universal/text-export": "^11.0.0-beta.0",
-    "@slickgrid-universal/web-mcp": "^11.0.0-beta.0",
+    "@slickgrid-universal/composite-editor-component": "^11.0.0",
+    "@slickgrid-universal/custom-tooltip-plugin": "^11.0.0",
+    "@slickgrid-universal/excel-export": "^11.0.0",
+    "@slickgrid-universal/graphql": "^11.0.0",
+    "@slickgrid-universal/odata": "^11.0.0",
+    "@slickgrid-universal/pdf-export": "^11.0.0",
+    "@slickgrid-universal/react-row-detail-plugin": "^11.0.0",
+    "@slickgrid-universal/rxjs-observable": "^11.0.0",
+    "@slickgrid-universal/sql": "^11.0.0",
+    "@slickgrid-universal/text-export": "^11.0.0",
+    "@slickgrid-universal/web-mcp": "^11.0.0",
     "bootstrap": "^5.3.8",
     "dompurify": "^3.4.17",
-    "i18next": "^26.4.2",
+    "i18next": "^26.7.2",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-i18next": "^17.0.16",
-    "slickgrid-react": "^11.0.0-beta.0"
+    "react-i18next": "^17.1.13",
+    "slickgrid-react": "^11.0.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.6.0",
@@ -63,7 +63,7 @@
     "rxjs": "^7.8.2",
     "sass": "^1.108.1",
     "typescript": "^6.0.3",
-    "vite": "^8.3.6",
+    "vite": "^8.3.7",
     "vite-plugin-svgr": "^5.2.0"
   },
   "engines": {
